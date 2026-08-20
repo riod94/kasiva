@@ -1,0 +1,342 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Official Brand Palette Tokens */
+  --color-primary: #4338CA;
+  --color-primary-hover: #3730A3;
+  --color-primary-light: #6366F1;
+  --color-secondary: #F97316;
+  --color-dark-bg: #0F172A;
+  --color-dark-card: #1E1B4B;
+  --color-dark-border: #2E2A68;
+  --color-kasiva-navy: #272D48;
+  --color-kasiva-blue-violet: #505B93;
+  --color-kasiva-teal: #00AAA6;
+  --color-kasiva-periwinkle: #8696ED;
+  --color-kasiva-cyan-teal: #3EDAD7;
+}
+
+:root, html.dark {
+  --app-bg: #0F172A;
+  --header-bg: rgba(30, 27, 75, 0.95);
+  --card-bg: #1E1B4B;
+  --card-sub-bg: #16192E;
+  --border-color: #2E2A68;
+  --text-main: #FFFFFF;
+  --text-muted: #94A3B8;
+  --text-accent: #3EDAD7;
+  color-scheme: dark;
+}
+
+html.light {
+  --app-bg: #F8FAFC;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --card-bg: #FFFFFF;
+  --card-sub-bg: #F1F5F9;
+  --border-color: #E2E8F0;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --text-accent: #00AAA6;
+  color-scheme: light;
+}
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--app-bg);
+    color: var(--text-main);
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Light Theme Overrides & High Contrast Styling */
+html.light body {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+html.light header,
+html.light nav[role="navigation"] {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+html.light .bg-\[\#1E1B4B\],
+html.light .bg-\[\#1E1B4B\]\/95 {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+html.light .bg-\[\#16192E\] {
+  background-color: #F8FAFC !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light .bg-\[\#0F172A\] {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.light .border-\[\#2E2A68\],
+html.light .border-\[\#2E2A68\]\/60 {
+  border-color: #E2E8F0 !important;
+}
+
+html.light .divide-\[\#2E2A68\] > * + * {
+  border-color: #E2E8F0 !important;
+}
+
+html.light .text-white {
+  color: #0F172A !important;
+}
+
+html.light .text-slate-100 {
+  color: #0F172A !important;
+}
+
+html.light .text-slate-200 {
+  color: #1E293B !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #64748B !important;
+}
+
+html.light .text-slate-500 {
+  color: #64748B !important;
+}
+
+html.light .hover\:bg-\[\#25215A\]:hover {
+  background-color: #F1F5F9 !important;
+}
+
+html.light .hover\:text-white:hover {
+  color: #0F172A !important;
+}
+
+/* Light Theme Inputs, Selects, and Textareas */
+html.light input:not([type="checkbox"]):not([type="radio"]),
+html.light select,
+html.light textarea {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94A3B8 !important;
+}
+
+html.light input:not([type="checkbox"]):not([type="radio"]):focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: #4338CA !important;
+  box-shadow: 0 0 0 1px #4338CA !important;
+}
+
+/* ═══════════════ TOGGLE SWITCHES (Dark & Light Mode) ═══════════════ */
+label:has(input[type="checkbox"].peer) div.peer,
+input[type="checkbox"].peer + div {
+  background-color: #334155 !important;
+  border: 1.5px solid #475569 !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+input[type="checkbox"].peer + div::after {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+input[type="checkbox"].peer:checked + div {
+  background-color: #4338CA !important;
+  border-color: #6366F1 !important;
+}
+
+/* Light mode specific toggle rules */
+html.light label:has(input[type="checkbox"].peer) div.peer,
+html.light input[type="checkbox"].peer:not(:checked) + div {
+  background-color: #CBD5E1 !important; /* Clearly distinct dark-silver track when OFF */
+  border-color: #94A3B8 !important;
+}
+
+html.light input[type="checkbox"].peer:not(:checked) + div::after {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.light input[type="checkbox"].peer:checked + div {
+  background-color: #4338CA !important; /* Rich vibrant brand indigo when ON */
+  border-color: #3730A3 !important;
+}
+
+html.light input[type="checkbox"].peer:checked + div::after {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Primary Action Buttons & Colored Badges (Must maintain white text) */
+html.light .bg-\[\#4338CA\],
+html.light .bg-\[\#3730A3\],
+html.light .bg-indigo-600,
+html.light .bg-emerald-600,
+html.light .bg-rose-600,
+html.light .bg-rose-500,
+html.light .bg-amber-500,
+html.light .bg-emerald-500 {
+  color: #FFFFFF !important;
+}
+
+html.light .bg-\[\#4338CA\] *,
+html.light .bg-\[\#3730A3\] *,
+html.light .bg-indigo-600 *,
+html.light .bg-emerald-600 *,
+html.light .bg-rose-600 * {
+  color: #FFFFFF !important;
+}
+
+/* Keep Brand Accent Highlights & Icons readable in Light Theme */
+html.light .text-\[\#3EDAD7\] {
+  color: #00AAA6 !important;
+}
+
+html.light .text-\[\#8696ED\] {
+  color: #4338CA !important;
+}
+
+html.light .text-indigo-300 {
+  color: #4338CA !important;
+}
+
+html.light .text-emerald-300 {
+  color: #059669 !important;
+}
+
+html.light .text-emerald-400 {
+  color: #059669 !important;
+}
+
+html.light .text-rose-300 {
+  color: #E11D48 !important;
+}
+
+html.light .text-rose-400 {
+  color: #E11D48 !important;
+}
+
+html.light .text-amber-300 {
+  color: #D97706 !important;
+}
+
+html.light .text-amber-400 {
+  color: #D97706 !important;
+}
+
+html.light .text-blue-400 {
+  color: #2563EB !important;
+}
+
+html.light .text-purple-400 {
+  color: #7C3AED !important;
+}
+
+html.light .text-cyan-400 {
+  color: #0891B2 !important;
+}
+
+/* Light Theme Badges with Tinted Backgrounds */
+html.light .bg-blue-500\/20 {
+  background-color: #EFF6FF !important;
+}
+html.light .bg-emerald-500\/20,
+html.light .bg-emerald-500\/10 {
+  background-color: #ECFDF5 !important;
+}
+html.light .bg-rose-500\/20,
+html.light .bg-rose-500\/10 {
+  background-color: #FFF1F2 !important;
+}
+html.light .bg-amber-500\/20,
+html.light .bg-amber-500\/10 {
+  background-color: #FFFBEB !important;
+}
+html.light .bg-violet-500\/20 {
+  background-color: #F5F3FF !important;
+}
+html.light .bg-purple-500\/20 {
+  background-color: #FAF5FF !important;
+}
+html.light .bg-orange-500\/20 {
+  background-color: #FFF7ED !important;
+}
+html.light .bg-\[\#4338CA\]\/30,
+html.light .bg-\[\#4338CA\]\/20,
+html.light .bg-\[\#4338CA\]\/10 {
+  background-color: #EEF2FF !important;
+}
+
+/* Utilities */
+.glass {
+  background: rgba(30, 27, 75, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #2E2A68;
+}
+
+html.light .glass {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #E2E8F0 !important;
+}
+
+.premium-shadow {
+  box-shadow: 0 10px 30px -10px rgba(67, 56, 202, 0.3), 0 4px 12px -2px rgba(0, 0, 0, 0.2);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #2E2A68;
+  border-radius: 9999px;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4338CA;
+}

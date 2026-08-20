@@ -1,0 +1,9 @@
+{
+  "entries": [
+    { "path": "https://github.com/laravel/agent-skills" },
+    { "path": "https://github.com/AsyrafHussin/agent-skills" },
+    { "path": "https://github.com/nasrulhazim/agent-skills" },
+    { "path": "https://github.com/PauloFelipeM/agent-laravel-skills" },
+    { "path": "../ngepos/.agents/skills" }
+  ]
+}
