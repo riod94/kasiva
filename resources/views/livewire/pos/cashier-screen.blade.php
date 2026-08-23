@@ -55,13 +55,6 @@
                 class="w-full h-12 pl-11 pr-4 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs md:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] shadow-inner"
             >
         </div>
-        <button 
-            type="button"
-            class="w-12 h-12 bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] text-slate-300 hover:text-white rounded-2xl flex items-center justify-center transition shrink-0 active:scale-95 shadow-sm"
-            title="Scan Barcode Kamera"
-        >
-            <x-icon name="qr-code" class="w-5 h-5" />
-        </button>
     </div>
 
     <!-- ═══════════════ Category Filter Horizontal Scroll ═══════════════ -->
@@ -84,7 +77,83 @@
         @endforeach
     </div>
 
-    <!-- ═══════════════ Layout Grid: Products + Cart Sidebar ═══════════════ -->
+    <!-- ═══════════════ Multi-Cart Tabs (3 slot + Hold) ═══════════════ -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1">
+        @foreach($this->carts as $idx => $c)
+            <button
+                wire:click="switchCart({{ $idx }})"
+                class="px-3.5 py-2 rounded-xl text-xs font-black border whitespace-nowrap flex items-center gap-1.5 transition {{ $idx === $activeCartIndex ? 'bg-[#4338CA] text-white border-[#4338CA] shadow-md' : 'bg-[#1E1B4B] text-slate-300 border-[#2E2A68] hover:border-[#4338CA]' }}"
+            >
+                <span>{{ $c['name'] }}</span>
+                @php $cnt = count($c['items'] ?? []); @endphp
+                @if($cnt > 0)<span class="px-1.5 py-0.5 rounded-full bg-white/20 text-[10px]">{{ $cnt }}</span>@endif
+            </button>
+        @endforeach
+        @if(count($carts) < 3)
+            <button wire:click="createNewCart" class="px-3 py-2 rounded-xl text-xs font-black bg-[#16192E] text-slate-300 border border-dashed border-[#2E2A68] hover:border-[#4338CA] flex items-center gap-1">
+                <x-icon name="plus" class="w-3.5 h-3.5" /> <span>Baru</span>
+            </button>
+        @endif
+        <button wire:click="holdCart" class="ml-auto px-3 py-2 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 hidden sm:flex items-center gap-1">
+            <span>Hold</span>
+        </button>
+        @if(count($carts) > 1)
+            <button wire:click="closeCart({{ $activeCartIndex }})" class="px-2 py-2 rounded-xl text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-600 hover:text-white" title="Tutup cart aktif">✕</button>
+        @endif
+    </div>
+
+    <!-- ═══ Member Loyalty — ringkas agar tidak bersaing dengan pencarian produk ═══ -->
+    @php $lm = $this->linkedMember; @endphp
+    <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl p-3 shadow-sm">
+        <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <span class="w-9 h-9 rounded-xl bg-[#00AAA6]/15 border border-[#00AAA6]/30 text-[#3EDAD7] flex items-center justify-center shrink-0">
+                    <x-icon name="users" class="w-4 h-4" />
+                </span>
+                <div class="min-w-0">
+                    <p class="text-[10px] uppercase tracking-widest font-black text-slate-500">Member transaksi</p>
+                    <p class="text-xs font-black text-white truncate">{{ $lm?->name ?: 'Belum dipilih' }}</p>
+                    @if($lm && $memberProgress)
+                        <p class="text-[10px] font-bold {{ $memberProgress['isEligibleForReward'] ? 'text-emerald-300' : 'text-slate-400' }}">{{ $memberProgress['currentStamps'] }}/{{ $memberProgress['targetStamps'] }} stamp</p>
+                    @endif
+                </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+                @if($lm)
+                    <button wire:click="unlinkMember" class="px-3 py-2 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-black hover:bg-rose-600 hover:text-white">Lepas</button>
+                @endif
+                <button wire:click="$set('showMemberScanner', true)" class="px-3.5 py-2 rounded-xl bg-[#00AAA6] hover:bg-[#3EDAD7] text-[#272D48] text-xs font-black transition flex items-center gap-2" aria-label="Scan QR member">
+                    <x-icon name="qr-code" class="w-4 h-4" />
+                    <span>Scan QR Member</span>
+                </button>
+            </div>
+        </div>
+
+        @if($showMemberScanner)
+            <div class="mt-3 pt-3 border-t border-[#2E2A68] flex gap-2" wire:transition>
+                <div class="relative flex-1">
+                    <x-icon name="qr-code" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#3EDAD7]" />
+                    <input type="text" wire:model="memberScanInput" wire:keydown.enter="searchMember" placeholder="Scan QR member atau ketik nomor HP" aria-label="Cari member berdasarkan QR atau nomor HP" class="w-full pl-9 pr-3 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
+                </div>
+                <button wire:click="searchMember" class="px-4 py-2.5 bg-[#00AAA6] hover:bg-[#3EDAD7] text-[#272D48] font-black text-xs rounded-xl">Temukan</button>
+            </div>
+        @endif
+    </div>
+
+    @if($lm && !empty($availableRewards))
+        <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+            <div class="flex items-center gap-2 text-emerald-300 font-black text-xs"><span>🎁 {{ count($availableRewards) }} Reward Tersedia</span>@if($appliedRewardId)<span class="px-2 py-1 rounded-full bg-emerald-500 text-white text-[10px]">Dipakai</span>@endif</div>
+            <div class="flex gap-2 flex-wrap">
+                @foreach($availableRewards as $rw)
+                    <button wire:click="{{ ($appliedRewardId===$rw['id']) ? 'removeReward' : "applyReward('{$rw['id']}')" }}" class="px-3 py-2 rounded-xl text-xs font-black border {{ ($appliedRewardId===$rw['id']) ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-[#1E1B4B] text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20' }}">
+                        {{ ($appliedRewardId===$rw['id']) ? 'Batalkan' : 'Pakai Reward' }}
+                    </button>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+        <!-- ═══════════════ Layout Grid: Products + Cart Sidebar ═══════════════ -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
         
         <!-- Product Grid -->
@@ -152,6 +221,14 @@
                 @endif
             </div>
 
+            @if($this->linkedMember)
+                <div class="p-3 rounded-2xl bg-[#4338CA]/15 border border-[#4338CA]/30 flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-lg bg-[#4338CA] text-white flex items-center justify-center font-black text-[10px]">{{ strtoupper(substr($this->linkedMember->name ?: 'M',0,1)) }}</span>
+                    <div class="flex-1 min-w-0"><p class="font-black text-xs text-white truncate">{{ $this->linkedMember->name ?: $this->linkedMember->qr_code }}</p><p class="text-[10px] text-indigo-200 truncate">{{ $this->linkedMember->qr_code }}</p></div>
+                    <button wire:click="unlinkMember" class="text-slate-400 hover:text-white text-xs">✕</button>
+                </div>
+            @endif
+
             <!-- Cart Items List -->
             <div class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
                 @forelse($cart as $key => $item)
@@ -186,6 +263,21 @@
             <!-- Summary & Checkout Button -->
             @if(count($cart) > 0)
                 <div class="border-t border-[#2E2A68] pt-3 space-y-2 text-xs">
+                    <div class="flex justify-between text-slate-400">
+                        <span>Subtotal:</span>
+                        <span class="font-bold text-white">Rp {{ number_format($subtotalAmount, 0, ',', '.') }}</span>
+                    </div>
+                    @if($discountTotal > 0)
+                        <div class="flex justify-between text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-2.5 py-1.5">
+                            <span class="font-bold">Diskon {{ $discountNote ? '(' . $discountNote . ')' : '' }}</span>
+                            <span class="font-black">-Rp {{ number_format($discountTotal, 0, ',', '.') }}</span>
+                        </div>
+                        @foreach($discountDetails as $d)
+                            <div class="flex justify-between text-[11px] text-emerald-200/80 pl-1">
+                                <span>• {{ $d['name'] }}</span><span>-{{ number_format($d['amount'],0,',','.') }}</span>
+                            </div>
+                        @endforeach
+                    @endif
                     <div class="flex justify-between text-slate-300">
                         <span>Total HPP Modal:</span>
                         <span class="font-bold text-amber-400">Rp {{ number_format($totalHpp, 0, ',', '.') }}</span>
@@ -556,7 +648,7 @@
                         <span>Kirim Struk WhatsApp</span>
                     </a>
 
-                    <button 
+                     <button 
                         wire:click="closeReceiptModal"
                         class="w-full py-3 bg-[#16192E] hover:bg-[#25215A] text-slate-300 hover:text-white font-black text-xs rounded-xl border border-[#2E2A68] transition"
                     >
@@ -566,4 +658,49 @@
             </div>
         </div>
     @endif
+
+    @if($showMemberScanner)
+        <div class="fixed inset-0 z-[60] bg-slate-950/85 backdrop-blur flex items-center justify-center p-4" wire:ignore.self>
+            <div class="bg-[#1E1B4B] border border-[#2E2A68] w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-black text-sm text-white">Scan QR Member</h3>
+                    <button wire:click="$set('showMemberScanner', false)" class="w-8 h-8 rounded-xl bg-[#16192E] border border-[#2E2A68] flex items-center justify-center text-slate-400">✕</button>
+                </div>
+                <div id="kasiva-member-reader" class="rounded-2xl overflow-hidden border border-[#2E2A68] bg-black min-h-[240px]"></div>
+                <p class="text-[11px] text-slate-400 text-center">Arahkan kamera ke QR <span class="font-mono text-white">KSV-MBR-</span> / <span class="font-mono text-white">NGEPOS-MBR-</span></p>
+            </div>
+        </div>
+    @endif
+
+    @push('scripts')
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script>
+        document.addEventListener('livewire:init', () => {
+            let html5Qr = null;
+            Livewire.on('member-scanned', (e) => {});
+            const startScanner = () => {
+                const el = document.getElementById('kasiva-member-reader');
+                if(!el || typeof Html5Qrcode === 'undefined') return;
+                if(html5Qr){ try{ html5Qr.clear(); }catch(e){} }
+                html5Qr = new Html5Qrcode("kasiva-member-reader");
+                html5Qr.start({ facingMode: "environment" }, { fps: 10, qrbox: 220 },
+                    (decoded) => { @this.call('scanMemberResult', decoded); try{ html5Qr.stop(); }catch(e){} },
+                    () => {}
+                ).catch(()=>{});
+            };
+            const stopScanner = () => { if(html5Qr){ try{ html5Qr.stop(); html5Qr.clear(); }catch(e){} html5Qr=null; } };
+            // Poll visibility of scanner modal
+            setInterval(()=>{
+                const visible = document.getElementById('kasiva-member-reader') && document.body.innerHTML.includes('Scan QR Member');
+                const hasEl = !!document.getElementById('kasiva-member-reader');
+                if(hasEl && !html5Qr && @this.get('showMemberScanner')) startScanner();
+                if(!@this.get('showMemberScanner')) stopScanner();
+            }, 600);
+            Livewire.hook('morph.updated', () => {
+                if(@this.get('showMemberScanner') && document.getElementById('kasiva-member-reader') && !html5Qr) setTimeout(startScanner, 300);
+                if(!@this.get('showMemberScanner')) stopScanner();
+            });
+        });
+    </script>
+    @endpush
 </div>

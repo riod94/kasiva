@@ -11,6 +11,9 @@ class Expense extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'client_expense_id',
+        'sync_status',
+        'sync_error',
         'title',
         'amount',
         'category',

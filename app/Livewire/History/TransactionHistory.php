@@ -3,6 +3,7 @@
 namespace App\Livewire\History;
 
 use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,6 +16,9 @@ class TransactionHistory extends Component
     public $dateRange = 'today'; // today, 7days, month, all
     public $selectedTransaction = null;
     public $showDetailModal = false;
+    public $showVoidModal = false;
+    public $voidTransactionId = null;
+    public string $voidReason = '';
 
     public function mount(): void
     {
@@ -31,6 +35,50 @@ class TransactionHistory extends Component
     {
         $this->showDetailModal = false;
         $this->selectedTransaction = null;
+    }
+
+    public function openVoidModal(string $id): void
+    {
+        if (!auth()->user()->hasPermission('VOID_TRANSACTION') && !auth()->user()->isOwner()) {
+            abort(403, 'Anda tidak memiliki izin VOID_TRANSACTION');
+        }
+        $this->voidTransactionId = $id;
+        $this->voidReason = '';
+        $this->showVoidModal = true;
+    }
+
+    public function closeVoidModal(): void
+    {
+        $this->showVoidModal = false;
+        $this->voidTransactionId = null;
+        $this->voidReason = '';
+    }
+
+    public function voidTransaction(): void
+    {
+        if (!auth()->user()->hasPermission('VOID_TRANSACTION') && !auth()->user()->isOwner()) {
+            abort(403, 'Anda tidak memiliki izin VOID_TRANSACTION');
+        }
+        $tx = Transaction::with('items.product.materials')->findOrFail($this->voidTransactionId);
+        if (($tx->status ?? 'COMPLETED') === 'VOIDED') {
+            session()->flash('message', 'Transaksi sudah dibatalkan sebelumnya.');
+            $this->closeVoidModal();
+            return;
+        }
+        DB::transaction(function () use ($tx) {
+            foreach ($tx->items as $item) {
+                if ($item->product) {
+                    app(\App\Services\HppCalculatorService::class)->restoreStockForVoid($item->product, (int) $item->quantity);
+                }
+            }
+            $tx->update([
+                'status' => 'VOIDED',
+                'voided_at' => now(),
+                'void_reason' => $this->voidReason ?: 'Dibatalkan oleh ' . (auth()->user()->name ?? 'Kasir'),
+            ]);
+        });
+        $this->closeVoidModal();
+        session()->flash('message', 'Transaksi ' . $tx->receipt_number . ' berhasil dibatalkan (VOID). Stok dikembalikan.');
     }
 
     public function getWhatsAppUrlProperty(): string

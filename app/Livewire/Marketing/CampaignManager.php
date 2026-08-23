@@ -3,6 +3,7 @@
 namespace App\Livewire\Marketing;
 
 use App\Models\Campaign;
+use App\Models\Product;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -49,14 +50,16 @@ class CampaignManager extends Component
         $this->showModal = true;
     }
 
+    public array $selectedProducts = []; // product_id => qty/role
+    public array $rewardItems = [];
+
     public function saveCampaign(): void
     {
         $this->validate([
             'name' => 'required|string|max:150',
             'reward_value' => 'required|numeric|min:0',
         ]);
-
-        Campaign::updateOrCreate(
+        $camp = Campaign::updateOrCreate(
             ['id' => $this->campaignId],
             [
                 'name' => $this->name,
@@ -68,7 +71,13 @@ class CampaignManager extends Component
                 'reward_value' => $this->reward_value,
             ]
         );
-
+        // If campaign_items selected, sync (optional)
+        if(!empty($this->selectedProducts)){
+            $camp->items()->delete();
+            foreach($this->selectedProducts as $pid=>$qty){
+                if($qty>0) $camp->items()->create(['product_id'=>$pid,'quantity'=>(int)$qty,'role'=>'BUY']);
+            }
+        }
         $this->showModal = false;
         session()->flash('message', 'Kampanye promosi berhasil disimpan.');
     }
@@ -89,7 +98,8 @@ class CampaignManager extends Component
     public function render()
     {
         return view('livewire.marketing.campaign-manager', [
-            'campaigns' => Campaign::latest()->paginate(9),
+            'campaigns' => Campaign::with(['items.product','rewards'])->latest()->paginate(9),
+            'products' => Product::orderBy('name')->get(),
         ]);
     }
 }

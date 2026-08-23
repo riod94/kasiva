@@ -28,6 +28,22 @@
         </div>
     @endif
 
+    @if(isset($templates) && $templates->count() > 0)
+    <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md space-y-3">
+        <h3 class="font-black text-xs uppercase tracking-widest text-slate-400">Template Library — Pakai Ulang Varian</h3>
+        <div class="flex flex-wrap gap-2">
+            @foreach($templates as $tpl)
+                <button wire:click="useTemplate('{{ $tpl->id }}')" class="px-3 py-2 rounded-xl bg-[#16192E] hover:bg-[#4338CA] border border-[#2E2A68] text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5">
+                    <span>{{ $tpl->name }}</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10">{{ $tpl->selection_type }}</span>
+                    <span class="text-[10px] opacity-70">{{ $tpl->options->count() }} opsi</span>
+                </button>
+            @endforeach
+        </div>
+        <p class="text-[10px] text-slate-500">Klik template untuk autopopulate form varian. Template dikelola via seeder atau admin.</p>
+    </div>
+    @endif
+
     <!-- Search Input -->
     <div class="relative w-full sm:w-80">
         <x-icon name="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />

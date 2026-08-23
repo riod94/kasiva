@@ -69,7 +69,7 @@
                 class="bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl p-4 flex items-center justify-between shadow-md hover:border-[#4338CA] transition cursor-pointer group"
             >
                 <div class="space-y-1">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                         <span class="font-mono font-bold text-xs text-[#8696ED] group-hover:text-[#3EDAD7] transition">{{ $tx->receipt_number }}</span>
                         <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-[#16192E] text-slate-300 border border-[#2E2A68]">
                             {{ $tx->payment_method }}
@@ -79,19 +79,29 @@
                                 Lampau
                             </span>
                         @endif
+                        @if(($tx->status ?? 'COMPLETED') === 'VOIDED')
+                            <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">VOID</span>
+                        @endif
                     </div>
                     <p class="text-[11px] text-slate-400 font-medium">
                         {{ $tx->created_at->format('d M Y H:i') }} • {{ $tx->cashier_name }}
                     </p>
                 </div>
 
-                <div class="text-right">
-                    <p class="text-base font-black text-white">
-                        Rp {{ number_format($tx->total_amount, 0, ',', '.') }}
-                    </p>
-                    <p class="text-[11px] text-emerald-400 font-bold">
-                        Profit: Rp {{ number_format($tx->total_amount - $tx->total_hpp, 0, ',', '.') }}
-                    </p>
+                <div class="flex items-center gap-2">
+                    <div class="text-right">
+                        <p class="text-base font-black {{ ($tx->status ?? 'COMPLETED')==='VOIDED' ? 'text-slate-500 line-through' : 'text-white' }}">
+                            Rp {{ number_format($tx->total_amount, 0, ',', '.') }}
+                        </p>
+                        <p class="text-[11px] {{ ($tx->status ?? 'COMPLETED')==='VOIDED' ? 'text-slate-500' : 'text-emerald-400' }} font-bold">
+                            @if(($tx->status ?? 'COMPLETED')==='VOIDED') Dibatalkan @else Profit: Rp {{ number_format($tx->total_amount - $tx->total_hpp, 0, ',', '.') }} @endif
+                        </p>
+                    </div>
+                    @if(($tx->status ?? 'COMPLETED')!=='VOIDED')
+                        @can('VOID_TRANSACTION')
+                        <button wire:click.stop="openVoidModal('{{ $tx->id }}')" class="w-8 h-8 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 flex items-center justify-center active:scale-95 transition" title="Batalkan Transaksi (Void)">×</button>
+                        @endcan
+                    @endif
                 </div>
             </div>
         @empty

@@ -1,0 +1,11 @@
+{
+  "graph_bytes": 8302122,
+  "nodes": 4424,
+  "edges": 5171,
+  "communities": 500,
+  "clustered": true,
+  "omitted_nodes": 1,
+  "omitted_edges": 0,
+  "identity_collisions": 0,
+  "resolution_degraded": false
+}

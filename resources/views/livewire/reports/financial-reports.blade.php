@@ -201,13 +201,38 @@
         </div>
     </div>
 
-    <!-- ═══════════════ Distribusi Metode Pembayaran ═══════════════ -->
+    <!-- Actions: Export -->
+    <div class="flex flex-wrap gap-2">
+        <button wire:click="exportExcel" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow flex items-center gap-1.5 active:scale-95">
+            <x-icon name="receipt" class="w-4 h-4" />
+            <span>Export Excel (CSV)</span>
+        </button>
+        <button wire:click="exportPdf" class="px-4 py-2.5 bg-[#16192E] hover:bg-[#25215A] text-slate-200 font-bold text-xs rounded-2xl border border-[#2E2A68] flex items-center gap-1.5">
+            <x-icon name="printer" class="w-4 h-4" />
+            <span>Export PDF</span>
+        </button>
+        <span class="text-[10px] text-slate-500 font-medium self-center">Void diexclude • HPP itemized</span>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="bg-[#1E1B4B] p-5 rounded-3xl border border-[#2E2A68] shadow-lg space-y-3">
+            <h3 class="font-black text-xs uppercase tracking-widest text-slate-400">Tren Omset vs HPP</h3>
+            <canvas id="trendChart" height="160"></canvas>
+            <p class="text-[10px] text-slate-500">Per jam (Hari Ini) atau per hari (Bulan Ini).</p>
+        </div>
+        <div class="bg-[#1E1B4B] p-5 rounded-3xl border border-[#2E2A68] shadow-lg space-y-3">
+            <h3 class="font-black text-xs uppercase tracking-widest text-slate-400">Distribusi Metode Pembayaran</h3>
+            <canvas id="paymentChart" height="160"></canvas>
+        </div>
+    </div>
+
+    <!-- Distribution Grid -->
     <div class="bg-[#1E1B4B] p-5 rounded-3xl border border-[#2E2A68] shadow-lg space-y-3">
         <h3 class="font-black text-xs uppercase tracking-widest text-slate-400 flex items-center gap-2">
             <x-icon name="wallet" class="w-4 h-4 text-slate-400" />
-            <span>Distribusi Metode Pembayaran</span>
+            <span>Rincian per Metode</span>
         </h3>
-
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             @forelse($paymentMethods as $pm)
                 <div class="bg-[#16192E] p-3.5 rounded-2xl border border-[#2E2A68] space-y-1 text-center">
@@ -216,10 +241,29 @@
                     <p class="text-[10px] text-slate-400 font-bold">{{ $pm['count'] }} Transaksi</p>
                 </div>
             @empty
-                <div class="col-span-full py-6 text-center text-slate-400 text-xs">
-                    Belum ada transaksi pada periode ini.
-                </div>
+                <div class="col-span-full py-6 text-center text-slate-400 text-xs">Belum ada transaksi pada periode ini.</div>
             @endforelse
         </div>
     </div>
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+        const labels = @json($trendLabels ?? []);
+        const omset = @json($trendOmset ?? []);
+        const cogs = @json($trendCogs ?? []);
+        const pmLabels = @json(array_column($paymentMethods ?? [], 'method'));
+        const pmTotals = @json(array_column($paymentMethods ?? [], 'total'));
+        const ctx1 = document.getElementById('trendChart');
+        if(ctx1 && window.Chart){
+            new Chart(ctx1, { type:'line', data:{ labels, datasets:[{label:'Omset', data: omset, borderColor:'#3EDAD7', backgroundColor:'rgba(62,218,215,0.15)', tension:0.3, fill:true},{label:'HPP', data:cogs, borderColor:'#F472B6', backgroundColor:'rgba(244,114,182,0.1)', tension:0.3, fill:true}]}, options:{responsive:true, plugins:{legend:{labels:{color:'#94A3B8', font:{size:10}}}}, scales:{x:{ticks:{color:'#94A3B8', maxRotation:45}}, y:{ticks:{color:'#94A3B8'}, grid:{color:'rgba(46,42,104,0.5)'}}}}});
+        }
+        const ctx2 = document.getElementById('paymentChart');
+        if(ctx2 && window.Chart){
+            new Chart(ctx2, { type:'doughnut', data:{ labels: pmLabels, datasets:[{ data: pmTotals, backgroundColor:['#4338CA','#06B6D4','#F97316','#10B981','#E11D48','#6366F1'], borderWidth:0}]}, options:{responsive:true, plugins:{legend:{position:'bottom', labels:{color:'#94A3B8', font:{size:10}, padding:12}}}}});
+        }
+    });
+    </script>
+    @endpush
 </div>

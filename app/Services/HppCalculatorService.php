@@ -12,28 +12,59 @@ class HppCalculatorService
      * Recalculates moving average cost of a raw material upon restocking.
      * Formula: ((currentStock * currentAvgCost) + (incomingQty * incomingPrice)) / (currentStock + incomingQty)
      */
-    public function recalculateMovingAverage(Material $material, float $incomingQty, float $incomingPrice): float
+    public function recalculateMovingAverage(Material $material, float $incomingQty, float $incomingPrice, ?string $notes = null, bool $log = true): float
     {
         if ($incomingQty <= 0) {
-            return $material->avg_cost;
+            return (float) $material->avg_cost;
         }
 
-        $totalCurrentValue = $material->current_stock * $material->avg_cost;
-        $totalIncomingValue = $incomingQty * $incomingPrice;
-        $newTotalStock = $material->current_stock + $incomingQty;
+        return DB::transaction(function () use ($material, $incomingQty, $incomingPrice, $notes, $log) {
+            $totalCurrentValue = (float) $material->current_stock * (float) $material->avg_cost;
+            $totalIncomingValue = $incomingQty * $incomingPrice;
+            $newTotalStock = (float) $material->current_stock + $incomingQty;
 
-        if ($newTotalStock <= 0) {
-            return 0.0;
-        }
+            if ($newTotalStock <= 0) {
+                return 0.0;
+            }
 
-        $newAvgCost = round(($totalCurrentValue + $totalIncomingValue) / $newTotalStock, 2);
+            $newAvgCost = round(($totalCurrentValue + $totalIncomingValue) / $newTotalStock, 2);
 
-        $material->update([
-            'current_stock' => $newTotalStock,
-            'avg_cost' => $newAvgCost,
-        ]);
+            $material->update([
+                'current_stock' => $newTotalStock,
+                'avg_cost' => $newAvgCost,
+            ]);
 
-        return $newAvgCost;
+            if ($log) {
+                \App\Models\InventoryLog::create([
+                    'material_id' => $material->id,
+                    'type' => 'IN',
+                    'quantity' => $incomingQty,
+                    'unit_cost' => $incomingQty > 0 ? round($totalIncomingValue / $incomingQty, 2) : 0,
+                    'notes' => $notes ?? 'Restok via HppCalculatorService',
+                ]);
+            }
+
+            return $newAvgCost;
+        });
+    }
+
+    public function restoreStockForVoid(Product $product, int $qty): void
+    {
+        DB::transaction(function () use ($product, $qty) {
+            $product->loadMissing('materials');
+            foreach ($product->materials as $material) {
+                $restoreAmount = (float) $material->pivot->quantity * $qty;
+                $material->increment('current_stock', $restoreAmount);
+                \App\Models\InventoryLog::create([
+                    'material_id' => $material->id,
+                    'type' => 'ADJUST',
+                    'quantity' => $restoreAmount,
+                    'unit_cost' => (float) $material->avg_cost,
+                    'notes' => 'Void transaksi: restore stok ' . $product->name . ' x' . $qty,
+                ]);
+            }
+            $product->increment('current_stock', $qty);
+        });
     }
 
     /**

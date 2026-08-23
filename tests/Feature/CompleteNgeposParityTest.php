@@ -204,17 +204,20 @@ test('cashier screen mendukung platform adjustment untuk input net received amou
 
 test('backdate transaction mencatat transaksi manual masa lalu', function () {
     $user = User::factory()->create();
+    $cat = Category::firstOrCreate(['name'=>'Test Backdate Cat'], ['icon'=>'🧪']);
+    $prod = Product::firstOrCreate(['name'=>'Backdate Parity Prod'], ['sku'=>'KSV-BACK-PARITY','price'=>75000,'hpp'=>30000,'current_stock'=>50,'category_id'=>$cat->id,'is_active'=>true]);
 
     Livewire::actingAs($user)
         ->test(BackdateTransaction::class)
-        ->set('totalAmount', 75000)
+        ->call('addToCart', $prod->id)
         ->set('transactionDate', '2026-08-01')
         ->set('transactionTime', '14:30')
         ->set('paymentMethod', 'QRIS')
         ->call('saveTransaction');
 
-    $tx = Transaction::whereDate('created_at', '2026-08-01')->first();
+    $tx = Transaction::whereDate('transaction_date', '2026-08-01')->orWhereDate('created_at','2026-08-01')->first();
     expect($tx)->not->toBeNull();
     expect((float)$tx->total_amount)->toBe(75000.0);
     expect($tx->payment_method)->toBe('QRIS');
+    expect($tx->is_backdated)->toBeTrue();
 });

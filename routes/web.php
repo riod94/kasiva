@@ -153,3 +153,48 @@ if (app()->environment('local', 'testing')) {
     })->name('error.preview');
 }
 
+
+Route::middleware('auth')->prefix('offline-sync')->group(function () {
+    Route::post('/transactions', [\App\Http\Controllers\OfflineSyncController::class, 'transactions'])->middleware('permission:POS_ACCESS');
+    Route::post('/expenses', [\App\Http\Controllers\OfflineSyncController::class, 'expenses'])->middleware('permission:MANAGE_EXPENSES');
+});
+
+Route::middleware('auth')->prefix('api/v1/sync')->group(function () {
+    Route::post('/devices', [\App\Http\Controllers\SyncController::class, 'registerDevice']);
+    Route::post('/push', [\App\Http\Controllers\SyncController::class, 'push']);
+    Route::post('/pull', [\App\Http\Controllers\SyncController::class, 'pull']);
+});
+
+// Local-first operational app. Route ini tidak memakai Livewire agar dapat di-reload offline.
+Route::view('/app/pos', 'pos.offline-shell')->name('app.pos');
+Route::view('/app/history', 'pos.offline-shell')->name('app.history');
+Route::view('/app/expenses', 'pos.offline-shell')->name('app.expenses');
+Route::view('/app/members', 'pos.offline-shell')->name('app.members');
+Route::view('/pos/offline', 'pos.offline-shell')->name('pos.offline');
+
+// Phase 5: Admin/backoffice aliases — same Livewire pages under /admin/*
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/pos', \App\Livewire\Pos\CashierScreen::class)->middleware('permission:POS_ACCESS')->name('pos');
+    Route::get('/history', \App\Livewire\History\TransactionHistory::class)->middleware('permission:VIEW_TRANSACTIONS')->name('history');
+    Route::get('/history/backdate', \App\Livewire\History\BackdateTransaction::class)->middleware('permission:VIEW_TRANSACTIONS')->name('history.backdate');
+    Route::get('/expenses', \App\Livewire\Expenses\ExpenseManager::class)->middleware('permission:MANAGE_EXPENSES')->name('expenses');
+    Route::get('/inventory', \App\Livewire\Inventory\InventoryHub::class)->middleware('permission:VIEW_PRODUCTS,MANAGE_PRODUCTS,VIEW_MATERIALS,MANAGE_MATERIALS,MANAGE_CATEGORIES')->name('inventory');
+    Route::get('/inventory/products', \App\Livewire\Settings\ProductManager::class)->middleware('permission:VIEW_PRODUCTS,MANAGE_PRODUCTS')->name('inventory.products');
+    Route::get('/inventory/categories', \App\Livewire\Inventory\CategoryManager::class)->middleware('permission:MANAGE_CATEGORIES')->name('inventory.categories');
+    Route::get('/inventory/materials', \App\Livewire\Inventory\MaterialManager::class)->middleware('permission:VIEW_MATERIALS,MANAGE_MATERIALS')->name('inventory.materials');
+    Route::get('/inventory/variations', \App\Livewire\Inventory\VariationManager::class)->middleware('permission:MANAGE_PRODUCTS')->name('inventory.variations');
+    Route::get('/marketing', \App\Livewire\Marketing\MarketingHub::class)->middleware('permission:MANAGE_PROMOS,MANAGE_LOYALTY,MANAGE_MEMBERS')->name('marketing');
+    Route::get('/marketing/members', \App\Livewire\Marketing\MemberManager::class)->middleware('permission:VIEW_MEMBERS,MANAGE_MEMBERS')->name('marketing.members');
+    Route::get('/marketing/loyalty', \App\Livewire\Marketing\LoyaltyManager::class)->middleware('permission:MANAGE_LOYALTY')->name('marketing.loyalty');
+    Route::get('/marketing/bundles', \App\Livewire\Marketing\BundleManager::class)->middleware('permission:MANAGE_PROMOS')->name('marketing.bundles');
+    Route::get('/marketing/discounts', \App\Livewire\Marketing\DiscountManager::class)->middleware('permission:MANAGE_PROMOS')->name('marketing.discounts');
+    Route::get('/marketing/campaigns', \App\Livewire\Marketing\CampaignManager::class)->middleware('permission:MANAGE_PROMOS')->name('marketing.campaigns');
+    Route::get('/reports', \App\Livewire\Reports\FinancialReports::class)->middleware('permission:VIEW_REPORTS')->name('reports');
+    Route::get('/settings', \App\Livewire\Settings\SettingsHub::class)->middleware('permission:MANAGE_OUTLET,MANAGE_STAFF,MANAGE_ROLES,MANAGE_PAYMENTS,MANAGE_PRINTER')->name('settings');
+    Route::get('/settings/outlet', \App\Livewire\Settings\OutletSettings::class)->middleware('permission:MANAGE_OUTLET')->name('settings.outlet');
+    Route::get('/settings/receipt', \App\Livewire\Settings\ReceiptSettings::class)->middleware('permission:MANAGE_PRINTER')->name('settings.receipt');
+    Route::get('/settings/payment', \App\Livewire\Settings\PaymentSettings::class)->middleware('permission:MANAGE_PAYMENTS')->name('settings.payment');
+    Route::get('/settings/staff', \App\Livewire\Settings\StaffManager::class)->middleware('permission:MANAGE_STAFF')->name('settings.staff');
+    Route::get('/settings/roles', \App\Livewire\Settings\RoleManager::class)->middleware('permission:MANAGE_ROLES')->name('settings.roles');
+    Route::get('/settings/products', \App\Livewire\Settings\ProductManager::class)->middleware('permission:MANAGE_PRODUCTS')->name('settings.products');
+});

@@ -109,35 +109,20 @@ class MaterialManager extends Component
         $this->validate([
             'restockQuantity' => 'required|numeric|min:0.01',
             'restockTotalCost' => 'required|numeric|min:0',
+            'restockNotes' => 'nullable|string|max:255',
         ]);
 
         $material = Material::findOrFail($this->restockMaterialId);
-        
-        $oldStock = (float)$material->current_stock;
-        $oldAvgCost = (float)$material->avg_cost;
-        $incomingQty = (float)$this->restockQuantity;
-        $incomingTotalCost = (float)$this->restockTotalCost;
-        $incomingUnitCost = $incomingQty > 0 ? ($incomingTotalCost / $incomingQty) : 0;
+        $incomingQty = (float) $this->restockQuantity;
+        $incomingTotalCost = (float) $this->restockTotalCost;
+        $unitPrice = $incomingQty > 0 ? $incomingTotalCost / $incomingQty : 0;
 
-        // Moving Average Unit Cost Calculation: ((old_stock * old_cost) + (new_qty * new_cost)) / (old_stock + new_qty)
-        $newTotalStock = $oldStock + $incomingQty;
-        $newAvgCost = $newTotalStock > 0 
-            ? ((($oldStock * $oldAvgCost) + $incomingTotalCost) / $newTotalStock)
-            : $incomingUnitCost;
-
-        $material->update([
-            'current_stock' => $newTotalStock,
-            'avg_cost' => $newAvgCost,
-        ]);
-
-        // Record to inventory logs
-        InventoryLog::create([
-            'material_id' => $material->id,
-            'type' => 'IN',
-            'quantity' => $incomingQty,
-            'unit_cost' => $incomingUnitCost,
-            'notes' => $this->restockNotes,
-        ]);
+        app(\App\Services\HppCalculatorService::class)->recalculateMovingAverage(
+            $material,
+            $incomingQty,
+            $unitPrice,
+            $this->restockNotes ?: 'Restok bahan baku dari supplier'
+        );
 
         $this->showRestockModal = false;
         $this->reset(['restockMaterialId', 'restockMaterialName', 'restockUnit', 'restockQuantity', 'restockTotalCost', 'restockNotes']);

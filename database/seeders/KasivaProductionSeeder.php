@@ -7,6 +7,7 @@ use App\Models\Campaign;
 use App\Models\Category;
 use App\Models\Expense;
 use App\Models\LoyaltyMember;
+use App\Models\LoyaltyProgram;
 use App\Models\LoyaltyReward;
 use App\Models\Material;
 use App\Models\Outlet;
@@ -20,6 +21,8 @@ use App\Models\Transaction;
 use App\Models\TransactionItem;
 use App\Models\User;
 use App\Models\VariantOption;
+use App\Models\VariantTemplate;
+use App\Models\VariantTemplateOption;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -663,6 +666,29 @@ class KasivaProductionSeeder extends Seeder
             ['title' => 'Gratis 1 Menu Bebas Pilihan'],
             ['stamps_required' => 10, 'discount_amount' => 16000.0, 'is_active' => true]
         );
+
+        // 10a. Loyalty Program Default
+        if (class_exists(\App\Models\LoyaltyProgram::class)) {
+            \App\Models\LoyaltyProgram::firstOrCreate(['name' => '10 Stempel Gratis 1 Menu'], ['target_stamps'=>10,'min_transaction'=>0,'expiry_months'=>12,'is_active'=>true]);
+        }
+
+        // 10b. Variant Template Library (for reusable variant options)
+        if (class_exists(\App\Models\VariantTemplate::class)) {
+            $tplPedas = \App\Models\VariantTemplate::firstOrCreate(['name' => 'Level Pedas'], ['selection_type'=>'SINGLE','is_required'=>false,'order_index'=>1]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplPedas->id,'name'=>'Tidak Pedas'], ['price_modifier'=>0,'cogs_modifier'=>0]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplPedas->id,'name'=>'Sedang'], ['price_modifier'=>0,'cogs_modifier'=>0]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplPedas->id,'name'=>'Pedas'], ['price_modifier'=>1000,'cogs_modifier'=>300]);
+
+            $tplExtra = \App\Models\VariantTemplate::firstOrCreate(['name' => 'Extra Topping'], ['selection_type'=>'MULTIPLE','is_required'=>false,'order_index'=>2]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplExtra->id,'name'=>'Keju'], ['price_modifier'=>3000,'cogs_modifier'=>1000]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplExtra->id,'name'=>'Coklat'], ['price_modifier'=>3000,'cogs_modifier'=>1000]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplExtra->id,'name'=>'Boba'], ['price_modifier'=>5000,'cogs_modifier'=>1500]);
+
+            $tplSugar = \App\Models\VariantTemplate::firstOrCreate(['name' => 'Level Gula Global'], ['selection_type'=>'SINGLE','is_required'=>true,'order_index'=>3]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplSugar->id,'name'=>'Normal'], ['price_modifier'=>0,'cogs_modifier'=>0]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplSugar->id,'name'=>'Less Sugar'], ['price_modifier'=>0,'cogs_modifier'=>0]);
+            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplSugar->id,'name'=>'No Sugar'], ['price_modifier'=>0,'cogs_modifier'=>0]);
+        }
 
         // 11. Sample Transactions
         if (Transaction::count() === 0 && count($createdProducts) > 0) {

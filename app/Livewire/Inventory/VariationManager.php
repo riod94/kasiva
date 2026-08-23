@@ -5,6 +5,7 @@ namespace App\Livewire\Inventory;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\VariantOption;
+use App\Models\VariantTemplate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -129,6 +130,16 @@ class VariationManager extends Component
         $this->reset(['variantId', 'productId', 'name', 'selection_type', 'is_required', 'options']);
     }
 
+    public function useTemplate(string $templateId): void
+    {
+        $tpl = VariantTemplate::with('options')->findOrFail($templateId);
+        $this->name = $tpl->name;
+        $this->selection_type = $tpl->selection_type;
+        $this->is_required = (bool) $tpl->is_required;
+        $this->options = $tpl->options->map(fn($o)=>['name'=>$o->name,'price_modifier'=>(float)$o->price_modifier,'cogs_modifier'=>(float)$o->cogs_modifier])->toArray();
+        if(empty($this->options)) $this->options = [['name'=>'Regular','price_modifier'=>0,'cogs_modifier'=>0]];
+    }
+
     public function deleteVariant(string $id): void
     {
         ProductVariant::findOrFail($id)->delete();
@@ -143,10 +154,12 @@ class VariationManager extends Component
             ->paginate(10);
 
         $products = Product::orderBy('name')->get();
+        $templates = VariantTemplate::with('options')->orderBy('name')->get();
 
         return view('livewire.inventory.variation-manager', [
             'variants' => $variants,
             'products' => $products,
+            'templates' => $templates,
         ])->layout('layouts.app');
     }
 }

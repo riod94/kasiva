@@ -1,0 +1,72 @@
+{
+  "schema": "compass.build-state/1",
+  "producer": "sha256:d6a16ba8d6935655c81b6502d41877f233c8b038ac30d0983f087eef5b18c686",
+  "profile": {
+    "purpose": "update",
+    "no_cluster": false,
+    "no_viz": false,
+    "resolution": 1.0,
+    "exclude_hubs": null,
+    "code_only": false,
+    "program_analysis": false,
+    "graph_storage": "sqlite",
+    "inference_level": "low",
+    "max_source_bytes": 16777216
+  },
+  "manifest": {
+    "bytes": 67910,
+    "sha256": "546d07a28f9c3bc58b24969659ea336e0597c6b00c233688a66757462d90256e"
+  },
+  "graph": {
+    "bytes": 8302122,
+    "sha256": "16e9516a2d8c062076eb0d4a300d79d70e23f900b0f700f5d5c2c2f1001c53e0"
+  },
+  "program": null,
+  "required": {
+    "GRAPH_REPORT.md": {
+      "bytes": 181771,
+      "sha256": "113f8a3fe9cc4b405d087d5bc04b34379a5da012a50791c06fe16f35bc916986"
+    },
+    "graph-overview.json": {
+      "bytes": 4563932,
+      "sha256": "56b2dd6601d1c9284c5e2687f5a644c7925f58d6dcc1dbea3c595996758d5641"
+    },
+    "graph.html": {
+      "bytes": 5895713,
+      "sha256": "7202f8d567018d95e80f411dd4835fedfd629c08c675e6174146369c6fc0dcf1"
+    },
+    "labels.json": {
+      "bytes": 25356,
+      "sha256": "71eb7e8184fffe6aa57de1c2fc7735f778d01d03b26a69b9e19531a908addca9"
+    },
+    "orientation.json": {
+      "bytes": 589410,
+      "sha256": "4f3a35db57926b184092d176a2532b8c245f1872a63d762d5c66359c4e8c1de3"
+    },
+    "output-stats.json": {
+      "bytes": 209,
+      "sha256": "99de844933c78e4395fe9fa355497af9b21aadb2527348878d5306aaa3154c0c"
+    },
+    "source-root.txt": {
+      "bytes": 1,
+      "sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8"
+    },
+    "store.ref": {
+      "bytes": 400,
+      "sha256": "ef6ae6c1152e07de197e1b10d023f44dc8038b15f8419ad6426a9fb4416126e3"
+    }
+  },
+  "stats": {
+    "files": 273,
+    "nodes": 4424,
+    "edges": 5171,
+    "communities": 500,
+    "omitted_nodes": 1,
+    "omitted_edges": 0,
+    "identity_collisions": 0,
+    "program_modules": 0,
+    "program_summaries": 0,
+    "program_providers": 0,
+    "program_conflicts": 0
+  }
+}

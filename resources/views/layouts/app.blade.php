@@ -252,5 +252,9 @@
     </nav>
 
     @livewireScripts
+    @stack('scripts')
+<script>document.addEventListener('click',e=>{const b=e.target.closest('#offline-save-expense');if(b&&!navigator.onLine){e.preventDefault();e.stopImmediatePropagation();window.kasivaOffline?.saveExpense();document.getElementById('kasiva-connection-status').hidden=false;document.getElementById('kasiva-connection-status').textContent='Pengeluaran tersimpan lokal — Pending Sync';}},true);</script>
+    <div id="kasiva-connection-status" class="fixed bottom-3 left-3 z-50 rounded-xl px-3 py-2 text-xs font-bold bg-emerald-500 text-white" hidden>Online</div>
+    <script>window.addEventListener("kasiva-connection-changed",e=>{const el=document.getElementById("kasiva-connection-status");el.hidden=false;el.textContent=e.detail.online?"Online":"Offline — data lokal aktif";el.className="fixed bottom-3 left-3 z-50 rounded-xl px-3 py-2 text-xs font-bold "+(e.detail.online?"bg-emerald-500":"bg-amber-500")+" text-white";});</script>
 </body>
 </html>
