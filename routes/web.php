@@ -28,6 +28,7 @@ use App\Livewire\Settings\RoleManager;
 use App\Livewire\Settings\SettingsHub;
 use App\Livewire\Settings\StaffManager;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 // 1. SaaS Landing Page & Mobile Onboarding (Public)
 Route::get('/', LandingPage::class)->name('landing');
@@ -38,11 +39,19 @@ Route::view('/about', 'livewire.pages.about')->name('about');
 Route::view('/privacy', 'livewire.pages.privacy')->name('privacy');
 Route::view('/terms', 'livewire.pages.terms')->name('terms');
 
-Route::name('pages.')->group(function () {
-    Route::view('/pages/about', 'livewire.pages.about')->name('about');
-    Route::view('/pages/privacy', 'livewire.pages.privacy')->name('privacy');
-    Route::view('/pages/terms', 'livewire.pages.terms')->name('terms');
-});
+Route::permanentRedirect('/pages/about', '/about')->name('pages.about');
+Route::permanentRedirect('/pages/privacy', '/privacy')->name('pages.privacy');
+Route::permanentRedirect('/pages/terms', '/terms')->name('pages.terms');
+
+Route::get('/sitemap.xml', function (): Response {
+    $urls = [route('landing'), route('about'), route('privacy'), route('terms')];
+    $items = collect($urls)
+        ->map(fn (string $url): string => '    <url><loc>'.e($url).'</loc></url>')
+        ->implode("\n");
+    $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n{$items}\n</urlset>";
+
+    return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
+})->name('sitemap');
 
 // 3. Guest Routes (Hanya untuk pengguna belum login)
 Route::middleware(['guest'])->group(function () {
@@ -166,35 +175,41 @@ Route::middleware('auth')->prefix('api/v1/sync')->group(function () {
 });
 
 // Local-first operational app. Route ini tidak memakai Livewire agar dapat di-reload offline.
-Route::view('/app/pos', 'pos.offline-shell')->name('app.pos');
-Route::view('/app/history', 'pos.offline-shell')->name('app.history');
-Route::view('/app/expenses', 'pos.offline-shell')->name('app.expenses');
-Route::view('/app/members', 'pos.offline-shell')->name('app.members');
-Route::view('/pos/offline', 'pos.offline-shell')->name('pos.offline');
+$offlineShell = fn () => response()
+    ->view('pos.offline-shell', ['robots' => 'noindex, nofollow'])
+    ->header('X-Robots-Tag', 'noindex, nofollow');
 
-// Phase 5: Admin/backoffice aliases — same Livewire pages under /admin/*
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/pos', \App\Livewire\Pos\CashierScreen::class)->middleware('permission:POS_ACCESS')->name('pos');
-    Route::get('/history', \App\Livewire\History\TransactionHistory::class)->middleware('permission:VIEW_TRANSACTIONS')->name('history');
-    Route::get('/history/backdate', \App\Livewire\History\BackdateTransaction::class)->middleware('permission:VIEW_TRANSACTIONS')->name('history.backdate');
-    Route::get('/expenses', \App\Livewire\Expenses\ExpenseManager::class)->middleware('permission:MANAGE_EXPENSES')->name('expenses');
-    Route::get('/inventory', \App\Livewire\Inventory\InventoryHub::class)->middleware('permission:VIEW_PRODUCTS,MANAGE_PRODUCTS,VIEW_MATERIALS,MANAGE_MATERIALS,MANAGE_CATEGORIES')->name('inventory');
-    Route::get('/inventory/products', \App\Livewire\Settings\ProductManager::class)->middleware('permission:VIEW_PRODUCTS,MANAGE_PRODUCTS')->name('inventory.products');
-    Route::get('/inventory/categories', \App\Livewire\Inventory\CategoryManager::class)->middleware('permission:MANAGE_CATEGORIES')->name('inventory.categories');
-    Route::get('/inventory/materials', \App\Livewire\Inventory\MaterialManager::class)->middleware('permission:VIEW_MATERIALS,MANAGE_MATERIALS')->name('inventory.materials');
-    Route::get('/inventory/variations', \App\Livewire\Inventory\VariationManager::class)->middleware('permission:MANAGE_PRODUCTS')->name('inventory.variations');
-    Route::get('/marketing', \App\Livewire\Marketing\MarketingHub::class)->middleware('permission:MANAGE_PROMOS,MANAGE_LOYALTY,MANAGE_MEMBERS')->name('marketing');
-    Route::get('/marketing/members', \App\Livewire\Marketing\MemberManager::class)->middleware('permission:VIEW_MEMBERS,MANAGE_MEMBERS')->name('marketing.members');
-    Route::get('/marketing/loyalty', \App\Livewire\Marketing\LoyaltyManager::class)->middleware('permission:MANAGE_LOYALTY')->name('marketing.loyalty');
-    Route::get('/marketing/bundles', \App\Livewire\Marketing\BundleManager::class)->middleware('permission:MANAGE_PROMOS')->name('marketing.bundles');
-    Route::get('/marketing/discounts', \App\Livewire\Marketing\DiscountManager::class)->middleware('permission:MANAGE_PROMOS')->name('marketing.discounts');
-    Route::get('/marketing/campaigns', \App\Livewire\Marketing\CampaignManager::class)->middleware('permission:MANAGE_PROMOS')->name('marketing.campaigns');
-    Route::get('/reports', \App\Livewire\Reports\FinancialReports::class)->middleware('permission:VIEW_REPORTS')->name('reports');
-    Route::get('/settings', \App\Livewire\Settings\SettingsHub::class)->middleware('permission:MANAGE_OUTLET,MANAGE_STAFF,MANAGE_ROLES,MANAGE_PAYMENTS,MANAGE_PRINTER')->name('settings');
-    Route::get('/settings/outlet', \App\Livewire\Settings\OutletSettings::class)->middleware('permission:MANAGE_OUTLET')->name('settings.outlet');
-    Route::get('/settings/receipt', \App\Livewire\Settings\ReceiptSettings::class)->middleware('permission:MANAGE_PRINTER')->name('settings.receipt');
-    Route::get('/settings/payment', \App\Livewire\Settings\PaymentSettings::class)->middleware('permission:MANAGE_PAYMENTS')->name('settings.payment');
-    Route::get('/settings/staff', \App\Livewire\Settings\StaffManager::class)->middleware('permission:MANAGE_STAFF')->name('settings.staff');
-    Route::get('/settings/roles', \App\Livewire\Settings\RoleManager::class)->middleware('permission:MANAGE_ROLES')->name('settings.roles');
-    Route::get('/settings/products', \App\Livewire\Settings\ProductManager::class)->middleware('permission:MANAGE_PRODUCTS')->name('settings.products');
+Route::middleware('auth')->group(function () use ($offlineShell) {
+    Route::get('/app/pos', $offlineShell)->name('app.pos');
+    Route::get('/app/history', $offlineShell)->name('app.history');
+    Route::get('/app/expenses', $offlineShell)->name('app.expenses');
+    Route::get('/app/members', $offlineShell)->name('app.members');
+    Route::get('/pos/offline', $offlineShell)->name('pos.offline');
+});
+
+// Admin/backoffice aliases retain the same access controls before redirecting to canonical routes.
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::permanentRedirect('/pos', '/pos')->middleware('permission:POS_ACCESS')->name('pos');
+    Route::permanentRedirect('/history', '/history')->middleware('permission:VIEW_TRANSACTIONS')->name('history');
+    Route::permanentRedirect('/history/backdate', '/history/backdate')->middleware('permission:VIEW_TRANSACTIONS')->name('history.backdate');
+    Route::permanentRedirect('/expenses', '/expenses')->middleware('permission:MANAGE_EXPENSES')->name('expenses');
+    Route::permanentRedirect('/inventory', '/inventory')->middleware('permission:VIEW_PRODUCTS,MANAGE_PRODUCTS,VIEW_MATERIALS,MANAGE_MATERIALS,MANAGE_CATEGORIES')->name('inventory');
+    Route::permanentRedirect('/inventory/products', '/inventory/products')->middleware('permission:VIEW_PRODUCTS,MANAGE_PRODUCTS')->name('inventory.products');
+    Route::permanentRedirect('/inventory/categories', '/inventory/categories')->middleware('permission:MANAGE_CATEGORIES')->name('inventory.categories');
+    Route::permanentRedirect('/inventory/materials', '/inventory/materials')->middleware('permission:VIEW_MATERIALS,MANAGE_MATERIALS')->name('inventory.materials');
+    Route::permanentRedirect('/inventory/variations', '/inventory/variations')->middleware('permission:MANAGE_PRODUCTS')->name('inventory.variations');
+    Route::permanentRedirect('/marketing', '/marketing')->middleware('permission:MANAGE_PROMOS,MANAGE_LOYALTY,MANAGE_MEMBERS')->name('marketing');
+    Route::permanentRedirect('/marketing/members', '/marketing/members')->middleware('permission:VIEW_MEMBERS,MANAGE_MEMBERS')->name('marketing.members');
+    Route::permanentRedirect('/marketing/loyalty', '/marketing/loyalty')->middleware('permission:MANAGE_LOYALTY')->name('marketing.loyalty');
+    Route::permanentRedirect('/marketing/bundles', '/marketing/bundles')->middleware('permission:MANAGE_PROMOS')->name('marketing.bundles');
+    Route::permanentRedirect('/marketing/discounts', '/marketing/discounts')->middleware('permission:MANAGE_PROMOS')->name('marketing.discounts');
+    Route::permanentRedirect('/marketing/campaigns', '/marketing/campaigns')->middleware('permission:MANAGE_PROMOS')->name('marketing.campaigns');
+    Route::permanentRedirect('/reports', '/reports')->middleware('permission:VIEW_REPORTS')->name('reports');
+    Route::permanentRedirect('/settings', '/settings')->middleware('permission:MANAGE_OUTLET,MANAGE_STAFF,MANAGE_ROLES,MANAGE_PAYMENTS,MANAGE_PRINTER')->name('settings');
+    Route::permanentRedirect('/settings/outlet', '/settings/outlet')->middleware('permission:MANAGE_OUTLET')->name('settings.outlet');
+    Route::permanentRedirect('/settings/receipt', '/settings/receipt')->middleware('permission:MANAGE_PRINTER')->name('settings.receipt');
+    Route::permanentRedirect('/settings/payment', '/settings/payment')->middleware('permission:MANAGE_PAYMENTS')->name('settings.payment');
+    Route::permanentRedirect('/settings/staff', '/settings/staff')->middleware('permission:MANAGE_STAFF')->name('settings.staff');
+    Route::permanentRedirect('/settings/roles', '/settings/roles')->middleware('permission:MANAGE_ROLES')->name('settings.roles');
+    Route::permanentRedirect('/settings/products', '/settings/products')->middleware('permission:MANAGE_PRODUCTS')->name('settings.products');
 });

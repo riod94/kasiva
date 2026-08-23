@@ -1,11 +1,11 @@
-<div class="flex flex-col min-h-screen bg-[#0F172A] text-slate-100 selection:bg-[#4338CA]/30 selection:text-[#3EDAD7]">
+<div class="flex flex-col min-h-screen bg-[#0F172A] text-slate-100 selection:bg-[#00AAA6]/30 selection:text-[#3EDAD7]">
     <!-- ═══════════════ HEADER ═══════════════ -->
     <header class="flex items-center justify-between p-4 md:px-8 md:py-4 border-b border-[#2E2A68] backdrop-blur-md sticky top-0 z-50 bg-[#0F172A]/90 shadow-sm">
         <div class="flex items-center gap-3">
             <a href="{{ route('landing') }}" class="flex items-center gap-2">
                 <img src="/images/kasiva-logo-full.png" alt="Kasiva POS" class="h-9 md:h-10 object-contain bg-white/95 p-1.5 rounded-xl shadow-sm">
             </a>
-            <span class="hidden sm:inline-flex text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#4338CA]/30 text-indigo-300 border border-[#4338CA]/50">
+            <span class="hidden sm:inline-flex text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#00AAA6]/30 text-[#8696ED] border border-[#00AAA6]/50">
                 Point of Sale
             </span>
         </div>
@@ -23,15 +23,15 @@
             <button 
                 type="button"
                 onclick="window.toggleKasivaTheme()"
-                class="w-9 h-9 rounded-xl bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 shadow-sm cursor-pointer"
+                class="w-9 h-9 rounded-xl bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 shadow-sm cursor-pointer"
                 title="Ganti Tema (Dark / Light)"
             >
                 <x-icon name="sun" class="w-4 h-4 text-amber-400 block dark:hidden" />
-                <x-icon name="moon" class="w-4 h-4 text-indigo-400 hidden dark:block" />
+                <x-icon name="moon" class="w-4 h-4 text-[#8696ED] hidden dark:block" />
             </button>
 
             <a href="{{ route('login') }}" class="text-xs font-bold text-slate-300 hover:text-white transition px-3 py-2">Masuk</a>
-            <a href="{{ route('pos.cashier') }}" class="inline-flex items-center gap-2 rounded-xl font-extrabold px-5 py-2.5 shadow-lg bg-[#4338CA] hover:bg-[#3730A3] text-white text-xs transition-all hover:scale-105 active:scale-95">
+            <a href="{{ route('pos.cashier') }}" class="inline-flex items-center gap-2 rounded-xl font-extrabold px-5 py-2.5 shadow-lg bg-[#00AAA6] hover:bg-[#008F8C] text-white text-xs transition-all hover:scale-105 active:scale-95">
                 <span>Buka Kasir</span>
                 <x-icon name="arrow-right" class="w-3.5 h-3.5" />
             </a>
@@ -42,7 +42,7 @@
         <!-- ═══════════════ HERO ═══════════════ -->
         <section class="relative pt-16 md:pt-24 pb-20 md:pb-32 overflow-hidden">
             <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <div class="absolute -top-40 -right-40 w-96 h-96 bg-[#4338CA]/20 rounded-full blur-3xl"></div>
+                <div class="absolute -top-40 -right-40 w-96 h-96 bg-[#00AAA6]/20 rounded-full blur-3xl"></div>
                 <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-[#00AAA6]/15 rounded-full blur-3xl"></div>
             </div>
 
@@ -74,12 +74,12 @@
 
                 <!-- CTA Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 w-full justify-center pt-4">
-                    <a href="{{ route('pos.cashier') }}" class="h-14 px-8 rounded-2xl font-black text-base w-full sm:w-auto shadow-xl shadow-[#4338CA]/30 bg-[#4338CA] hover:bg-[#3730A3] text-white transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
+                    <a href="{{ route('pos.cashier') }}" class="h-14 px-8 rounded-2xl font-black text-base w-full sm:w-auto shadow-xl shadow-[#00AAA6]/30 bg-[#00AAA6] hover:bg-[#008F8C] text-white transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
                         <span>Mulai Transaksi Kasir</span>
                         <x-icon name="arrow-right" class="w-5 h-5" />
                     </a>
-                    <a href="{{ route('onboarding') }}" class="h-14 px-8 rounded-2xl font-black text-base w-full sm:w-auto border border-[#2E2A68] bg-[#1E1B4B] hover:bg-[#25215A] text-white transition-all shadow-sm flex items-center justify-center gap-2">
-                        <x-icon name="store" class="w-5 h-5 text-indigo-400" />
+                    <a href="{{ route('onboarding') }}" class="h-14 px-8 rounded-2xl font-black text-base w-full sm:w-auto border border-[#2E2A68] bg-[#1E1B4B] hover:bg-[#2A3155] text-white transition-all shadow-sm flex items-center justify-center gap-2">
+                        <x-icon name="store" class="w-5 h-5 text-[#8696ED]" />
                         <span>Panduan Mobile App</span>
                     </a>
                 </div>
@@ -119,7 +119,7 @@
 
                 <!-- Feature Grid -->
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#4338CA] transition group">
+                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#00AAA6] transition group">
                         <div class="w-12 h-12 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-4 text-xl font-bold group-hover:scale-105 transition-transform">
                             <x-icon name="store" class="w-6 h-6 text-blue-400" />
                         </div>
@@ -127,7 +127,7 @@
                         <p class="text-xs text-slate-300 leading-relaxed font-medium">Desain antarmuka mobile-first dengan touch target luas untuk transaksi cepat, pencarian menu debounced, dan seleksi varian.</p>
                     </div>
 
-                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#4338CA] transition group">
+                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#00AAA6] transition group">
                         <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-2xl flex items-center justify-center mb-4 text-xl font-bold group-hover:scale-105 transition-transform">
                             <x-icon name="chart-bar" class="w-6 h-6 text-emerald-400" />
                         </div>
@@ -135,7 +135,7 @@
                         <p class="text-xs text-slate-300 leading-relaxed font-medium">Perhitungan moving average cost bahan baku per porsi menu secara akurat. Indikator kesehatan margin 4-tier dari kritis hingga optimal.</p>
                     </div>
 
-                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#4338CA] transition group">
+                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#00AAA6] transition group">
                         <div class="w-12 h-12 bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-2xl flex items-center justify-center mb-4 text-xl font-bold group-hover:scale-105 transition-transform">
                             <x-icon name="bike" class="w-6 h-6 text-orange-400" />
                         </div>
@@ -143,7 +143,7 @@
                         <p class="text-xs text-slate-300 leading-relaxed font-medium">Input uang bersih (net received) untuk pesanan GoFood, GrabFood, dan ShopeeFood demi pembukuan omset yang jujur dan presisi.</p>
                     </div>
 
-                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#4338CA] transition group">
+                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#00AAA6] transition group">
                         <div class="w-12 h-12 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-2xl flex items-center justify-center mb-4 text-xl font-bold group-hover:scale-105 transition-transform">
                             <x-icon name="sparkles" class="w-6 h-6 text-purple-400" />
                         </div>
@@ -151,7 +151,7 @@
                         <p class="text-xs text-slate-300 leading-relaxed font-medium">Rekomendasi cerdas pemisahan alokasi modal belanja bahan dengan uang bebas, serta proyeksi omset bulanan berbasis run-rate.</p>
                     </div>
 
-                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#4338CA] transition group">
+                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#00AAA6] transition group">
                         <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-2xl flex items-center justify-center mb-4 text-xl font-bold group-hover:scale-105 transition-transform">
                             <x-icon name="printer" class="w-6 h-6 text-cyan-400" />
                         </div>
@@ -159,9 +159,9 @@
                         <p class="text-xs text-slate-300 leading-relaxed font-medium">Cetak struk ke printer Bluetooth thermal 58mm/80mm fisik serta opsi pembagian struk digital langsung ke WhatsApp pelanggan.</p>
                     </div>
 
-                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#4338CA] transition group">
-                        <div class="w-12 h-12 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-2xl flex items-center justify-center mb-4 text-xl font-bold group-hover:scale-105 transition-transform">
-                            <x-icon name="gift" class="w-6 h-6 text-indigo-400" />
+                    <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-xl hover:border-[#00AAA6] transition group">
+                        <div class="w-12 h-12 bg-[#8696ED]/20 text-[#8696ED] border border-[#8696ED]/30 rounded-2xl flex items-center justify-center mb-4 text-xl font-bold group-hover:scale-105 transition-transform">
+                            <x-icon name="gift" class="w-6 h-6 text-[#8696ED]" />
                         </div>
                         <h3 class="font-black text-base md:text-lg mb-2 text-white">Loyalitas Stempel & Bundle</h3>
                         <p class="text-xs text-slate-300 leading-relaxed font-medium">Program kartu stempel pelanggan digital, database member, dan pembuatan paket hemat kombo menu dengan kalkulator HPP otomatis.</p>
@@ -207,8 +207,8 @@
                                     <p class="text-[10px] text-slate-400">Struktur HPP ideal untuk ekspansi outlet</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3 p-3.5 bg-[#1E1B4B] rounded-2xl border border-indigo-500/30">
-                                <span class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-300 font-black text-xs flex items-center justify-center">O</span>
+                            <div class="flex items-center gap-3 p-3.5 bg-[#1E1B4B] rounded-2xl border border-[#8696ED]/30">
+                                <span class="w-8 h-8 rounded-xl bg-[#8696ED]/20 text-[#8696ED] font-black text-xs flex items-center justify-center">O</span>
                                 <div>
                                     <span class="font-black text-xs text-white">Optimal (≥ 72% Margin)</span>
                                     <p class="text-[10px] text-slate-400">Profitabilitas sangat tinggi</p>
@@ -221,7 +221,7 @@
                     <div class="bg-[#1E1B4B] rounded-3xl p-6 md:p-8 border border-[#2E2A68] shadow-2xl space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-[#2E2A68]">
                             <h3 class="font-black text-sm text-white flex items-center gap-2">
-                                <x-icon name="chart-bar" class="w-4 h-4 text-indigo-400" />
+                                <x-icon name="chart-bar" class="w-4 h-4 text-[#8696ED]" />
                                 <span>Simulasi Pembukuan Finansial</span>
                             </h3>
                             <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">Sehat</span>
@@ -259,7 +259,7 @@
         </section>
 
         <!-- ═══════════════ BOTTOM CTA ═══════════════ -->
-        <section class="py-16 md:py-20 bg-gradient-to-br from-[#4338CA] via-[#3730A3] to-[#1E1B4B] text-center border-t border-[#4338CA]/40">
+        <section class="py-16 md:py-20 bg-gradient-to-br from-[#00AAA6] via-[#008F8C] to-[#1E1B4B] text-center border-t border-[#00AAA6]/40">
             <div class="max-w-3xl mx-auto px-4 space-y-5">
                 <h2 class="text-2xl md:text-4xl font-black tracking-tight text-white">
                     Tingkatkan Performa Outlet Anda Sekarang
@@ -268,9 +268,9 @@
                     Aplikasi kasir terintegrasi yang memudahkan operasional staf dan memberikan transparansi keuangan bisnis F&B.
                 </p>
                 <div class="pt-2">
-                    <a href="{{ route('pos.cashier') }}" class="inline-flex items-center gap-2 h-14 px-8 rounded-2xl font-black text-sm bg-white text-[#4338CA] hover:bg-slate-100 transition-all shadow-xl hover:scale-105 active:scale-95">
+                    <a href="{{ route('pos.cashier') }}" class="inline-flex items-center gap-2 h-14 px-8 rounded-2xl font-black text-sm bg-white text-[#00AAA6] hover:bg-slate-100 transition-all shadow-xl hover:scale-105 active:scale-95">
                         <span>Buka Layar Kasir POS</span>
-                        <x-icon name="arrow-right" class="w-4 h-4 text-[#4338CA]" />
+                        <x-icon name="arrow-right" class="w-4 h-4 text-[#00AAA6]" />
                     </a>
                 </div>
             </div>

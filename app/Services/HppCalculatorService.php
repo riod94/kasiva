@@ -93,15 +93,39 @@ class HppCalculatorService
      */
     public function deductRecipeStockForCheckout(Product $product, int $qty): void
     {
-        DB::transaction(function () use ($product, $qty) {
-            $product->loadMissing('materials');
+        if ($qty <= 0) {
+            throw new \InvalidArgumentException('Jumlah produk harus lebih dari nol.');
+        }
 
-            foreach ($product->materials as $material) {
-                $deductAmount = (float) $material->pivot->quantity * $qty;
-                $material->decrement('current_stock', $deductAmount);
+        $deduct = function () use ($product, $qty): void {
+            $lockedProduct = Product::query()->lockForUpdate()->findOrFail($product->id);
+            $materials = $lockedProduct->materials()->lockForUpdate()->orderBy('materials.id')->get();
+
+            if ((float) $lockedProduct->current_stock < $qty) {
+                throw new \InvalidArgumentException("Stok {$lockedProduct->name} tidak mencukupi.");
             }
 
-            $product->decrement('current_stock', $qty);
-        });
+            foreach ($materials as $material) {
+                $deductAmount = (float) $material->pivot->quantity * $qty;
+
+                if ((float) $material->current_stock < $deductAmount) {
+                    throw new \InvalidArgumentException("Stok bahan {$material->name} tidak mencukupi.");
+                }
+            }
+
+            foreach ($materials as $material) {
+                $material->decrement('current_stock', (float) $material->pivot->quantity * $qty);
+            }
+
+            $lockedProduct->decrement('current_stock', $qty);
+        };
+
+        if (DB::transactionLevel() > 0) {
+            $deduct();
+
+            return;
+        }
+
+        DB::transaction($deduct);
     }
 }

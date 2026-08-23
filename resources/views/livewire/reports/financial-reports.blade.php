@@ -10,7 +10,7 @@
             </div>
             
             <div class="flex items-center gap-2">
-                <a href="{{ route('history.index') }}" class="px-3.5 py-2 bg-[#16192E] hover:bg-[#4338CA] text-slate-300 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center gap-1.5 shadow-sm">
+                <a href="{{ route('history.index') }}" class="px-3.5 py-2 bg-[#16192E] hover:bg-[#00AAA6] text-slate-300 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center gap-1.5 shadow-sm">
                     <x-icon name="receipt" class="w-3.5 h-3.5" />
                     <span>Riwayat</span>
                 </a>
@@ -25,19 +25,19 @@
         <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-[#2E2A68]">
             <button 
                 wire:click="setPeriod('HARI_INI')"
-                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition {{ $period === 'HARI_INI' ? 'bg-[#4338CA] text-white shadow-md' : 'bg-[#16192E] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
+                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition {{ $period === 'HARI_INI' ? 'bg-[#00AAA6] text-white shadow-md' : 'bg-[#16192E] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
             >
                 Hari Ini
             </button>
             <button 
                 wire:click="setPeriod('BULAN_INI')"
-                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition {{ $period === 'BULAN_INI' ? 'bg-[#4338CA] text-white shadow-md' : 'bg-[#16192E] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
+                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition {{ $period === 'BULAN_INI' ? 'bg-[#00AAA6] text-white shadow-md' : 'bg-[#16192E] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
             >
                 Bulan Ini
             </button>
             <button 
                 wire:click="setPeriod('SEMUA')"
-                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition {{ $period === 'SEMUA' ? 'bg-[#4338CA] text-white shadow-md' : 'bg-[#16192E] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
+                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition {{ $period === 'SEMUA' ? 'bg-[#00AAA6] text-white shadow-md' : 'bg-[#16192E] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
             >
                 Semua Data
             </button>
@@ -125,7 +125,7 @@
         <!-- 1. Penjualan -->
         <div class="bg-[#1E1B4B] p-5 rounded-3xl border border-[#2E2A68] shadow-md space-y-3.5">
             <h3 class="font-black text-xs uppercase tracking-widest text-slate-400 flex items-center gap-2">
-                <x-icon name="shopping-bag" class="w-4 h-4 text-indigo-400" />
+                <x-icon name="shopping-bag" class="w-4 h-4 text-[#8696ED]" />
                 <span>Penjualan</span>
             </h3>
 
@@ -207,7 +207,7 @@
             <x-icon name="receipt" class="w-4 h-4" />
             <span>Export Excel (CSV)</span>
         </button>
-        <button wire:click="exportPdf" class="px-4 py-2.5 bg-[#16192E] hover:bg-[#25215A] text-slate-200 font-bold text-xs rounded-2xl border border-[#2E2A68] flex items-center gap-1.5">
+        <button wire:click="exportPdf" class="px-4 py-2.5 bg-[#16192E] hover:bg-[#2A3155] text-slate-200 font-bold text-xs rounded-2xl border border-[#2E2A68] flex items-center gap-1.5">
             <x-icon name="printer" class="w-4 h-4" />
             <span>Export PDF</span>
         </button>
@@ -261,7 +261,7 @@
         }
         const ctx2 = document.getElementById('paymentChart');
         if(ctx2 && window.Chart){
-            new Chart(ctx2, { type:'doughnut', data:{ labels: pmLabels, datasets:[{ data: pmTotals, backgroundColor:['#4338CA','#06B6D4','#F97316','#10B981','#E11D48','#6366F1'], borderWidth:0}]}, options:{responsive:true, plugins:{legend:{position:'bottom', labels:{color:'#94A3B8', font:{size:10}, padding:12}}}}});
+            new Chart(ctx2, { type:'doughnut', data:{ labels: pmLabels, datasets:[{ data: pmTotals, backgroundColor:['#00AAA6','#06B6D4','#F97316','#10B981','#E11D48','#8696ED'], borderWidth:0}]}, options:{responsive:true, plugins:{legend:{position:'bottom', labels:{color:'#94A3B8', font:{size:10}, padding:12}}}}});
         }
     });
     </script>

@@ -2,7 +2,7 @@
     <!-- Header Page -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -14,7 +14,7 @@
         </div>
         <button 
             wire:click="openCreateModal"
-            class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
+            class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
         >
             <x-icon name="plus" class="w-4 h-4" />
             <span>Tambah Peran</span>
@@ -37,17 +37,17 @@
     <!-- Roles Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($roles as $role)
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md hover:border-[#4338CA] transition space-y-4 flex flex-col justify-between group">
+            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md hover:border-[#00AAA6] transition space-y-4 flex flex-col justify-between group">
                 <div>
                     <div class="flex items-center gap-3.5">
-                        <div class="h-11 w-11 rounded-2xl {{ $role->slug === 'owner' ? 'bg-[#4338CA] text-white' : 'bg-[#16192E] text-indigo-400 border border-[#2E2A68]' }} flex items-center justify-center text-sm font-black shrink-0">
-                            <x-icon name="shield" class="w-5 h-5 {{ $role->slug === 'owner' ? 'text-white' : 'text-indigo-400' }}" />
+                        <div class="h-11 w-11 rounded-2xl {{ $role->slug === 'owner' ? 'bg-[#00AAA6] text-white' : 'bg-[#16192E] text-[#8696ED] border border-[#2E2A68]' }} flex items-center justify-center text-sm font-black shrink-0">
+                            <x-icon name="shield" class="w-5 h-5 {{ $role->slug === 'owner' ? 'text-white' : 'text-[#8696ED]' }}" />
                         </div>
                         <div class="min-w-0">
                             <h4 class="font-black text-sm text-white flex items-center gap-1.5 truncate">
                                 {{ $role->name }}
                                 @if($role->slug === 'owner')
-                                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-indigo-500/30 text-indigo-300 shrink-0">Sistem</span>
+                                    <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-[#8696ED]/30 text-[#8696ED] shrink-0">Sistem</span>
                                 @endif
                             </h4>
                             <p class="text-[11px] text-slate-400 font-medium mt-0.5 line-clamp-1">{{ $role->description ?? 'Hak akses staf' }}</p>
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="flex items-center gap-2 pt-3 border-t border-[#2E2A68]">
-                    <button wire:click="openEditModal('{{ $role->id }}')" class="flex-1 py-2 bg-[#16192E] hover:bg-[#4338CA] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center justify-center gap-1.5">
+                    <button wire:click="openEditModal('{{ $role->id }}')" class="flex-1 py-2 bg-[#16192E] hover:bg-[#00AAA6] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center justify-center gap-1.5">
                         <x-icon name="edit" class="w-3.5 h-3.5" />
                         <span>Edit Izin</span>
                     </button>
@@ -93,13 +93,13 @@
                 <div class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Peran / Jabatan</label>
-                        <input type="text" wire:model="name" placeholder="cth: Supervisor Outlet / Leader Barista" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="name" placeholder="cth: Supervisor Outlet / Leader Barista" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Deskripsi Tugas</label>
-                        <input type="text" wire:model="description" placeholder="cth: Bertanggung jawab atas stok & tutup kasir" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="description" placeholder="cth: Bertanggung jawab atas stok & tutup kasir" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                     </div>
 
                     <!-- Permission Matrix -->
@@ -115,10 +115,10 @@
                                         <button 
                                             type="button" 
                                             wire:click="togglePermission('{{ $perm['id'] }}')"
-                                            class="flex items-center justify-between p-3 rounded-2xl border text-left transition {{ $isSelected ? 'bg-[#4338CA]/20 border-[#4338CA] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
+                                            class="flex items-center justify-between p-3 rounded-2xl border text-left transition {{ $isSelected ? 'bg-[#00AAA6]/20 border-[#00AAA6] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
                                         >
                                             <span class="font-bold text-xs">{{ $perm['label'] }}</span>
-                                            <div class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] {{ $isSelected ? 'bg-[#4338CA] border-[#4338CA] text-white' : 'border-[#2E2A68]' }}">
+                                            <div class="w-5 h-5 rounded-lg border flex items-center justify-center text-[10px] {{ $isSelected ? 'bg-[#00AAA6] border-[#00AAA6] text-white' : 'border-[#2E2A68]' }}">
                                                 @if($isSelected)
                                                     <x-icon name="check" class="w-3.5 h-3.5 text-white" />
                                                 @endif
@@ -134,7 +134,7 @@
                 <div class="pt-2 border-t border-[#2E2A68]">
                     <button 
                         wire:click="saveRole"
-                        class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                        class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                     >
                         Simpan Izin Peran
                     </button>

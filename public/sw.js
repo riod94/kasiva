@@ -1,6 +1,5 @@
-const CACHE = 'kasiva-shell-v7';
-const STATIC = ['/offline.html', '/app/pos', '/images/kasiva-logo-icon.png', '/images/kasiva-logo-full.png'];
-const LOCAL_ROUTES = ['/pos', '/history', '/expenses', '/marketing/members', '/app/pos', '/app/history', '/app/expenses', '/app/members', '/pos/offline'];
+const CACHE = 'kasiva-shell-v8';
+const STATIC = ['/offline.html', '/images/kasiva-logo-icon.png', '/images/kasiva-logo-full.png'];
 const ONLINE_ONLY_PREFIXES = ['/admin/'];
 
 async function preCacheManifest(cache) {
@@ -42,18 +41,16 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        if (response.ok && (event.request.mode === 'navigate' || url.pathname.startsWith('/build/'))) {
+        if (response.ok && url.pathname.startsWith('/build/')) {
           event.waitUntil(
             caches.open(CACHE).then(cache => cache.put(event.request, response.clone()))
           );
         }
         return response;
       })
-      .catch(() => {
-        if (event.request.mode === 'navigate' && LOCAL_ROUTES.some(path => url.pathname === path || url.pathname.startsWith(path + '/'))) {
-          return caches.match('/app/pos').then(r => r || caches.match('/offline.html'));
-        }
-        return caches.match(event.request);
-      })
+      .catch(() => event.request.mode === 'navigate'
+        ? caches.match('/offline.html')
+        : caches.match(event.request)
+      )
   );
 });

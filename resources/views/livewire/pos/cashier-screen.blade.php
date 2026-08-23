@@ -9,7 +9,7 @@
                 <p class="text-xs text-slate-400 font-medium mt-0.5">Sistem kasir siap melayani transaksi outlet</p>
             </div>
             <div class="hidden sm:flex items-center gap-2">
-                <a href="{{ route('history.index') }}" class="px-3.5 py-2 bg-[#1E1B4B] hover:bg-[#4338CA] border border-[#2E2A68] text-xs font-bold rounded-xl text-slate-300 hover:text-white transition shadow-sm flex items-center gap-1.5">
+                <a href="{{ route('history.index') }}" class="px-3.5 py-2 bg-[#1E1B4B] hover:bg-[#00AAA6] border border-[#2E2A68] text-xs font-bold rounded-xl text-slate-300 hover:text-white transition shadow-sm flex items-center gap-1.5">
                     <x-icon name="receipt" class="w-3.5 h-3.5" />
                     <span>Riwayat</span>
                 </a>
@@ -22,12 +22,12 @@
 
         <!-- Mobile Quick Shortcuts (2 Grid Cards) -->
         <div class="grid grid-cols-2 gap-3 sm:hidden">
-            <a href="{{ route('history.index') }}" class="flex items-center gap-3 p-3 rounded-2xl bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] transition text-left group shadow-sm">
-                <div class="w-9 h-9 rounded-xl bg-[#4338CA]/20 text-indigo-300 border border-[#4338CA]/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
-                    <x-icon name="receipt" class="w-4 h-4 text-indigo-400" />
+            <a href="{{ route('history.index') }}" class="flex items-center gap-3 p-3 rounded-2xl bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] transition text-left group shadow-sm">
+                <div class="w-9 h-9 rounded-xl bg-[#00AAA6]/20 text-[#8696ED] border border-[#00AAA6]/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+                    <x-icon name="receipt" class="w-4 h-4 text-[#8696ED]" />
                 </div>
                 <div class="flex flex-col min-w-0">
-                    <span class="text-[9px] font-black uppercase tracking-widest text-indigo-400 leading-none mb-1">Cek Data</span>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-[#8696ED] leading-none mb-1">Cek Data</span>
                     <span class="text-xs font-black text-white truncate leading-tight">Riwayat</span>
                 </div>
             </a>
@@ -47,13 +47,9 @@
     <!-- ═══════════════ Search Box & Barcode Scanner ═══════════════ -->
     <div class="flex gap-2">
         <div class="relative flex-1">
-            <x-icon name="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input 
-                type="text" 
-                wire:model.live.debounce.250ms="searchQuery"
-                placeholder="Cari produk menu atau masukkan SKU..."
-                class="w-full h-12 pl-11 pr-4 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs md:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] shadow-inner"
-            >
+            <label for="product-search" class="sr-only">Cari produk atau SKU</label>
+            <x-icon name="search" class="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input id="product-search" type="search" wire:model.live.debounce.250ms="searchQuery" placeholder="Cari menu atau SKU" class="h-12 w-full rounded-2xl border border-[#2E2A68] bg-[#1E1B4B] pl-11 pr-4 text-base text-white placeholder-slate-400 shadow-inner focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7] sm:text-sm">
         </div>
     </div>
 
@@ -61,7 +57,7 @@
     <div class="flex gap-2 overflow-x-auto pb-1.5 -mx-4 px-4 md:-mx-0 md:px-0 scrollbar-hide">
         <button 
             wire:click="selectCategory('ALL')"
-            class="px-4 py-2.5 rounded-2xl font-black text-xs uppercase tracking-wider whitespace-nowrap transition flex items-center gap-2 {{ $selectedCategory === 'ALL' ? 'bg-[#4338CA] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-300 hover:bg-[#25215A] border border-[#2E2A68]' }}"
+            class="px-4 py-2.5 rounded-2xl font-black text-xs uppercase tracking-wider whitespace-nowrap transition flex items-center gap-2 {{ $selectedCategory === 'ALL' ? 'bg-[#00AAA6] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-300 hover:bg-[#2A3155] border border-[#2E2A68]' }}"
         >
             <x-icon name="store" class="w-3.5 h-3.5" />
             <span>Semua Menu</span>
@@ -70,7 +66,7 @@
         @foreach($categories as $category)
             <button 
                 wire:click="selectCategory('{{ $category->id }}')"
-                class="px-4 py-2.5 rounded-2xl font-black text-xs uppercase tracking-wider whitespace-nowrap transition flex items-center gap-2 {{ $selectedCategory == $category->id ? 'bg-[#4338CA] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-300 hover:bg-[#25215A] border border-[#2E2A68]' }}"
+                class="px-4 py-2.5 rounded-2xl font-black text-xs uppercase tracking-wider whitespace-nowrap transition flex items-center gap-2 {{ $selectedCategory == $category->id ? 'bg-[#00AAA6] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-300 hover:bg-[#2A3155] border border-[#2E2A68]' }}"
             >
                 <span>{{ $category->name }}</span>
             </button>
@@ -82,7 +78,7 @@
         @foreach($this->carts as $idx => $c)
             <button
                 wire:click="switchCart({{ $idx }})"
-                class="px-3.5 py-2 rounded-xl text-xs font-black border whitespace-nowrap flex items-center gap-1.5 transition {{ $idx === $activeCartIndex ? 'bg-[#4338CA] text-white border-[#4338CA] shadow-md' : 'bg-[#1E1B4B] text-slate-300 border-[#2E2A68] hover:border-[#4338CA]' }}"
+                class="px-3.5 py-2 rounded-xl text-xs font-black border whitespace-nowrap flex items-center gap-1.5 transition {{ $idx === $activeCartIndex ? 'bg-[#00AAA6] text-white border-[#00AAA6] shadow-md' : 'bg-[#1E1B4B] text-slate-300 border-[#2E2A68] hover:border-[#00AAA6]' }}"
             >
                 <span>{{ $c['name'] }}</span>
                 @php $cnt = count($c['items'] ?? []); @endphp
@@ -90,7 +86,7 @@
             </button>
         @endforeach
         @if(count($carts) < 3)
-            <button wire:click="createNewCart" class="px-3 py-2 rounded-xl text-xs font-black bg-[#16192E] text-slate-300 border border-dashed border-[#2E2A68] hover:border-[#4338CA] flex items-center gap-1">
+            <button wire:click="createNewCart" class="px-3 py-2 rounded-xl text-xs font-black bg-[#16192E] text-slate-300 border border-dashed border-[#2E2A68] hover:border-[#00AAA6] flex items-center gap-1">
                 <x-icon name="plus" class="w-3.5 h-3.5" /> <span>Baru</span>
             </button>
         @endif
@@ -133,7 +129,7 @@
             <div class="mt-3 pt-3 border-t border-[#2E2A68] flex gap-2" wire:transition>
                 <div class="relative flex-1">
                     <x-icon name="qr-code" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#3EDAD7]" />
-                    <input type="text" wire:model="memberScanInput" wire:keydown.enter="searchMember" placeholder="Scan QR member atau ketik nomor HP" aria-label="Cari member berdasarkan QR atau nomor HP" class="w-full pl-9 pr-3 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
+                    <input type="text" wire:model="memberScanInput" wire:keydown.enter="searchMember" placeholder="Scan QR member atau ketik nomor HP" aria-label="Cari member berdasarkan QR atau nomor HP" class="w-full pl-9 pr-3 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-base text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] sm:text-xs">
                 </div>
                 <button wire:click="searchMember" class="px-4 py-2.5 bg-[#00AAA6] hover:bg-[#3EDAD7] text-[#272D48] font-black text-xs rounded-xl">Temukan</button>
             </div>
@@ -154,15 +150,13 @@
     @endif
 
         <!-- ═══════════════ Layout Grid: Products + Cart Sidebar ═══════════════ -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+    <div class="grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1fr)_384px]">
         
         <!-- Product Grid -->
-        <div class="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
             @forelse($products as $product)
-                <div 
-                    wire:click="handleProductClick('{{ $product->id }}')"
-                    class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all duration-200 active:scale-[0.97] group shadow-md hover:shadow-indigo-500/10 relative overflow-hidden"
-                >
+                <button type="button" wire:click="handleProductClick('{{ $product->id }}')" class="group relative flex min-h-[210px] flex-col justify-between overflow-hidden rounded-2xl border border-[#2E2A68] bg-[#1E1B4B] p-3 text-left shadow-md transition-all duration-200 hover:border-[#00AAA6] hover:shadow-[#8696ED]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7] active:scale-[0.98]">
+                    <span class="sr-only">Tambahkan {{ $product->name }} ke keranjang</span>
                     <!-- Product Image Area -->
                     <div class="aspect-square w-full rounded-xl bg-[#0F172A] flex items-center justify-center relative overflow-hidden mb-2.5 border border-[#2E2A68]/60">
                         @if($product->image_url)
@@ -177,9 +171,9 @@
                             </span>
                         @endif
 
-                        <button class="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-white text-[#4338CA] group-hover:bg-[#4338CA] group-hover:text-white font-black text-sm flex items-center justify-center shadow-md transition">
-                            <x-icon name="plus" class="w-3.5 h-3.5" />
-                        </button>
+                        <span class="absolute bottom-2 right-2 flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#00AAA6] shadow-md transition group-hover:bg-[#00AAA6] group-hover:text-white">
+                            <x-icon name="plus" class="h-4 w-4" />
+                        </span>
                     </div>
 
                     <!-- Product Info -->
@@ -197,7 +191,7 @@
                             @endif
                         </div>
                     </div>
-                </div>
+                </button>
             @empty
                 <div class="col-span-full py-16 text-center text-slate-400 bg-[#1E1B4B] rounded-3xl border border-[#2E2A68]">
                     <x-icon name="search" class="w-10 h-10 mx-auto mb-2 opacity-30" />
@@ -208,10 +202,10 @@
         </div>
 
         <!-- ═══════════════ Cart Sidebar (Desktop) ═══════════════ -->
-        <div class="hidden lg:flex flex-col bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-xl sticky top-20 space-y-4">
+        <aside class="hidden xl:flex flex-col bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-xl sticky top-20 space-y-4">
             <div class="flex items-center justify-between border-b border-[#2E2A68] pb-3">
                 <div class="flex items-center gap-2">
-                    <x-icon name="shopping-bag" class="w-4 h-4 text-indigo-400" />
+                    <x-icon name="shopping-bag" class="w-4 h-4 text-[#8696ED]" />
                     <h3 class="font-black text-sm text-white">Keranjang Pesanan</h3>
                 </div>
                 @if(count($cart) > 0)
@@ -222,9 +216,9 @@
             </div>
 
             @if($this->linkedMember)
-                <div class="p-3 rounded-2xl bg-[#4338CA]/15 border border-[#4338CA]/30 flex items-center gap-2.5">
-                    <span class="w-7 h-7 rounded-lg bg-[#4338CA] text-white flex items-center justify-center font-black text-[10px]">{{ strtoupper(substr($this->linkedMember->name ?: 'M',0,1)) }}</span>
-                    <div class="flex-1 min-w-0"><p class="font-black text-xs text-white truncate">{{ $this->linkedMember->name ?: $this->linkedMember->qr_code }}</p><p class="text-[10px] text-indigo-200 truncate">{{ $this->linkedMember->qr_code }}</p></div>
+                <div class="p-3 rounded-2xl bg-[#00AAA6]/15 border border-[#00AAA6]/30 flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-lg bg-[#00AAA6] text-white flex items-center justify-center font-black text-[10px]">{{ strtoupper(substr($this->linkedMember->name ?: 'M',0,1)) }}</span>
+                    <div class="flex-1 min-w-0"><p class="font-black text-xs text-white truncate">{{ $this->linkedMember->name ?: $this->linkedMember->qr_code }}</p><p class="text-[10px] text-[#8696ED] truncate">{{ $this->linkedMember->qr_code }}</p></div>
                     <button wire:click="unlinkMember" class="text-slate-400 hover:text-white text-xs">✕</button>
                 </div>
             @endif
@@ -246,7 +240,7 @@
                                 -
                             </button>
                             <span class="w-6 text-center font-black text-xs text-white">{{ $item['qty'] }}</span>
-                            <button wire:click="updateQuantity('{{ $key }}', {{ $item['qty'] + 1 }})" class="w-6 h-6 rounded-lg bg-[#4338CA] hover:bg-[#3730A3] text-white font-black text-xs flex items-center justify-center transition">
+                            <button wire:click="updateQuantity('{{ $key }}', {{ $item['qty'] + 1 }})" class="w-6 h-6 rounded-lg bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-xs flex items-center justify-center transition">
                                 +
                             </button>
                         </div>
@@ -289,22 +283,22 @@
 
                     <button 
                         wire:click="openCheckoutModal"
-                        class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2 mt-2"
+                        class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2 mt-2"
                     >
                         <span>Bayar Sekarang ({{ count($cart) }})</span>
                         <x-icon name="arrow-right" class="w-4 h-4" />
                     </button>
                 </div>
             @endif
-        </div>
+        </aside>
     </div>
 
-    <!-- ═══════════════ Floating Cart Button (Mobile) ═══════════════ -->
+    <!-- ═══════════════ Floating Cart Button (Mobile) — above bottom-nav, not overlapping ═══════════════ -->
     @if(count($cart) > 0)
-        <div class="lg:hidden fixed bottom-20 left-4 right-4 z-40">
+        <div class="xl:hidden fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] left-4 right-4 z-40">
             <button 
                 wire:click="openCheckoutModal"
-                class="w-full py-3.5 px-5 bg-gradient-to-r from-[#4338CA] to-[#3730A3] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-2xl flex items-center justify-between active:scale-95 transition border border-[#8696ED]/30"
+                class="w-full py-3.5 px-5 bg-gradient-to-r from-[#00AAA6] to-[#008F8C] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-2xl flex items-center justify-between active:scale-95 transition border border-[#8696ED]/30"
             >
                 <div class="flex items-center gap-2.5">
                     <span class="px-2 py-0.5 rounded-lg bg-white/20 text-white font-black text-xs">{{ count($cart) }}</span>
@@ -317,14 +311,14 @@
 
     <!-- ═══════════════ Variant Selection Modal ═══════════════ -->
     @if($showVariantModal && $selectedProductForVariant)
-        <div class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] w-full max-w-md rounded-t-[32px] sm:rounded-3xl p-5 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto">
+        <div x-data="{trap(e){const f=[...e.currentTarget.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>!x.hasAttribute('disabled')); if(!f.length) return; const first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault(); last.focus()} else if(!e.shiftKey && document.activeElement===last){e.preventDefault(); first.focus()}}}" @keydown.tab.prevent="trap($event)" class="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/80 p-0 backdrop-blur-sm sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="variant-dialog-title" wire:keydown.escape="$set('showVariantModal', false)">
+            <div class="max-h-[85vh] w-full max-w-md space-y-4 overflow-y-auto rounded-t-[32px] border border-[#2E2A68] bg-[#1E1B4B] p-5 shadow-2xl sm:rounded-3xl">
                 <div class="flex items-center justify-between border-b border-[#2E2A68] pb-3">
                     <div>
-                        <h3 class="text-sm font-black text-white">{{ $selectedProductForVariant->name }}</h3>
+                        <h3 id="variant-dialog-title" class="text-sm font-black text-white">{{ $selectedProductForVariant->name }}</h3>
                         <p class="text-xs font-black text-[#3EDAD7] mt-0.5">Rp {{ number_format($selectedProductForVariant->price, 0, ',', '.') }}</p>
                     </div>
-                    <button wire:click="$set('showVariantModal', false)" class="text-slate-400 hover:text-white font-bold p-1">✕</button>
+                    <button type="button" wire:click="$set('showVariantModal', false)" class="flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 hover:bg-[#16192E] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7]" aria-label="Tutup pilihan varian">✕</button>
                 </div>
 
                 <div class="space-y-4 text-xs">
@@ -337,7 +331,7 @@
                                     <button 
                                         type="button" 
                                         wire:click="$set('selectedOptions.{{ $variant->id }}', '{{ $option->id }}')"
-                                        class="p-3 rounded-2xl border text-left transition {{ $isSelected ? 'bg-[#4338CA]/30 border-[#4338CA] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
+                                        class="p-3 rounded-2xl border text-left transition {{ $isSelected ? 'bg-[#00AAA6]/30 border-[#00AAA6] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
                                     >
                                         <p class="font-bold text-xs">{{ $option->name }}</p>
                                         @if($option->price_modifier > 0)
@@ -352,7 +346,7 @@
 
                 <button 
                     wire:click="confirmVariantSelection"
-                    class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                    class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                 >
                     Tambahkan ke Keranjang
                 </button>
@@ -362,17 +356,17 @@
 
     <!-- ═══════════════ Multi-Step Checkout Modal ═══════════════ -->
     @if($showCheckoutModal)
-        <div class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] w-full max-w-md rounded-t-[32px] sm:rounded-3xl p-6 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div x-data="{trap(e){const f=[...e.currentTarget.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>!x.hasAttribute('disabled')); if(!f.length) return; const first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault(); last.focus()} else if(!e.shiftKey && document.activeElement===last){e.preventDefault(); first.focus()}}}" @keydown.tab.prevent="trap($event)" class="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/80 p-0 backdrop-blur-sm sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="checkout-dialog-title" wire:keydown.escape="$set('showCheckoutModal', false)">
+            <div class="max-h-[90vh] w-full max-w-md space-y-5 overflow-y-auto rounded-t-[32px] border border-[#2E2A68] bg-[#1E1B4B] p-6 shadow-2xl sm:rounded-3xl">
                 
                 <!-- Step 1: METHOD_SELECT -->
                 @if($checkoutStep === 'METHOD_SELECT')
                     <div class="flex items-center justify-between border-b border-[#2E2A68] pb-3">
                         <div>
-                            <h3 class="text-base font-black text-white">Metode Pembayaran</h3>
+                            <h3 id="checkout-dialog-title" class="text-base font-black text-white">Metode Pembayaran</h3>
                             <p class="text-xs text-slate-400 font-medium">Total: <strong class="text-[#3EDAD7]">Rp {{ number_format($totalAmount, 0, ',', '.') }}</strong></p>
                         </div>
-                        <button wire:click="$set('showCheckoutModal', false)" class="text-slate-400 hover:text-white font-bold p-1">✕</button>
+                        <button type="button" wire:click="$set('showCheckoutModal', false)" class="flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 hover:bg-[#16192E] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7]" aria-label="Tutup pembayaran">✕</button>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -440,7 +434,7 @@
                         <!-- Split Payment (Tunai + QRIS) -->
                         <button 
                             wire:click="selectSplitMethod"
-                            class="col-span-full flex items-center justify-center gap-3 p-3.5 rounded-2xl border-2 border-dashed border-[#2E2A68] bg-[#16192E] hover:border-[#4338CA] transition text-center"
+                            class="col-span-full flex items-center justify-center gap-3 p-3.5 rounded-2xl border-2 border-dashed border-[#2E2A68] bg-[#16192E] hover:border-[#00AAA6] transition text-center"
                         >
                             <x-icon name="split" class="w-4 h-4 text-slate-300" />
                             <span class="font-black text-xs uppercase tracking-wider text-slate-300">Bayar Sebagian (Tunai + QRIS)</span>
@@ -463,21 +457,21 @@
                         <div>
                             <label class="block font-black text-slate-300 text-xs mb-1.5 uppercase tracking-wider">Nominal Uang Diterima (Rp)</label>
                             <input 
-                                type="number" 
+                                type="number" inputmode="decimal"
                                 wire:model.live="paidAmount" 
-                                class="w-full h-14 bg-[#16192E] border-2 border-[#4338CA] rounded-2xl text-xl font-black text-white px-4 focus:outline-none focus:ring-4 focus:ring-[#4338CA]/20 transition text-center"
+                                class="w-full h-14 bg-[#16192E] border-2 border-[#00AAA6] rounded-2xl text-xl font-black text-white px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7] focus-visible:ring-4 focus-visible:ring-[#00AAA6]/20 transition text-center"
                             >
                         </div>
 
                         <!-- Quick Cash Shortcuts -->
                         <div class="grid grid-cols-3 gap-2">
-                            <button type="button" wire:click="setCashNominal({{ $totalAmount }})" class="py-2.5 bg-[#16192E] hover:bg-[#4338CA] border border-[#2E2A68] rounded-xl text-xs font-black text-white transition">
+                            <button type="button" wire:click="setCashNominal({{ $totalAmount }})" class="py-2.5 bg-[#16192E] hover:bg-[#00AAA6] border border-[#2E2A68] rounded-xl text-xs font-black text-white transition">
                                 Uang Pas
                             </button>
-                            <button type="button" wire:click="setCashNominal({{ ceil($totalAmount / 10000) * 10000 }})" class="py-2.5 bg-[#16192E] hover:bg-[#4338CA] border border-[#2E2A68] rounded-xl text-xs font-black text-white transition">
+                            <button type="button" wire:click="setCashNominal({{ ceil($totalAmount / 10000) * 10000 }})" class="py-2.5 bg-[#16192E] hover:bg-[#00AAA6] border border-[#2E2A68] rounded-xl text-xs font-black text-white transition">
                                 Rp {{ number_format(ceil($totalAmount / 10000) * 10000, 0) }}
                             </button>
-                            <button type="button" wire:click="setCashNominal({{ ceil($totalAmount / 50000) * 50000 }})" class="py-2.5 bg-[#16192E] hover:bg-[#4338CA] border border-[#2E2A68] rounded-xl text-xs font-black text-white transition">
+                            <button type="button" wire:click="setCashNominal({{ ceil($totalAmount / 50000) * 50000 }})" class="py-2.5 bg-[#16192E] hover:bg-[#00AAA6] border border-[#2E2A68] rounded-xl text-xs font-black text-white transition">
                                 Rp {{ number_format(ceil($totalAmount / 50000) * 50000, 0) }}
                             </button>
                         </div>
@@ -490,7 +484,7 @@
 
                         <button 
                             wire:click="processCheckout"
-                            class="w-full py-4 bg-[#4338CA] hover:bg-[#3730A3] text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
+                            class="w-full py-4 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
                         >
                             Konfirmasi Pembayaran Tunai
                         </button>
@@ -519,9 +513,9 @@
                                 Total Uang Net / Bersih Diterima (Rp)
                             </label>
                             <input 
-                                type="number" 
+                                type="number" inputmode="decimal"
                                 wire:model.live="adjustedAmount" 
-                                class="w-full h-14 bg-[#16192E] border-2 border-[#3EDAD7] rounded-2xl text-xl font-black text-white px-4 focus:outline-none focus:ring-4 focus:ring-[#3EDAD7]/20 transition text-center"
+                                class="w-full h-14 bg-[#16192E] border-2 border-[#3EDAD7] rounded-2xl text-xl font-black text-white px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7] focus-visible:ring-4 focus-visible:ring-[#3EDAD7]/20 transition text-center"
                             >
                             <p class="text-[10px] text-slate-400 mt-1">Masukkan nominal setelah dipotong komisi/diskon platform.</p>
                         </div>
@@ -536,7 +530,7 @@
 
                         <button 
                             wire:click="processCheckout"
-                            class="w-full py-4 bg-[#4338CA] hover:bg-[#3730A3] text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
+                            class="w-full py-4 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
                         >
                             Simpan Transaksi {{ $selectedPlatform }}
                         </button>
@@ -583,12 +577,12 @@
                     <div class="space-y-4 text-xs">
                         <div>
                             <label class="block font-bold text-slate-300 mb-1">Porsi Tunai (Rp)</label>
-                            <input type="number" wire:model.live="splitCashAmount" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white font-black text-sm">
+                            <input type="number" inputmode="decimal" wire:model.live="splitCashAmount" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white font-black text-base sm:text-sm">
                         </div>
 
                         <div>
                             <label class="block font-bold text-slate-300 mb-1">Porsi QRIS (Rp)</label>
-                            <input type="number" wire:model.live="splitQrisAmount" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white font-black text-sm">
+                            <input type="number" inputmode="decimal" wire:model.live="splitQrisAmount" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white font-black text-base sm:text-sm">
                         </div>
 
                         <div class="p-3 bg-[#16192E] rounded-xl border border-[#2E2A68] flex justify-between font-bold">
@@ -598,7 +592,7 @@
 
                         <button 
                             wire:click="processCheckout"
-                            class="w-full py-4 bg-[#4338CA] hover:bg-[#3730A3] text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
+                            class="w-full py-4 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
                         >
                             Simpan Pembayaran Split
                         </button>
@@ -610,7 +604,7 @@
 
     <!-- ═══════════════ Receipt Modal & WhatsApp Share ═══════════════ -->
     @if($showReceiptModal && $lastTransaction)
-        <div class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div x-data="{trap(e){const f=[...e.currentTarget.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>!x.hasAttribute('disabled')); if(!f.length) return; const first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault(); last.focus()} else if(!e.shiftKey && document.activeElement===last){e.preventDefault(); first.focus()}}}" @keydown.tab.prevent="trap($event)" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Transaksi berhasil">
             <div class="bg-[#1E1B4B] border border-[#2E2A68] w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl text-center animate-in zoom-in-95">
                 <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/40">
                     <x-icon name="check" class="w-6 h-6 text-emerald-400" />
@@ -650,7 +644,7 @@
 
                      <button 
                         wire:click="closeReceiptModal"
-                        class="w-full py-3 bg-[#16192E] hover:bg-[#25215A] text-slate-300 hover:text-white font-black text-xs rounded-xl border border-[#2E2A68] transition"
+                        class="w-full py-3 bg-[#16192E] hover:bg-[#2A3155] text-slate-300 hover:text-white font-black text-xs rounded-xl border border-[#2E2A68] transition"
                     >
                         Selesai & Transaksi Baru
                     </button>
@@ -660,7 +654,7 @@
     @endif
 
     @if($showMemberScanner)
-        <div class="fixed inset-0 z-[60] bg-slate-950/85 backdrop-blur flex items-center justify-center p-4" wire:ignore.self>
+        <div x-data="{trap(e){const f=[...e.currentTarget.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>!x.hasAttribute('disabled')); if(!f.length) return; const first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault(); last.focus()} else if(!e.shiftKey && document.activeElement===last){e.preventDefault(); first.focus()}}}" @keydown.tab.prevent="trap($event)" class="fixed inset-0 z-[60] bg-slate-950/85 backdrop-blur flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Scan QR member" wire:ignore.self>
             <div class="bg-[#1E1B4B] border border-[#2E2A68] w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl">
                 <div class="flex items-center justify-between">
                     <h3 class="font-black text-sm text-white">Scan QR Member</h3>
@@ -673,20 +667,20 @@
     @endif
 
     @push('scripts')
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script>
         document.addEventListener('livewire:init', () => {
             let html5Qr = null;
             Livewire.on('member-scanned', (e) => {});
-            const startScanner = () => {
+            const startScanner = async () => {
                 const el = document.getElementById('kasiva-member-reader');
-                if(!el || typeof Html5Qrcode === 'undefined') return;
-                if(html5Qr){ try{ html5Qr.clear(); }catch(e){} }
-                html5Qr = new Html5Qrcode("kasiva-member-reader");
-                html5Qr.start({ facingMode: "environment" }, { fps: 10, qrbox: 220 },
-                    (decoded) => { @this.call('scanMemberResult', decoded); try{ html5Qr.stop(); }catch(e){} },
+                if (!el || html5Qr) return;
+                const Html5Qrcode = await window.loadKasivaQrScanner?.();
+                if (!Html5Qrcode || !document.getElementById('kasiva-member-reader')) return;
+                html5Qr = new Html5Qrcode('kasiva-member-reader');
+                html5Qr.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 },
+                    (decoded) => { @this.call('scanMemberResult', decoded); try { html5Qr.stop(); } catch (e) {} },
                     () => {}
-                ).catch(()=>{});
+                ).catch(() => { html5Qr = null; });
             };
             const stopScanner = () => { if(html5Qr){ try{ html5Qr.stop(); html5Qr.clear(); }catch(e){} html5Qr=null; } };
             // Poll visibility of scanner modal

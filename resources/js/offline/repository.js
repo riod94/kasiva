@@ -101,8 +101,16 @@ export async function upsertAll(store, values) {
 }
 
 export async function replaceAll(store, values) {
-    await clear(store);
-    await upsertAll(store, values);
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(store, 'readwrite');
+        const os = tx.objectStore(store);
+        os.clear();
+        for (const value of values) os.put({ ...value, id: value.id });
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error || new Error('replaceAll aborted'));
+    });
 }
 
 // --- Device / auth helpers ---
@@ -262,11 +270,13 @@ export async function getTransactionById(id) {
 
 export async function saveExpense(expense) {
     const db = await openDb();
+    const id = expense.id || crypto.randomUUID();
+    const record = { ...expense, id, client_expense_id: expense.client_expense_id || id, created_at: new Date().toISOString() };
     return new Promise((resolve, reject) => {
         const tx = db.transaction(['expenses', 'pending_operations'], 'readwrite');
-        tx.objectStore('expenses').put({ id: expense.id || crypto.randomUUID(), ...expense, created_at: new Date().toISOString() });
-        tx.objectStore('pending_operations').put({ id: crypto.randomUUID(), type: 'expense', payload: expense, status: 'PENDING', created_at: new Date().toISOString() });
-        tx.oncomplete = () => resolve(expense.id);
+        tx.objectStore('expenses').put(record);
+        tx.objectStore('pending_operations').put({ id: crypto.randomUUID(), type: 'expense', payload: record, status: 'PENDING', created_at: new Date().toISOString() });
+        tx.oncomplete = () => resolve(id);
         tx.onerror = () => reject(tx.error);
     });
 }
@@ -317,6 +327,7 @@ export async function markOperationConflict(id, error) {
 
 // --- Connection manager ---
 
+const MAX_SYNC_ATTEMPTS = 3;
 const OP_MAP = {
     transaction: { operation: 'UPSERT_TRANSACTION', entity_type: 'transaction' },
     expense: { operation: 'UPSERT_EXPENSE', entity_type: 'expense' },
@@ -325,12 +336,20 @@ const OP_MAP = {
     reward: { operation: 'UPSERT_CUSTOMER_REWARD', entity_type: 'customer_reward' },
 };
 
-export async function flushPendingOperations() {
+let flushInFlight;
+
+export function flushPendingOperations() {
+    if (flushInFlight) return flushInFlight;
+    flushInFlight = flushPendingOperationsNow().finally(() => { flushInFlight = null; });
+    return flushInFlight;
+}
+
+async function flushPendingOperationsNow() {
     if (!isOnline()) return 0;
     const csrf = getCsrfToken();
     const deviceId = getDeviceId();
     const ops = await getPendingOperations();
-    const pending = ops.filter((o) => o.status === 'PENDING' || o.status === 'FAILED');
+    const pending = ops.filter((o) => o.status === 'PENDING' || (o.status === 'FAILED' && (o.attempts || 0) < MAX_SYNC_ATTEMPTS));
     if (!pending.length) return 0;
 
     const operations = pending.map((op) => {
@@ -359,15 +378,23 @@ export async function flushPendingOperations() {
             return 0;
         }
         const data = await res.json();
+        const results = Array.isArray(data.results) ? data.results : [];
+        const resultById = new Map(results.filter((result) => result?.id).map((result) => [result.id, result]));
         let synced = 0;
-        for (const result of data.results || []) {
+        for (const op of pending) {
+            const result = resultById.get(op.id);
+            if (!result) {
+                await markOperationFailed(op.id, 'Missing sync result');
+                continue;
+            }
             const st = result.status;
-            if (st === 'SYNCED') { await markOperationSynced(result.id); synced++; }
-            else if (st === 'CONFLICT') { await markOperationConflict(result.id, result.last_error || result.error || 'CONFLICT'); }
-            else if (st === 'RETRY' || st === 'FAILED') { await markOperationFailed(result.id, result.last_error || result.error || st); }
+            if (st === 'SYNCED') { await markOperationSynced(op.id); synced++; }
+            else if (st === 'CONFLICT') { await markOperationConflict(op.id, result.last_error || result.error || 'CONFLICT'); }
+            else { await markOperationFailed(op.id, result.last_error || result.error || st || 'Unknown sync status'); }
         }
         return synced;
-    } catch {
+    } catch (error) {
+        for (const op of pending) await markOperationFailed(op.id, error?.message || 'Network error');
         return 0;
     }
 }

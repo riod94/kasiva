@@ -16,13 +16,16 @@ class HardwareBridge
 
     public function printEscPos(string $payload, ?string $printerName = null): bool
     {
-        Log::info('HardwareBridge.printEscPos stub', ['printer'=>$printerName, 'bytes'=>strlen($payload)]);
-        return true;
+        Log::warning('HardwareBridge.printEscPos unavailable', ['printer' => $printerName, 'bytes' => strlen($payload)]);
+
+        return false;
     }
 
     public function openCashDrawer(?string $printerName = null): bool
     {
-        Log::info('HardwareBridge.openCashDrawer stub', ['printer'=>$printerName]); return true;
+        Log::warning('HardwareBridge.openCashDrawer unavailable', ['printer' => $printerName]);
+
+        return false;
     }
 
     public function scanBarcode(?string $source = null): ?string

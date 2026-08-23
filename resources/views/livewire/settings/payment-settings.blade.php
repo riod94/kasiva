@@ -2,7 +2,7 @@
     <!-- Header Page -->
     <div class="flex items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -46,7 +46,7 @@
                     <div class="flex gap-2">
                         <label class="flex-1">
                             <input type="file" wire:model="qris_file" wire:change="uploadQris" accept="image/*" class="hidden">
-                            <div class="w-full h-12 rounded-2xl border border-[#2E2A68] bg-[#16192E] hover:bg-[#25215A] text-slate-300 hover:text-white flex items-center justify-center gap-2 font-black text-xs cursor-pointer transition">
+                            <div class="w-full h-12 rounded-2xl border border-[#2E2A68] bg-[#16192E] hover:bg-[#2A3155] text-slate-300 hover:text-white flex items-center justify-center gap-2 font-black text-xs cursor-pointer transition">
                                 <x-icon name="upload" class="w-4 h-4" />
                                 <span>Ganti Kode QR</span>
                             </div>
@@ -63,9 +63,9 @@
                     </div>
                 </div>
             @else
-                <label class="flex flex-col items-center justify-center gap-3 p-8 border-2 border-dashed border-[#2E2A68] rounded-3xl cursor-pointer hover:border-[#4338CA] hover:bg-[#4338CA]/10 transition group">
+                <label class="flex flex-col items-center justify-center gap-3 p-8 border-2 border-dashed border-[#2E2A68] rounded-3xl cursor-pointer hover:border-[#00AAA6] hover:bg-[#00AAA6]/10 transition group">
                     <input type="file" wire:model="qris_file" wire:change="uploadQris" accept="image/*" class="hidden">
-                    <div class="w-14 h-14 rounded-2xl bg-[#16192E] flex items-center justify-center border border-[#2E2A68] text-slate-400 group-hover:scale-110 group-hover:text-indigo-400 transition">
+                    <div class="w-14 h-14 rounded-2xl bg-[#16192E] flex items-center justify-center border border-[#2E2A68] text-slate-400 group-hover:scale-110 group-hover:text-[#8696ED] transition">
                         <x-icon name="upload" class="w-7 h-7" />
                     </div>
                     <div class="text-center">
@@ -108,7 +108,7 @@
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" wire:model.live="enable_gofood" class="sr-only peer">
-                        <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4338CA] border border-[#2E2A68]"></div>
+                        <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00AAA6] border border-[#2E2A68]"></div>
                     </label>
                 </div>
 
@@ -125,7 +125,7 @@
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" wire:model.live="enable_grabfood" class="sr-only peer">
-                        <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4338CA] border border-[#2E2A68]"></div>
+                        <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00AAA6] border border-[#2E2A68]"></div>
                     </label>
                 </div>
 
@@ -142,13 +142,13 @@
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" wire:model.live="enable_shopeefood" class="sr-only peer">
-                        <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4338CA] border border-[#2E2A68]"></div>
+                        <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00AAA6] border border-[#2E2A68]"></div>
                     </label>
                 </div>
             </div>
 
-            <div class="bg-[#4338CA]/10 p-4 rounded-2xl border border-[#4338CA]/20">
-                <p class="text-xs text-indigo-300 font-medium leading-relaxed">
+            <div class="bg-[#00AAA6]/10 p-4 rounded-2xl border border-[#00AAA6]/20">
+                <p class="text-xs text-[#8696ED] font-medium leading-relaxed">
                     <em>Kanal yang diaktifkan akan muncul sebagai pilihan metode pembayaran di kasir. Anda dapat menyesuaikan nominal uang bersih (net) yang diterima untuk setiap pesanan platform saat pembayaran.</em>
                 </p>
             </div>

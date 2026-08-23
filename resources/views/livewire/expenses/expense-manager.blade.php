@@ -9,7 +9,7 @@
         </div>
         <button 
             wire:click="openModal"
-            class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
+            class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
         >
             <x-icon name="plus" class="w-4 h-4" />
             <span>Catat Pengeluaran</span>
@@ -39,7 +39,7 @@
     <!-- Expense List -->
     <div class="space-y-3">
         @forelse($expenses as $exp)
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] rounded-2xl p-4 flex items-center justify-between shadow-md transition">
+            <div class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] rounded-2xl p-4 flex items-center justify-between shadow-md transition">
                 <div>
                     <div class="flex items-center gap-2">
                         <h4 class="font-bold text-xs text-white">{{ $exp->title }}</h4>
@@ -81,17 +81,17 @@
                 <div class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Judul Pengeluaran</label>
-                        <input type="text" id="offline-expense-title" wire:model="title" placeholder="cth: Belanja Susu UHT & Gula Aren" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" id="offline-expense-title" wire:model="title" placeholder="cth: Belanja Susu UHT & Gula Aren" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                     </div>
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nominal (Rp)</label>
-                        <input type="number" id="offline-expense-amount" wire:model="amount" placeholder="0" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA] font-bold text-rose-400">
+                        <input type="number" id="offline-expense-amount" wire:model="amount" placeholder="0" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] font-bold text-rose-400">
                     </div>
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Kategori Beban</label>
-                        <select id="offline-expense-category" wire:model="category" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white font-semibold focus:outline-none focus:border-[#4338CA]">
+                        <select id="offline-expense-category" wire:model="category" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white font-semibold focus:outline-none focus:border-[#00AAA6]">
                             <option value="RAW_MATERIAL">Bahan Baku (Restok)</option>
                             <option value="RENT">Sewa Tempat Outlet</option>
                             <option value="SALARY">Gaji / Upah Karyawan</option>
@@ -104,18 +104,18 @@
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Tanggal Transaksi</label>
-                        <input type="datetime-local" id="offline-expense-date" wire:model="expense_date" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#4338CA]">
+                        <input type="datetime-local" id="offline-expense-date" wire:model="expense_date" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#00AAA6]">
                     </div>
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Catatan Tambahan</label>
-                        <textarea id="offline-expense-notes" wire:model="notes" rows="2" placeholder="Catatan opsional..." class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]"></textarea>
+                        <textarea id="offline-expense-notes" wire:model="notes" rows="2" placeholder="Catatan opsional..." class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]"></textarea>
                     </div>
                 </div>
 
                 <button 
                     id="offline-save-expense" wire:click="saveExpense"
-                    class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                    class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                 >
                     Simpan Pengeluaran
                 </button>

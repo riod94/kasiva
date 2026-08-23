@@ -2,7 +2,7 @@
     <!-- Header Page -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -14,7 +14,7 @@
         </div>
         <button 
             wire:click="openCreateModal"
-            class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
+            class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
         >
             <x-icon name="plus" class="w-4 h-4" />
             <span>Tambah Bahan</span>
@@ -35,7 +35,7 @@
             type="text" 
             wire:model.live.debounce.250ms="search"
             placeholder="Cari nama bahan baku..."
-            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] transition"
+            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00AAA6] transition"
         >
     </div>
 
@@ -45,7 +45,7 @@
             @php
                 $isLowStock = $material->current_stock <= $material->min_stock;
             @endphp
-            <div class="bg-[#1E1B4B] border {{ $isLowStock ? 'border-amber-500/50' : 'border-[#2E2A68]' }} rounded-3xl p-5 flex flex-col justify-between gap-4 shadow-md hover:border-[#4338CA] transition group">
+            <div class="bg-[#1E1B4B] border {{ $isLowStock ? 'border-amber-500/50' : 'border-[#2E2A68]' }} rounded-3xl p-5 flex flex-col justify-between gap-4 shadow-md hover:border-[#00AAA6] transition group">
                 <div class="space-y-3">
                     <div class="flex items-start justify-between gap-2">
                         <div>
@@ -85,7 +85,7 @@
                     </button>
                     <button 
                         wire:click="openEditModal('{{ $material->id }}')" 
-                        class="p-2 bg-[#16192E] hover:bg-[#4338CA] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition"
+                        class="p-2 bg-[#16192E] hover:bg-[#00AAA6] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition"
                         title="Edit Bahan"
                     >
                         <x-icon name="edit" class="w-3.5 h-3.5" />
@@ -128,19 +128,19 @@
                 <div class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Jumlah Masuk ({{ $restockUnit }})</label>
-                        <input type="number" step="0.01" wire:model="restockQuantity" placeholder="cth: 1000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="number" step="0.01" wire:model="restockQuantity" placeholder="cth: 1000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('restockQuantity') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Total Biaya Pembelian (Rp)</label>
-                        <input type="number" wire:model="restockTotalCost" placeholder="cth: 150000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="number" wire:model="restockTotalCost" placeholder="cth: 150000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('restockTotalCost') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Catatan Pembelian / Supplier</label>
-                        <input type="text" wire:model="restockNotes" placeholder="cth: Beli di Toko Bahan Roti" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="restockNotes" placeholder="cth: Beli di Toko Bahan Roti" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                     </div>
                 </div>
 
@@ -168,14 +168,14 @@
                 <div class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Bahan Baku</label>
-                        <input type="text" wire:model="name" placeholder="cth: Biji Kopi Arabika" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="name" placeholder="cth: Biji Kopi Arabika" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Satuan Takar</label>
-                            <select wire:model="unit" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#4338CA]">
+                            <select wire:model="unit" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#00AAA6]">
                                 <option value="gram">Gram (g)</option>
                                 <option value="ml">Mililiter (ml)</option>
                                 <option value="pcs">Pieces (pcs)</option>
@@ -185,27 +185,27 @@
                         </div>
                         <div>
                             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Stok Minimum</label>
-                            <input type="number" wire:model="min_stock" placeholder="100" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                            <input type="number" wire:model="min_stock" placeholder="100" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         </div>
                     </div>
 
                     @if(!$materialId)
                         <div>
                             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Stok Awal</label>
-                            <input type="number" wire:model="current_stock" placeholder="1000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                            <input type="number" wire:model="current_stock" placeholder="1000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         </div>
                     @endif
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">HPP Awal per Satuan (Rp)</label>
-                        <input type="number" wire:model="avg_cost" placeholder="cth: 180" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="number" wire:model="avg_cost" placeholder="cth: 180" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('avg_cost') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
                 <button 
                     wire:click="saveMaterial"
-                    class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                    class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                 >
                     {{ $materialId ? 'Simpan Perubahan' : 'Terbitkan Bahan Baku' }}
                 </button>

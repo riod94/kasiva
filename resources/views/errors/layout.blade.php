@@ -36,19 +36,14 @@
 
     <title>@yield('code') — @yield('title') · Kasiva POS</title>
     
-    <!-- Google Fonts: Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <link rel="icon" type="image/png" href="{{ asset('images/kasiva-logo-icon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/kasiva-logo-icon.png') }}">
-    <meta name="theme-color" content="#1E1B4B">
+    <meta name="theme-color" content="#272D48">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body 
-    class="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col justify-between p-4 sm:p-6 md:p-8 font-sans antialiased selection:bg-[#4338CA]/30 selection:text-[#3EDAD7] relative overflow-x-hidden"
+    class="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col justify-between p-4 sm:p-6 md:p-8 font-sans antialiased selection:bg-[#00AAA6]/30 selection:text-[#3EDAD7] relative overflow-x-hidden"
     x-data="{
         theme: localStorage.getItem('kasiva_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'),
         showDetails: false
@@ -57,7 +52,7 @@
 >
     <!-- Background Ambient Glow & Mesh Elements -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-        <div class="absolute -top-32 -left-32 w-96 h-96 @yield('glow_color', 'bg-[#4338CA]')/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute -top-32 -left-32 w-96 h-96 @yield('glow_color', 'bg-[#00AAA6]')/20 rounded-full blur-3xl animate-pulse"></div>
         <div class="absolute -bottom-32 -right-32 w-96 h-96 @yield('glow_color_secondary', 'bg-[#00AAA6]')/15 rounded-full blur-3xl"></div>
     </div>
 
@@ -72,11 +67,11 @@
             <button 
                 type="button"
                 onclick="window.toggleKasivaTheme()"
-                class="w-10 h-10 rounded-2xl bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 shadow-md cursor-pointer"
+                class="w-10 h-10 rounded-2xl bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 shadow-md cursor-pointer"
                 title="Ganti Tema (Dark / Light)"
             >
                 <x-icon name="sun" class="w-4 h-4 text-amber-400 block dark:hidden" />
-                <x-icon name="moon" class="w-4 h-4 text-indigo-400 hidden dark:block" />
+                <x-icon name="moon" class="w-4 h-4 text-[#8696ED] hidden dark:block" />
             </button>
 
             <!-- Status Indicator -->
@@ -92,7 +87,7 @@
         <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-[36px] p-6 sm:p-10 shadow-2xl space-y-6 relative overflow-hidden backdrop-blur-xl">
             
             <!-- Top Accent Line -->
-            <div class="absolute top-0 left-0 right-0 h-1.5 @yield('accent_bar', 'bg-gradient-to-r from-rose-500 via-[#4338CA] to-[#00AAA6]')"></div>
+            <div class="absolute top-0 left-0 right-0 h-1.5 @yield('accent_bar', 'bg-gradient-to-r from-rose-500 via-[#00AAA6] to-[#00AAA6]')"></div>
 
             <!-- Big Icon Badge -->
             <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-3xl @yield('icon_bg', 'bg-rose-500/15 text-rose-400 border border-rose-500/30') flex items-center justify-center shadow-inner relative group">
@@ -142,7 +137,7 @@
                 @section('actions')
                     <a 
                         href="{{ route('pos.cashier') }}" 
-                        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider bg-[#4338CA] hover:bg-[#3730A3] text-white shadow-xl shadow-[#4338CA]/30 flex items-center justify-center gap-2 active:scale-95 transition"
+                        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider bg-[#00AAA6] hover:bg-[#008F8C] text-white shadow-xl shadow-[#00AAA6]/30 flex items-center justify-center gap-2 active:scale-95 transition"
                     >
                         <x-icon name="store" class="w-4 h-4" />
                         <span>Kembali ke Kasir POS</span>
@@ -151,7 +146,7 @@
                     <button 
                         type="button" 
                         onclick="window.history.back()"
-                        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider bg-[#16192E] hover:bg-[#25215A] text-slate-200 border border-[#2E2A68] flex items-center justify-center gap-2 active:scale-95 transition"
+                        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider bg-[#16192E] hover:bg-[#2A3155] text-slate-200 border border-[#2E2A68] flex items-center justify-center gap-2 active:scale-95 transition"
                     >
                         <x-icon name="arrow-left" class="w-4 h-4" />
                         <span>Halaman Sebelumnya</span>

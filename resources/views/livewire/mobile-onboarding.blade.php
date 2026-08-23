@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-[#0F172A] flex flex-col justify-between p-6 text-white selection:bg-[#4338CA]/30 selection:text-[#3EDAD7]">
+<div class="min-h-screen bg-[#0F172A] flex flex-col justify-between p-6 text-white selection:bg-[#00AAA6]/30 selection:text-[#3EDAD7]">
     <!-- Header Controls -->
     <div class="flex items-center justify-between pt-2">
         <a href="{{ route('landing') }}">
@@ -13,11 +13,11 @@
 
     <!-- Active Slide Content Card -->
     <div class="my-auto py-8 text-center space-y-6 max-w-sm mx-auto">
-        <div class="w-24 h-24 mx-auto rounded-3xl bg-gradient-to-br from-[#4338CA]/30 to-[#1E1B4B] border border-[#2E2A68] flex items-center justify-center shadow-2xl">
+        <div class="w-24 h-24 mx-auto rounded-3xl bg-gradient-to-br from-[#00AAA6]/30 to-[#1E1B4B] border border-[#2E2A68] flex items-center justify-center shadow-2xl">
             <x-icon name="{{ $slides[$currentSlide]['icon'] }}" class="w-12 h-12 text-[#3EDAD7]" />
         </div>
 
-        <span class="inline-block text-[11px] font-black px-3.5 py-1 rounded-full bg-[#4338CA]/20 text-[#8696ED] border border-[#4338CA]/40 uppercase tracking-widest">
+        <span class="inline-block text-[11px] font-black px-3.5 py-1 rounded-full bg-[#00AAA6]/20 text-[#8696ED] border border-[#00AAA6]/40 uppercase tracking-widest">
             {{ $slides[$currentSlide]['badge'] }}
         </span>
 
@@ -37,7 +37,7 @@
             @foreach($slides as $index => $slide)
                 <button 
                     wire:click="setSlide({{ $index }})" 
-                    class="h-2 rounded-full transition-all duration-300 {{ $currentSlide === $index ? 'w-8 bg-[#4338CA]' : 'w-2 bg-[#2E2A68]' }}"
+                    class="h-2 rounded-full transition-all duration-300 {{ $currentSlide === $index ? 'w-8 bg-[#00AAA6]' : 'w-2 bg-[#2E2A68]' }}"
                     aria-label="Slide {{ $index + 1 }}">
                 </button>
             @endforeach
@@ -47,12 +47,12 @@
         <div class="space-y-3">
             <button 
                 wire:click="nextSlide" 
-                class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-[#4338CA]/30 transition active:scale-95 flex items-center justify-center gap-2">
+                class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-[#00AAA6]/30 transition active:scale-95 flex items-center justify-center gap-2">
                 <span>{{ $currentSlide === count($slides) - 1 ? 'Masuk ke Kasir POS' : 'Lanjutkan' }}</span>
                 <x-icon name="arrow-right" class="w-4 h-4" />
             </button>
 
-            <a href="{{ route('register') }}" class="block text-center w-full py-3 bg-[#1E1B4B] hover:bg-[#25215A] text-slate-200 border border-[#2E2A68] font-bold text-xs rounded-2xl transition shadow-sm">
+            <a href="{{ route('register') }}" class="block text-center w-full py-3 bg-[#1E1B4B] hover:bg-[#2A3155] text-slate-200 border border-[#2E2A68] font-bold text-xs rounded-2xl transition shadow-sm">
                 Daftar Akun Baru
             </a>
         </div>

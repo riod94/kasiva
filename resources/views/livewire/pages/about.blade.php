@@ -1,5 +1,5 @@
 <x-layouts.guest>
-<div class="flex flex-col min-h-screen bg-[#0F172A] text-slate-100 selection:bg-[#4338CA]/30 selection:text-[#3EDAD7]">
+<div class="flex flex-col min-h-screen bg-[#0F172A] text-slate-100 selection:bg-[#00AAA6]/30 selection:text-[#3EDAD7]">
     <!-- Header -->
     <header class="flex items-center justify-between p-4 md:px-8 border-b border-[#2E2A68] backdrop-blur-md sticky top-0 z-50 bg-[#1E1B4B]/90 shadow-sm">
         <div class="flex items-center gap-3">
@@ -8,7 +8,7 @@
                 <span class="font-black text-lg text-white tracking-tight">Kasiva</span>
             </a>
         </div>
-        <a href="{{ route('pos.cashier') }}" class="rounded-xl font-extrabold px-5 py-2.5 border border-[#2E2A68] text-xs md:text-sm bg-[#4338CA] hover:bg-[#3730A3] text-white transition flex items-center gap-2 shadow-sm">
+        <a href="{{ route('pos.cashier') }}" class="rounded-xl font-extrabold px-5 py-2.5 border border-[#2E2A68] text-xs md:text-sm bg-[#00AAA6] hover:bg-[#008F8C] text-white transition flex items-center gap-2 shadow-sm">
             <x-icon name="store" class="w-4 h-4" />
             <span>Buka Kasir POS</span>
         </a>
@@ -16,9 +16,9 @@
 
     <main class="flex-1">
         <!-- ═══════════════ HERO ═══════════════ -->
-        <section class="py-14 md:py-24 bg-gradient-to-br from-[#4338CA]/15 via-[#1E1B4B] to-[#0F172A] border-b border-[#2E2A68]/60 text-center px-4">
+        <section class="py-14 md:py-24 bg-gradient-to-br from-[#00AAA6]/15 via-[#1E1B4B] to-[#0F172A] border-b border-[#2E2A68]/60 text-center px-4">
             <div class="max-w-3xl mx-auto space-y-4">
-                <div class="inline-flex items-center gap-2 bg-[#4338CA]/20 px-4 py-1.5 rounded-full border border-[#4338CA]/40 text-[#8696ED] text-xs font-black uppercase tracking-widest">
+                <div class="inline-flex items-center gap-2 bg-[#00AAA6]/20 px-4 py-1.5 rounded-full border border-[#00AAA6]/40 text-[#8696ED] text-xs font-black uppercase tracking-widest">
                     <span>Tentang Kasiva POS</span>
                 </div>
                 <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
@@ -34,8 +34,8 @@
         <section class="py-12 md:py-16 max-w-4xl mx-auto px-4 space-y-4">
             <div class="grid md:grid-cols-3 gap-4">
                 <div class="bg-[#1E1B4B] p-6 rounded-3xl border border-[#2E2A68] shadow-md space-y-3">
-                    <div class="w-10 h-10 bg-[#4338CA]/20 border border-[#4338CA]/40 rounded-2xl flex items-center justify-center text-indigo-400">
-                        <x-icon name="target" class="w-5 h-5 text-indigo-400" />
+                    <div class="w-10 h-10 bg-[#00AAA6]/20 border border-[#00AAA6]/40 rounded-2xl flex items-center justify-center text-[#8696ED]">
+                        <x-icon name="target" class="w-5 h-5 text-[#8696ED]" />
                     </div>
                     <h2 class="text-lg font-black text-white">Misi Kami</h2>
                     <p class="text-xs text-slate-300 leading-relaxed font-medium">
@@ -86,8 +86,8 @@
                     </div>
 
                     <div class="flex items-start gap-3.5 p-4 bg-[#1E1B4B] rounded-2xl border border-[#2E2A68]">
-                        <div class="w-10 h-10 bg-[#4338CA]/30 text-indigo-300 rounded-xl flex items-center justify-center shrink-0">
-                            <x-icon name="chart-bar" class="w-5 h-5 text-indigo-300" />
+                        <div class="w-10 h-10 bg-[#00AAA6]/30 text-[#8696ED] rounded-xl flex items-center justify-center shrink-0">
+                            <x-icon name="chart-bar" class="w-5 h-5 text-[#8696ED]" />
                         </div>
                         <div>
                             <h4 class="font-black text-sm text-white">Resep Bahan (BOM)</h4>
@@ -139,14 +139,14 @@
         </section>
 
         <!-- ═══════════════ BOTTOM CTA ═══════════════ -->
-        <section class="py-14 md:py-20 bg-gradient-to-br from-[#4338CA] via-[#3730A3] to-[#1E1B4B] text-center px-4 relative overflow-hidden border-t border-[#4338CA]/40">
+        <section class="py-14 md:py-20 bg-gradient-to-br from-[#00AAA6] via-[#008F8C] to-[#1E1B4B] text-center px-4 relative overflow-hidden border-t border-[#00AAA6]/40">
             <div class="max-w-xl mx-auto space-y-4 relative z-10">
                 <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight">Siap Memaksimalkan Penjualan?</h2>
-                <p class="text-xs md:text-sm text-indigo-100 font-medium">Gunakan Kasiva POS sekarang juga di laptop, tablet, maupun ponsel Anda.</p>
+                <p class="text-xs md:text-sm text-slate-100 font-medium">Gunakan Kasiva POS sekarang juga di laptop, tablet, maupun ponsel Anda.</p>
                 <div class="pt-2">
-                    <a href="{{ route('pos.cashier') }}" class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-[#4338CA] hover:bg-slate-100 font-black text-sm rounded-2xl shadow-xl transition active:scale-95 gap-2">
+                    <a href="{{ route('pos.cashier') }}" class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-[#00AAA6] hover:bg-slate-100 font-black text-sm rounded-2xl shadow-xl transition active:scale-95 gap-2">
                         <span>Buka Layar Kasir Sekarang</span>
-                        <x-icon name="arrow-right" class="w-4 h-4 text-[#4338CA]" />
+                        <x-icon name="arrow-right" class="w-4 h-4 text-[#00AAA6]" />
                     </a>
                 </div>
             </div>

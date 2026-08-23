@@ -57,3 +57,57 @@ test('menghitung total HPP produk dari resep bahan baku', function () {
     expect($totalHpp)->toBe(6600.0);
     expect($product->fresh()->hpp)->toBe(6600.0);
 });
+
+test('mengurangi stok produk dan bahan resep setelah stok terkunci', function () {
+    [$product, $material] = recipeProduct(productStock: 4, materialStock: 12, recipeQuantity: 3);
+
+    app(HppCalculatorService::class)->deductRecipeStockForCheckout($product, 2);
+
+    expect($product->fresh()->current_stock)->toBe(2.0)
+        ->and($material->fresh()->current_stock)->toBe(6.0);
+});
+
+test('menolak checkout ketika stok bahan resep tidak mencukupi tanpa mengubah stok produk', function () {
+    [$product, $material] = recipeProduct(productStock: 4, materialStock: 5, recipeQuantity: 3);
+
+    expect(fn () => app(HppCalculatorService::class)->deductRecipeStockForCheckout($product, 2))
+        ->toThrow(InvalidArgumentException::class, 'Stok bahan Bahan Uji tidak mencukupi.');
+
+    expect($product->fresh()->current_stock)->toBe(4.0)
+        ->and($material->fresh()->current_stock)->toBe(5.0);
+});
+
+test('uses the caller transaction without opening a nested transaction', function () {
+    [$product, $material] = recipeProduct(productStock: 4, materialStock: 12, recipeQuantity: 3);
+
+    Illuminate\Support\Facades\DB::transaction(function () use ($product): void {
+        $level = Illuminate\Support\Facades\DB::transactionLevel();
+        app(HppCalculatorService::class)->deductRecipeStockForCheckout($product, 2);
+        expect(Illuminate\Support\Facades\DB::transactionLevel())->toBe($level);
+    });
+
+    expect($product->fresh()->current_stock)->toBe(2.0)
+        ->and($material->fresh()->current_stock)->toBe(6.0);
+});
+
+function recipeProduct(float $productStock, float $materialStock, float $recipeQuantity): array
+{
+    $material = Material::create([
+        'name' => 'Bahan Uji',
+        'unit' => 'gram',
+        'current_stock' => $materialStock,
+        'avg_cost' => 100.0,
+    ]);
+
+    $product = Product::create([
+        'name' => 'Produk Uji',
+        'sku' => 'SKU-' . uniqid(),
+        'price' => 10000.0,
+        'hpp' => 1000.0,
+        'current_stock' => $productStock,
+    ]);
+
+    $product->materials()->attach($material->id, ['quantity' => $recipeQuantity]);
+
+    return [$product, $material];
+}

@@ -10,12 +10,12 @@
         <div class="flex items-center gap-2">
             <a 
                 href="{{ route('history.backdate') }}" 
-                class="px-4 py-2.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-md flex items-center gap-1.5 active:scale-95 transition"
+                class="px-4 py-2.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-md flex items-center gap-1.5 active:scale-95 transition"
             >
                 <x-icon name="plus" class="w-3.5 h-3.5" />
                 <span>Input Lampau</span>
             </a>
-            <span class="text-xs font-black px-3.5 py-2.5 bg-[#16192E] text-indigo-300 rounded-2xl border border-[#2E2A68]">
+            <span class="text-xs font-black px-3.5 py-2.5 bg-[#16192E] text-[#8696ED] rounded-2xl border border-[#2E2A68]">
                 {{ $transactions->total() }} Transaksi
             </span>
         </div>
@@ -36,12 +36,12 @@
                 type="text" 
                 wire:model.live.debounce.250ms="search"
                 placeholder="Cari nomor struk KSV..."
-                class="w-full pl-11 pr-4 py-3 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] transition"
+                class="w-full pl-11 pr-4 py-3 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00AAA6] transition"
             >
         </div>
         <select 
             wire:model.live="paymentFilter"
-            class="px-4 py-3 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs font-bold text-slate-200 focus:outline-none focus:border-[#4338CA] transition"
+            class="px-4 py-3 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs font-bold text-slate-200 focus:outline-none focus:border-[#00AAA6] transition"
         >
             <option value="ALL">Semua Pembayaran</option>
             <option value="CASH">Tunai</option>
@@ -52,7 +52,7 @@
         </select>
         <select 
             wire:model.live="dateRange"
-            class="px-4 py-3 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs font-bold text-slate-200 focus:outline-none focus:border-[#4338CA] transition"
+            class="px-4 py-3 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs font-bold text-slate-200 focus:outline-none focus:border-[#00AAA6] transition"
         >
             <option value="today">Hari Ini</option>
             <option value="7days">7 Hari Terakhir</option>
@@ -66,7 +66,7 @@
         @forelse($transactions as $tx)
             <div 
                 wire:click="showDetail('{{ $tx->id }}')"
-                class="bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl p-4 flex items-center justify-between shadow-md hover:border-[#4338CA] transition cursor-pointer group"
+                class="bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl p-4 flex items-center justify-between shadow-md hover:border-[#00AAA6] transition cursor-pointer group"
             >
                 <div class="space-y-1">
                     <div class="flex items-center gap-2 flex-wrap">
@@ -173,7 +173,7 @@
 
                     <button 
                         onclick="window.print()" 
-                        class="w-full py-3 bg-[#16192E] hover:bg-[#25215A] text-slate-200 font-bold text-xs rounded-2xl border border-[#2E2A68] transition flex items-center justify-center gap-2 active:scale-95"
+                        class="w-full py-3 bg-[#16192E] hover:bg-[#2A3155] text-slate-200 font-bold text-xs rounded-2xl border border-[#2E2A68] transition flex items-center justify-center gap-2 active:scale-95"
                     >
                         <x-icon name="printer" class="w-4 h-4" />
                         <span>Cetak Struk ESC/POS</span>
@@ -181,7 +181,7 @@
 
                     <button 
                         wire:click="closeModal"
-                        class="w-full py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-black text-xs rounded-2xl shadow transition active:scale-95"
+                        class="w-full py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-xs rounded-2xl shadow transition active:scale-95"
                     >
                         Tutup
                     </button>

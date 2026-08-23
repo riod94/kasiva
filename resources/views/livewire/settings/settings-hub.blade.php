@@ -12,7 +12,7 @@
     <!-- Settings Navigation Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- 1. Informasi Outlet -->
-        <a href="{{ route('settings.outlet') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('settings.outlet') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-orange-500/20 text-orange-400 flex items-center justify-center border border-orange-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="store" class="w-6 h-6 text-orange-400" />
             </div>
@@ -26,7 +26,7 @@
         </a>
 
         <!-- 2. Pengaturan Struk Thermal -->
-        <a href="{{ route('settings.receipt') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('settings.receipt') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="printer" class="w-6 h-6 text-cyan-400" />
             </div>
@@ -40,7 +40,7 @@
         </a>
 
         <!-- 3. Metode Pembayaran & QRIS -->
-        <a href="{{ route('settings.payment') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('settings.payment') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="qr-code" class="w-6 h-6 text-emerald-400" />
             </div>
@@ -54,9 +54,9 @@
         </a>
 
         <!-- 4. Manajemen Staff & PIN -->
-        <a href="{{ route('settings.staff') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="users" class="w-6 h-6 text-indigo-400" />
+        <a href="{{ route('settings.staff') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+            <div class="w-12 h-12 rounded-2xl bg-[#8696ED]/20 text-[#8696ED] flex items-center justify-center border border-[#8696ED]/40 group-hover:scale-105 transition shrink-0">
+                <x-icon name="users" class="w-6 h-6 text-[#8696ED]" />
             </div>
             <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between">
@@ -68,7 +68,7 @@
         </a>
 
         <!-- 5. Hak Akses & Peran (RBAC) -->
-        <a href="{{ route('settings.roles') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('settings.roles') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="shield" class="w-6 h-6 text-purple-400" />
             </div>
@@ -82,7 +82,7 @@
         </a>
 
         <!-- 6. Profil Akun & Keamanan -->
-        <a href="{{ route('profile.show') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('profile.show') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="settings" class="w-6 h-6 text-amber-400" />
             </div>

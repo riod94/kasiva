@@ -1,4 +1,4 @@
-import { upsertAll, put, flushPendingOperations } from './offline/repository.js';
+import { upsertAll, put, saveExpense, flushPendingOperations } from './offline/repository.js';
 
 (() => {
     const deviceId = () => {
@@ -42,21 +42,44 @@ import { upsertAll, put, flushPendingOperations } from './offline/repository.js'
     };
 
     const flush = async () => {
-        if (!navigator.onLine) return;
-        await flushPendingOperations();
+        if (!navigator.onLine) return 0;
+        return flushPendingOperations();
+    };
+
+    const setConnectionStatus = (online = navigator.onLine) => {
+        window.dispatchEvent(new CustomEvent('kasiva-connection-changed', { detail: { online } }));
     };
 
     // No goOfflineShell() redirect — single local-first UI via /app/pos
 
     window.addEventListener('online', () => {
-        pullMaster();
-        flush();
+        setConnectionStatus(true);
+        pullMaster().catch(() => {});
+        flush().catch(() => {});
     });
+    window.addEventListener('offline', () => setConnectionStatus(false));
+    setConnectionStatus();
 
     if ('serviceWorker' in navigator &&
         (location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname))) {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
 
-    window.kasivaOffline = { flush, pullMaster, registerDevice };
+    const saveOfflineExpense = async () => {
+        const value = (id) => document.getElementById(id)?.value || '';
+        const id = crypto.randomUUID();
+        return saveExpense({
+            id,
+            client_expense_id: id,
+            title: value('offline-expense-title').trim(),
+            amount: Number(value('offline-expense-amount')),
+            category: value('offline-expense-category'),
+            expense_date: value('offline-expense-date') || new Date().toISOString(),
+            notes: value('offline-expense-notes'),
+            sync_status: 'PENDING_SYNC',
+        });
+    };
+
+    window.kasivaOffline = { flush, pullMaster, registerDevice, saveExpense: saveOfflineExpense };
+    window.loadKasivaQrScanner = () => import('html5-qrcode').then(({ Html5Qrcode }) => Html5Qrcode);
 })();

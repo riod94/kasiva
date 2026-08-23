@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('marketing.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('marketing.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -14,7 +14,7 @@
             <button wire:click="$set('showBatchModal', true)" class="px-4 py-3 bg-white text-[#1E1B4B] font-black text-xs uppercase tracking-wider rounded-2xl shadow flex items-center gap-2 active:scale-95 transition">
                 <x-icon name="qr-code" class="w-4 h-4" /> Generate QR
             </button>
-            <button wire:click="openCreateModal" class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center gap-2 active:scale-95 transition">
+            <button wire:click="openCreateModal" class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center gap-2 active:scale-95 transition">
                 <x-icon name="plus" class="w-4 h-4" /> Tambah
             </button>
         </div>
@@ -31,16 +31,16 @@
     <div class="flex flex-col gap-3">
         <div class="flex bg-[#1E1B4B] p-1.5 rounded-2xl border border-[#2E2A68] shadow-sm w-full sm:w-fit">
             @foreach(['ALL'=>'Semua','ASSIGNED'=>'Terdaftar','UNASSIGNED'=>'Kosong'] as $key=>$label)
-                <button wire:click="setTab('{{ $key }}')" class="flex-1 sm:flex-none px-5 h-9 rounded-xl font-black text-xs uppercase tracking-wider transition {{ $activeTab===$key ? 'bg-[#4338CA] text-white shadow' : 'text-slate-400 hover:text-white' }}">{{ $label }}</button>
+                <button wire:click="setTab('{{ $key }}')" class="flex-1 sm:flex-none px-5 h-9 rounded-xl font-black text-xs uppercase tracking-wider transition {{ $activeTab===$key ? 'bg-[#00AAA6] text-white shadow' : 'text-slate-400 hover:text-white' }}">{{ $label }}</button>
             @endforeach
         </div>
         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
             <div class="relative flex-1 sm:max-w-sm">
                 <x-icon name="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input type="text" wire:model.live.debounce.250ms="search" placeholder="Cari ID, Nama, HP atau QR..." class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] transition">
+                <input type="text" wire:model.live.debounce.250ms="search" placeholder="Cari ID, Nama, HP atau QR..." class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00AAA6] transition">
             </div>
             @if($members->count() > 0)
-                <button wire:click="toggleSelectAll" class="text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition text-left sm:text-center">
+                <button wire:click="toggleSelectAll" class="text-[10px] font-black uppercase tracking-widest text-[#8696ED] hover:text-[#8696ED] transition text-left sm:text-center">
                     {{ count(array_intersect($members->pluck('id')->toArray(), $selectedIds)) === $members->count() ? 'Batalkan Semua Halaman Ini' : 'Pilih Semua Halaman Ini' }}
                 </button>
             @endif
@@ -51,10 +51,10 @@
     <div class="flex flex-col gap-2.5">
         @forelse($members as $member)
             @php $isSel = in_array($member->id, $selectedIds, true); @endphp
-            <div wire:click="openProfile('{{ $member->id }}')" class="flex items-center gap-3 bg-[#1E1B4B] px-3.5 py-3 rounded-2xl border transition cursor-pointer shadow-sm {{ $isSel ? 'border-[#4338CA] bg-[#4338CA]/10 ring-1 ring-[#4338CA]/20' : 'border-[#2E2A68] hover:border-[#4338CA]/40' }}">
-                <button wire:click.stop="toggleSelect('{{ $member->id }}')" class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border bg-white overflow-hidden relative {{ $isSel ? 'border-[#4338CA] ring-2 ring-[#4338CA]/20' : 'border-slate-200' }}">
+            <div wire:click="openProfile('{{ $member->id }}')" class="flex items-center gap-3 bg-[#1E1B4B] px-3.5 py-3 rounded-2xl border transition cursor-pointer shadow-sm {{ $isSel ? 'border-[#00AAA6] bg-[#00AAA6]/10 ring-1 ring-[#00AAA6]/20' : 'border-[#2E2A68] hover:border-[#00AAA6]/40' }}">
+                <button wire:click.stop="toggleSelect('{{ $member->id }}')" class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border bg-white overflow-hidden relative {{ $isSel ? 'border-[#00AAA6] ring-2 ring-[#00AAA6]/20' : 'border-slate-200' }}">
                     @if($isSel)
-                        <span class="absolute inset-0 bg-[#4338CA] flex items-center justify-center text-white"><x-icon name="check" class="w-5 h-5" /></span>
+                        <span class="absolute inset-0 bg-[#00AAA6] flex items-center justify-center text-white"><x-icon name="check" class="w-5 h-5" /></span>
                     @else
                         <canvas class="member-qr-mini" data-qr="{{ $member->qr_code }}" width="48" height="48"></canvas>
                     @endif
@@ -104,11 +104,11 @@
                     <button wire:click="$set('showModal', false)" class="text-slate-400 hover:text-white font-bold p-1">✕</button>
                 </div>
                 <div class="space-y-4 text-xs">
-                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Lengkap</label><input type="text" wire:model="name" placeholder="cth: Rian Pratama" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]"> @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror</div>
-                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">No WhatsApp</label><input type="text" wire:model="phone" placeholder="081234567890" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]"> @error('phone') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror</div>
-                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Email (opsional)</label><input type="email" wire:model="email" placeholder="email@member.com" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]"></div>
+                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Lengkap</label><input type="text" wire:model="name" placeholder="cth: Rian Pratama" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]"> @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror</div>
+                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">No WhatsApp</label><input type="text" wire:model="phone" placeholder="081234567890" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]"> @error('phone') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror</div>
+                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Email (opsional)</label><input type="email" wire:model="email" placeholder="email@member.com" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]"></div>
                 </div>
-                <button wire:click="saveMember" class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95">{{ $memberId ? 'Simpan Perubahan' : 'Daftarkan Member' }}</button>
+                <button wire:click="saveMember" class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95">{{ $memberId ? 'Simpan Perubahan' : 'Daftarkan Member' }}</button>
             </div>
         </div>
     @endif
@@ -120,12 +120,12 @@
                 <div class="text-center"><h2 class="text-lg font-black text-white uppercase tracking-tight">Generate QR</h2><p class="text-[10px] font-bold text-slate-400 mt-1">Pilih jumlah kartu member kosong</p></div>
                 <div class="grid grid-cols-3 gap-2">
                     @foreach([5,10,15,25,50] as $num)
-                        <button wire:click="$set('batchCount', {{ $num }})" class="h-10 rounded-xl border-2 font-black text-[10px] transition {{ $batchCount===$num ? 'border-[#4338CA] bg-[#4338CA]/20 text-white' : 'border-[#2E2A68] text-slate-400 hover:bg-[#16192E]' }}">{{ $num }} PCS</button>
+                        <button wire:click="$set('batchCount', {{ $num }})" class="h-10 rounded-xl border-2 font-black text-[10px] transition {{ $batchCount===$num ? 'border-[#00AAA6] bg-[#00AAA6]/20 text-white' : 'border-[#2E2A68] text-slate-400 hover:bg-[#16192E]' }}">{{ $num }} PCS</button>
                     @endforeach
                     <div class="relative h-10"><input type="number" min="1" max="50" wire:model.live="batchCount" placeholder="CSTM" class="w-full h-full rounded-xl border-2 px-2 text-center font-black text-[10px] outline-none bg-[#16192E] border-[#2E2A68] text-white"></div>
                 </div>
                 <div class="pt-2 space-y-2">
-                    <button wire:click="generateBatch" class="w-full h-12 bg-[#4338CA] text-white rounded-xl font-black text-[11px] uppercase tracking-widest shadow-lg active:scale-[0.98] transition">Generate & Print</button>
+                    <button wire:click="generateBatch" class="w-full h-12 bg-[#00AAA6] text-white rounded-xl font-black text-[11px] uppercase tracking-widest shadow-lg active:scale-[0.98] transition">Generate & Print</button>
                     <button wire:click="$set('showBatchModal', false)" class="w-full h-10 text-[10px] font-black text-slate-400 uppercase tracking-widest">Batal</button>
                 </div>
             </div>
@@ -163,25 +163,25 @@
                             <div><label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email</label><input type="email" wire:model="email" class="w-full h-11 px-4 mt-1 rounded-xl border border-[#2E2A68] bg-[#16192E] text-sm text-white"></div>
                             <div class="flex gap-3 pt-2">
                                 <button wire:click="cancelEditProfile" class="flex-1 h-11 bg-[#16192E] border border-[#2E2A68] text-slate-300 rounded-xl font-black text-xs uppercase">Batal</button>
-                                <button wire:click="saveMember" class="flex-1 h-11 bg-[#4338CA] text-white rounded-xl font-black text-xs uppercase">Simpan</button>
+                                <button wire:click="saveMember" class="flex-1 h-11 bg-[#00AAA6] text-white rounded-xl font-black text-xs uppercase">Simpan</button>
                             </div>
                         </div>
                     @else
                         <div class="space-y-3">
-                            <div class="flex items-center gap-3 p-4 rounded-2xl bg-[#16192E] border border-[#2E2A68]"><span class="w-10 h-10 rounded-xl bg-[#4338CA]/20 flex items-center justify-center text-[#8696ED] text-xs font-black">Aa</span><div class="flex-1 min-w-0"><p class="text-[10px] font-black text-slate-500 uppercase">Nama Lengkap</p><p class="text-sm font-bold text-white truncate">{{ $profileMember->name ?: '-' }}</p></div></div>
-                            <div class="flex items-center gap-3 p-4 rounded-2xl bg-[#16192E] border border-[#2E2A68]"><span class="w-10 h-10 rounded-xl bg-[#4338CA]/20 flex items-center justify-center text-[#8696ED]"><x-icon name="phone" class="w-4 h-4" /></span><div class="flex-1 min-w-0"><p class="text-[10px] font-black text-slate-500 uppercase">WhatsApp</p><p class="text-sm font-bold text-white truncate">{{ $profileMember->phone ?: '-' }}</p></div></div>
-                            <div class="flex items-center gap-3 p-4 rounded-2xl bg-[#16192E] border border-[#2E2A68]"><span class="w-10 h-10 rounded-xl bg-[#4338CA]/20 flex items-center justify-center text-[#8696ED]"><x-icon name="mail" class="w-4 h-4" /></span><div class="flex-1 min-w-0"><p class="text-[10px] font-black text-slate-500 uppercase">Email</p><p class="text-sm font-bold text-white truncate">{{ $profileMember->email ?: '-' }}</p></div></div>
+                            <div class="flex items-center gap-3 p-4 rounded-2xl bg-[#16192E] border border-[#2E2A68]"><span class="w-10 h-10 rounded-xl bg-[#00AAA6]/20 flex items-center justify-center text-[#8696ED] text-xs font-black">Aa</span><div class="flex-1 min-w-0"><p class="text-[10px] font-black text-slate-500 uppercase">Nama Lengkap</p><p class="text-sm font-bold text-white truncate">{{ $profileMember->name ?: '-' }}</p></div></div>
+                            <div class="flex items-center gap-3 p-4 rounded-2xl bg-[#16192E] border border-[#2E2A68]"><span class="w-10 h-10 rounded-xl bg-[#00AAA6]/20 flex items-center justify-center text-[#8696ED]"><x-icon name="phone" class="w-4 h-4" /></span><div class="flex-1 min-w-0"><p class="text-[10px] font-black text-slate-500 uppercase">WhatsApp</p><p class="text-sm font-bold text-white truncate">{{ $profileMember->phone ?: '-' }}</p></div></div>
+                            <div class="flex items-center gap-3 p-4 rounded-2xl bg-[#16192E] border border-[#2E2A68]"><span class="w-10 h-10 rounded-xl bg-[#00AAA6]/20 flex items-center justify-center text-[#8696ED]"><x-icon name="mail" class="w-4 h-4" /></span><div class="flex-1 min-w-0"><p class="text-[10px] font-black text-slate-500 uppercase">Email</p><p class="text-sm font-bold text-white truncate">{{ $profileMember->email ?: '-' }}</p></div></div>
                         </div>
                         <!-- Stamp Progress Grid 5 columns -->
                         <div class="pt-2">
                             <div class="flex items-center justify-between px-1 mb-3">
                                 <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Progress Loyalty</h4>
-                                <span class="text-[10px] font-black text-[#3EDAD7] px-2.5 py-1 bg-[#4338CA]/20 rounded-lg border border-[#4338CA]/30">{{ $profileStampsCount }} / {{ $activeProgram?->target_stamps ?? 10 }} STAMP</span>
+                                <span class="text-[10px] font-black text-[#3EDAD7] px-2.5 py-1 bg-[#00AAA6]/20 rounded-lg border border-[#00AAA6]/30">{{ $profileStampsCount }} / {{ $activeProgram?->target_stamps ?? 10 }} STAMP</span>
                             </div>
                             <div class="bg-[#16192E] rounded-[20px] border border-[#2E2A68] p-4">
                                 <div class="grid grid-cols-5 gap-2">
                                     @for($i=0;$i<($activeProgram?->target_stamps ?? 10);$i++)
-                                        <div class="aspect-square rounded-xl flex items-center justify-center border-2 text-[10px] font-black {{ $i < $profileStampsCount ? 'bg-[#4338CA] border-[#4338CA] text-white shadow' : 'bg-[#1E1B4B] border-[#2E2A68] text-slate-600' }}">{{ $i < $profileStampsCount ? '✓' : $i+1 }}</div>
+                                        <div class="aspect-square rounded-xl flex items-center justify-center border-2 text-[10px] font-black {{ $i < $profileStampsCount ? 'bg-[#00AAA6] border-[#00AAA6] text-white shadow' : 'bg-[#1E1B4B] border-[#2E2A68] text-slate-600' }}">{{ $i < $profileStampsCount ? '✓' : $i+1 }}</div>
                                     @endfor
                                 </div>
                                 @if($profileProgress)
@@ -190,7 +190,7 @@
                             </div>
                         </div>
                         <div class="flex gap-2.5 pt-2">
-                            <button wire:click="startEditProfile" class="flex-1 h-12 bg-[#4338CA] text-white rounded-2xl font-black text-xs uppercase tracking-widest">Edit Profil</button>
+                            <button wire:click="startEditProfile" class="flex-1 h-12 bg-[#00AAA6] text-white rounded-2xl font-black text-xs uppercase tracking-widest">Edit Profil</button>
                             <button wire:click="openBulkPrint" class="w-12 h-12 bg-[#16192E] border border-[#2E2A68] text-slate-300 rounded-2xl flex items-center justify-center"><x-icon name="printer" class="w-5 h-5" /></button>
                         </div>
                         <button wire:click="deleteMember('{{ $profileMember->id }}')" wire:confirm="Hapus member ini permanen?" class="w-full py-3 text-[10px] font-black text-rose-400 uppercase tracking-widest">Hapus Selamanya</button>
@@ -204,9 +204,9 @@
     @if($showPrintPreview)
         <div id="member-print-portal" class="fixed inset-0 z-[9999] bg-white overflow-y-auto">
             <div class="no-print fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur border-b border-slate-200 flex items-center justify-between px-4 z-[10000]">
-                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-[#4338CA]/10 flex items-center justify-center text-[#4338CA]"><x-icon name="printer" class="w-5 h-5" /></span><div><p class="font-black text-sm text-slate-900">Pratinjau Cetak</p><p class="text-[10px] font-bold text-slate-500">{{ $printMembers->count() }} Kartu Member</p></div></div>
+                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-[#00AAA6]/10 flex items-center justify-center text-[#00AAA6]"><x-icon name="printer" class="w-5 h-5" /></span><div><p class="font-black text-sm text-slate-900">Pratinjau Cetak</p><p class="text-[10px] font-bold text-slate-500">{{ $printMembers->count() }} Kartu Member</p></div></div>
                 <div class="flex items-center gap-2">
-                    <button onclick="window.print()" class="px-5 h-10 bg-[#4338CA] text-white rounded-full font-black text-xs uppercase tracking-widest">Cetak</button>
+                    <button onclick="window.print()" class="px-5 h-10 bg-[#00AAA6] text-white rounded-full font-black text-xs uppercase tracking-widest">Cetak</button>
                     <button wire:click="closePrintPreview" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">✕</button>
                 </div>
             </div>

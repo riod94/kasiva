@@ -2,259 +2,90 @@
 <html lang="id" class="h-full antialiased">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- Universal Theme Engine (Anti-FOUC & Global Toggle) -->
-    <script>
-        (function() {
-            const stored = localStorage.getItem('kasiva_theme');
-            const system = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-            const theme = stored || system;
-            if (theme === 'light') {
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
-                document.documentElement.classList.remove('light');
-            }
-        })();
-
-        window.toggleKasivaTheme = function() {
-            const isLight = document.documentElement.classList.contains('light');
-            const newTheme = isLight ? 'dark' : 'light';
-            localStorage.setItem('kasiva_theme', newTheme);
-            if (newTheme === 'light') {
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
-                document.documentElement.classList.remove('light');
-            }
-            window.dispatchEvent(new CustomEvent('kasiva-theme-changed', { detail: newTheme }));
-        };
-    </script>
-
-    <!-- SEO & Metadata -->
-    <title>{{ $title ?? 'Kasiva POS — Sistem Kasir Pintar & Manajemen Inventaris F&B' }}</title>
-    <meta name="description" content="Kasiva POS adalah aplikasi kasir pintar modern (Point of Sale) khusus bisnis F&B dan retail dengan kalkulasi HPP otomatis, manajemen resep, dan integrasi kanal online.">
-    <meta name="keywords" content="kasiva pos, aplikasi kasir, sistem pos indonesia, hpp kalkulator, point of sale fnb, kasir offline, struk thermal">
-    <meta name="author" content="Kasiva POS Team">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="{{ $title ?? 'Kasiva POS — Sistem Kasir Pintar F&B' }}">
-    <meta property="og:description" content="Sistem Kasir Pintar Modern dengan kalkulasi HPP otomatis, laporan laba bersih, dan dukungan platform online.">
-    <meta property="og:image" content="{{ asset('images/kasiva-logo-full.png') }}">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Kasiva POS — Modern Point of Sale">
-    <meta property="twitter:description" content="Sistem Kasir Pintar Modern untuk UMKM dan Bisnis F&B Indonesia.">
-    <meta property="twitter:image" content="{{ asset('images/kasiva-logo-full.png') }}">
-
-    <!-- Favicon & Brand Icons -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="theme-color" content="#272D48">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title ?? 'Kasiva POS' }}</title>
     <link rel="icon" type="image/png" href="{{ asset('images/kasiva-logo-icon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/kasiva-logo-icon.png') }}">
-    <meta name="theme-color" content="#1E1B4B">
-    
-    <!-- Google Fonts: Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <script>
+        (() => {
+            const theme = localStorage.getItem('kasiva_theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            document.documentElement.classList.add(theme);
+        })();
+        window.toggleKasivaTheme = () => {
+            const next = document.documentElement.classList.contains('light') ? 'dark' : 'light';
+            document.documentElement.classList.remove('light', 'dark');
+            document.documentElement.classList.add(next);
+            localStorage.setItem('kasiva_theme', next);
+            window.dispatchEvent(new CustomEvent('kasiva-theme-changed', { detail: next }));
+        };
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body 
-    class="h-full flex flex-col font-sans antialiased selection:bg-[#4338CA]/30 selection:text-[#3EDAD7] min-h-screen"
-    x-data="{
-        theme: localStorage.getItem('kasiva_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
-    }"
-    @kasiva-theme-changed.window="theme = $event.detail"
->
-    
-    @php
-        $user = auth()->user();
-    @endphp
+<body class="min-h-dvh bg-[var(--app-bg)] font-sans text-[var(--text-main)] antialiased">
+    @php($user = auth()->user())
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[#00AAA6] focus:px-4 focus:py-2 focus:text-white">Lewati ke konten utama</a>
 
-    <!-- ═══════════════ TOP NAVBAR (Header Desktop & Mobile) ═══════════════ -->
-    <header role="banner" class="sticky top-0 z-40 w-full border-b border-[#2E2A68] bg-[#1E1B4B]/95 backdrop-blur-xl shadow-sm print:hidden">
-        <div class="flex h-14 items-center px-4 md:px-8 max-w-7xl mx-auto justify-between gap-3">
-            <!-- Brand Logo -->
-            <div class="flex items-center gap-3">
-                <a href="{{ route('pos.cashier') }}" class="flex items-center gap-2.5 active:scale-95 transition-all">
-                    <img src="/images/kasiva-logo-icon.png" alt="Kasiva POS" class="h-8 w-8 object-contain bg-white/95 p-1 rounded-xl shadow-sm">
-                    <span class="font-black text-base text-white tracking-tight">Kasiva</span>
-                </a>
-                <span class="hidden sm:inline-flex text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#4338CA]/30 text-indigo-300 border border-[#4338CA]/50">
-                    {{ $user?->role?->name ?? 'POS' }}
-                </span>
-            </div>
+    <header class="sticky top-0 z-40 border-b border-[var(--border-color)] bg-[var(--header-bg)] backdrop-blur-xl print:hidden" role="banner">
+        <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 pt-[env(safe-area-inset-top)] md:px-8">
+            <a href="{{ route('pos.cashier') }}" class="flex min-h-11 items-center gap-2.5 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7]">
+                <img src="{{ asset('images/kasiva-logo-icon.png') }}" alt="Kasiva POS" class="h-8 w-8 rounded-xl bg-white p-1 shadow-sm">
+                <span class="font-black tracking-tight">Kasiva</span>
+            </a>
 
-            <!-- Desktop Navigation Links (Only on md+ screens with RBAC filtering) -->
-            <nav class="hidden md:flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-slate-300">
-                @if(!$user || $user->hasPermission('POS_ACCESS'))
-                    <a href="{{ route('pos.cashier') }}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {{ request()->routeIs('pos.cashier') ? 'bg-[#4338CA] text-white shadow-md' : 'hover:text-white hover:bg-[#25215A]' }}">
-                        <x-icon name="store" class="w-4 h-4" />
-                        <span>Kasir</span>
-                    </a>
-                @endif
-
-                @if($user && ($user->hasPermission('VIEW_PRODUCTS') || $user->hasPermission('VIEW_MATERIALS') || $user->hasPermission('MANAGE_PRODUCTS')))
-                    <a href="{{ route('inventory.index') }}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {{ request()->routeIs('inventory.*') ? 'bg-[#4338CA] text-white shadow-md' : 'hover:text-white hover:bg-[#25215A]' }}">
-                        <x-icon name="package" class="w-4 h-4" />
-                        <span>Inventaris</span>
-                    </a>
-                @endif
-
-                @if($user && ($user->hasPermission('MANAGE_PROMOS') || $user->hasPermission('VIEW_MEMBERS') || $user->hasPermission('MANAGE_LOYALTY')))
-                    <a href="{{ route('marketing.index') }}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {{ request()->routeIs('marketing.*') ? 'bg-[#4338CA] text-white shadow-md' : 'hover:text-white hover:bg-[#25215A]' }}">
-                        <x-icon name="megaphone" class="w-4 h-4" />
-                        <span>Pemasaran</span>
-                    </a>
-                @endif
-
-                @if($user && $user->hasPermission('VIEW_TRANSACTIONS'))
-                    <a href="{{ route('history.index') }}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {{ request()->routeIs('history.index') || request()->routeIs('history.backdate') ? 'bg-[#4338CA] text-white shadow-md' : 'hover:text-white hover:bg-[#25215A]' }}">
-                        <x-icon name="receipt" class="w-4 h-4" />
-                        <span>Riwayat</span>
-                    </a>
-                @endif
-
-                @if($user && $user->hasPermission('MANAGE_EXPENSES'))
-                    <a href="{{ route('expenses.index') }}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {{ request()->routeIs('expenses.index') ? 'bg-[#4338CA] text-white shadow-md' : 'hover:text-white hover:bg-[#25215A]' }}">
-                        <x-icon name="wallet" class="w-4 h-4" />
-                        <span>Pengeluaran</span>
-                    </a>
-                @endif
-
-                @if($user && $user->hasPermission('VIEW_REPORTS'))
-                    <a href="{{ route('reports.index') }}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {{ request()->routeIs('reports.index') ? 'bg-[#4338CA] text-white shadow-md' : 'hover:text-white hover:bg-[#25215A]' }}">
-                        <x-icon name="chart-bar" class="w-4 h-4" />
-                        <span>Laporan</span>
-                    </a>
-                @endif
-
-                @if($user && ($user->isOwner() || $user->hasPermission('MANAGE_OUTLET') || $user->hasPermission('MANAGE_STAFF') || $user->hasPermission('MANAGE_ROLES') || $user->hasPermission('MANAGE_PAYMENTS') || $user->hasPermission('MANAGE_PRINTER')))
-                    <a href="{{ route('settings.index') }}" class="px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 {{ request()->routeIs('settings.*') ? 'bg-[#4338CA] text-white shadow-md' : 'hover:text-white hover:bg-[#25215A]' }}">
-                        <x-icon name="settings" class="w-4 h-4" />
-                        <span>Pengaturan</span>
-                    </a>
-                @endif
+            <nav class="hidden items-center gap-1 lg:flex" aria-label="Navigasi utama desktop">
+                @php($nav = [
+                    ['route' => 'pos.cashier', 'label' => 'Kasir', 'icon' => 'store', 'show' => !$user || $user->hasPermission('POS_ACCESS')],
+                    ['route' => 'inventory.index', 'label' => 'Inventaris', 'icon' => 'package', 'show' => $user && ($user->hasPermission('VIEW_PRODUCTS') || $user->hasPermission('VIEW_MATERIALS') || $user->hasPermission('MANAGE_PRODUCTS'))],
+                    ['route' => 'history.index', 'label' => 'Riwayat', 'icon' => 'receipt', 'show' => $user && $user->hasPermission('VIEW_TRANSACTIONS')],
+                    ['route' => 'expenses.index', 'label' => 'Pengeluaran', 'icon' => 'wallet', 'show' => $user && $user->hasPermission('MANAGE_EXPENSES')],
+                    ['route' => 'reports.index', 'label' => 'Laporan', 'icon' => 'chart-bar', 'show' => $user && $user->hasPermission('VIEW_REPORTS')],
+                    ['route' => 'settings.index', 'label' => 'Setelan', 'icon' => 'settings', 'show' => $user && ($user->isOwner() || $user->hasPermission('MANAGE_OUTLET') || $user->hasPermission('MANAGE_STAFF') || $user->hasPermission('MANAGE_ROLES') || $user->hasPermission('MANAGE_PAYMENTS') || $user->hasPermission('MANAGE_PRINTER'))],
+                ])
+                @foreach($nav as $item)
+                    @if($item['show'])
+                        @php($active = request()->routeIs($item['route']))
+                        <a href="{{ route($item['route']) }}" @if($active) aria-current="page" @endif class="flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-xs font-bold transition {{ $active ? 'bg-[#00AAA6] text-white' : 'text-[var(--text-muted)] hover:bg-[var(--card-sub-bg)] hover:text-[var(--text-main)]' }}">
+                            <x-icon :name="$item['icon']" class="h-4 w-4" />{{ $item['label'] }}
+                        </a>
+                    @endif
+                @endforeach
             </nav>
-            
-            <!-- Right Actions: Theme Switcher, Sync Status & Profile -->
+
             <div class="flex items-center gap-2">
-                <!-- Theme Toggle Button -->
-                <button 
-                    type="button"
-                    onclick="window.toggleKasivaTheme()"
-                    class="w-9 h-9 rounded-xl bg-[#16192E] border border-[#2E2A68] hover:border-[#4338CA] text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 shadow-sm"
-                    title="Ganti Tema (Dark / Light)"
-                >
-                    <template x-if="theme === 'dark'">
-                        <x-icon name="sun" class="w-4 h-4 text-amber-400" />
-                    </template>
-                    <template x-if="theme === 'light'">
-                        <x-icon name="moon" class="w-4 h-4 text-indigo-400" />
-                    </template>
+                <button type="button" onclick="window.toggleKasivaTheme()" class="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border-color)] bg-[var(--card-sub-bg)] text-[var(--text-main)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7]" aria-label="Ganti tema gelap atau terang">
+                    <x-icon name="sun" class="h-4 w-4" />
                 </button>
-
-                <!-- Sync Status Badge -->
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[10px] font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="hidden sm:inline">Online</span>
-                </div>
-
-                <!-- Profile Avatar -->
-                <a href="{{ route('profile.show') }}" class="h-9 w-9 rounded-xl bg-[#4338CA] border border-[#4338CA]/60 flex items-center justify-center text-xs font-black text-white shadow-sm hover:scale-105 active:scale-95 transition" title="Profil Staf: {{ $user?->name ?? 'Kasir' }}">
-                    {{ strtoupper(substr($user?->name ?? 'K', 0, 1)) }}
-                </a>
+                <div id="kasiva-network-badge" role="status" aria-live="polite" class="hidden min-h-11 items-center rounded-xl border px-3 text-xs font-bold sm:flex"></div>
+                <a href="{{ route('profile.show') }}" class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#00AAA6] text-sm font-black text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3EDAD7]" aria-label="Buka profil {{ $user?->name ?? 'Kasir' }}">{{ strtoupper(substr($user?->name ?? 'K', 0, 1)) }}</a>
             </div>
         </div>
     </header>
 
-    <!-- ═══════════════ MAIN CONTENT CONTAINER ═══════════════ -->
-    <main class="flex-1 max-w-7xl w-full mx-auto pb-24 md:pb-8 px-4 md:px-8 py-5">
+    <main id="main-content" class="mx-auto w-full max-w-7xl flex-1 px-4 py-5 pb-[calc(4.75rem+env(safe-area-inset-bottom))] md:px-8 lg:pb-8">
         {{ $slot }}
     </main>
 
-    <!-- ═══════════════ BOTTOM NAVIGATION BAR (Mobile Viewport with RBAC filtering) ═══════════════ -->
-    <nav role="navigation" aria-label="Navigasi utama" class="md:hidden fixed bottom-0 left-0 right-0 bg-[#1E1B4B]/95 backdrop-blur-xl border-t border-[#2E2A68] z-50 shadow-[0_-8px_30px_rgba(0,0,0,0.5)] print:hidden">
-        <div class="flex items-center justify-around h-16 max-w-md mx-auto px-2">
-            
-            <!-- 1. Kasir -->
-            @if(!$user || $user->hasPermission('POS_ACCESS'))
-                <a href="{{ route('pos.cashier') }}" 
-                   class="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all outline-none {{ request()->routeIs('pos.cashier') ? 'text-[#3EDAD7]' : 'text-slate-400 hover:text-slate-200' }}">
-                    <div class="p-1 rounded-xl transition-transform {{ request()->routeIs('pos.cashier') ? 'bg-[#4338CA]/30 scale-105' : '' }}">
-                        <x-icon name="store" class="w-5 h-5 {{ request()->routeIs('pos.cashier') ? 'text-[#3EDAD7]' : '' }}" />
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider leading-none {{ request()->routeIs('pos.cashier') ? 'font-black text-[#3EDAD7]' : 'font-bold' }}">
-                        Kasir
-                    </span>
-                </a>
-            @endif
-
-            <!-- 2. Inventaris -->
-            @if($user && ($user->hasPermission('VIEW_PRODUCTS') || $user->hasPermission('VIEW_MATERIALS') || $user->hasPermission('MANAGE_PRODUCTS')))
-                <a href="{{ route('inventory.index') }}" 
-                   class="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all outline-none {{ request()->routeIs('inventory.*') ? 'text-[#3EDAD7]' : 'text-slate-400 hover:text-slate-200' }}">
-                    <div class="p-1 rounded-xl transition-transform {{ request()->routeIs('inventory.*') ? 'bg-[#4338CA]/30 scale-105' : '' }}">
-                        <x-icon name="package" class="w-5 h-5 {{ request()->routeIs('inventory.*') ? 'text-[#3EDAD7]' : '' }}" />
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider leading-none {{ request()->routeIs('inventory.*') ? 'font-black text-[#3EDAD7]' : 'font-bold' }}">
-                        Katalog
-                    </span>
-                </a>
-            @endif
-
-            <!-- 3. Riwayat / Pemasaran -->
-            @if($user && $user->hasPermission('VIEW_TRANSACTIONS'))
-                <a href="{{ route('history.index') }}" 
-                   class="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all outline-none {{ request()->routeIs('history.*') ? 'text-[#3EDAD7]' : 'text-slate-400 hover:text-slate-200' }}">
-                    <div class="p-1 rounded-xl transition-transform {{ request()->routeIs('history.*') ? 'bg-[#4338CA]/30 scale-105' : '' }}">
-                        <x-icon name="receipt" class="w-5 h-5 {{ request()->routeIs('history.*') ? 'text-[#3EDAD7]' : '' }}" />
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider leading-none {{ request()->routeIs('history.*') ? 'font-black text-[#3EDAD7]' : 'font-bold' }}">
-                        Riwayat
-                    </span>
-                </a>
-            @endif
-
-            <!-- 4. Laporan -->
-            @if($user && $user->hasPermission('VIEW_REPORTS'))
-                <a href="{{ route('reports.index') }}" 
-                   class="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all outline-none {{ request()->routeIs('reports.index') ? 'text-[#3EDAD7]' : 'text-slate-400 hover:text-slate-200' }}">
-                    <div class="p-1 rounded-xl transition-transform {{ request()->routeIs('reports.index') ? 'bg-[#4338CA]/30 scale-105' : '' }}">
-                        <x-icon name="chart-bar" class="w-5 h-5 {{ request()->routeIs('reports.index') ? 'text-[#3EDAD7]' : '' }}" />
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider leading-none {{ request()->routeIs('reports.index') ? 'font-black text-[#3EDAD7]' : 'font-bold' }}">
-                        Laporan
-                    </span>
-                </a>
-            @endif
-
-            <!-- 5. Pengaturan -->
-            @if($user && ($user->isOwner() || $user->hasPermission('MANAGE_OUTLET') || $user->hasPermission('MANAGE_STAFF') || $user->hasPermission('MANAGE_ROLES') || $user->hasPermission('MANAGE_PAYMENTS') || $user->hasPermission('MANAGE_PRINTER')))
-                <a href="{{ route('settings.index') }}" 
-                   class="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all outline-none {{ request()->routeIs('settings.*') ? 'text-[#3EDAD7]' : 'text-slate-400 hover:text-slate-200' }}">
-                    <div class="p-1 rounded-xl transition-transform {{ request()->routeIs('settings.*') ? 'bg-[#4338CA]/30 scale-105' : '' }}">
-                        <x-icon name="settings" class="w-5 h-5 {{ request()->routeIs('settings.*') ? 'text-[#3EDAD7]' : '' }}" />
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider leading-none {{ request()->routeIs('settings.*') ? 'font-black text-[#3EDAD7]' : 'font-bold' }}">
-                        Setelan
-                    </span>
-                </a>
-            @endif
+    <nav class="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--border-color)] bg-[var(--header-bg)] pb-[env(safe-area-inset-bottom)] backdrop-blur-xl print:hidden lg:hidden" aria-label="Navigasi utama mobile">
+        <div class="mx-auto flex h-16 max-w-md items-stretch">
+            @foreach(array_slice($nav, 0, 1) as $item)
+                @if($item['show']) @php($active = request()->routeIs($item['route']))
+                <a href="{{ route($item['route']) }}" @if($active) aria-current="page" @endif class="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-[10px] font-bold {{ $active ? 'text-[#00AAA6]' : 'text-[var(--text-muted)]' }}"><x-icon :name="$item['icon']" class="h-5 w-5" />{{ $item['label'] }}</a>
+                @endif
+            @endforeach
+            @foreach(array_slice($nav, 2, 4) as $item)
+                @if($item['show']) @php($active = request()->routeIs($item['route']))
+                <a href="{{ route($item['route']) }}" @if($active) aria-current="page" @endif class="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 text-[10px] font-bold {{ $active ? 'text-[#00AAA6]' : 'text-[var(--text-muted)]' }}"><x-icon :name="$item['icon']" class="h-5 w-5" />{{ $item['label'] }}</a>
+                @endif
+            @endforeach
         </div>
     </nav>
 
+    <div id="kasiva-connection-status" role="status" aria-live="polite" class="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] left-4 z-[60] hidden rounded-xl px-3 py-2 text-xs font-bold text-white lg:bottom-4"></div>
     @livewireScripts
     @stack('scripts')
-<script>document.addEventListener('click',e=>{const b=e.target.closest('#offline-save-expense');if(b&&!navigator.onLine){e.preventDefault();e.stopImmediatePropagation();window.kasivaOffline?.saveExpense();document.getElementById('kasiva-connection-status').hidden=false;document.getElementById('kasiva-connection-status').textContent='Pengeluaran tersimpan lokal — Pending Sync';}},true);</script>
-    <div id="kasiva-connection-status" class="fixed bottom-3 left-3 z-50 rounded-xl px-3 py-2 text-xs font-bold bg-emerald-500 text-white" hidden>Online</div>
-    <script>window.addEventListener("kasiva-connection-changed",e=>{const el=document.getElementById("kasiva-connection-status");el.hidden=false;el.textContent=e.detail.online?"Online":"Offline — data lokal aktif";el.className="fixed bottom-3 left-3 z-50 rounded-xl px-3 py-2 text-xs font-bold "+(e.detail.online?"bg-emerald-500":"bg-amber-500")+" text-white";});</script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 @section('title', 'Layanan Sedang Dalam Pemeliharaan')
 @section('category', 'PEMELIHARAAN SISTEM')
 @section('glow_color', 'bg-[#00AAA6]')
-@section('glow_color_secondary', 'bg-[#4338CA]')
+@section('glow_color_secondary', 'bg-[#00AAA6]')
 @section('accent_bar', 'bg-gradient-to-r from-[#00AAA6] via-[#3EDAD7] to-[#8696ED]')
 @section('badge_indicator_color', 'bg-[#00AAA6]')
 @section('badge_style', 'bg-[#00AAA6]/20 text-[#3EDAD7] border border-[#00AAA6]/40')
@@ -30,7 +30,7 @@
 
     <a 
         href="{{ route('landing') }}" 
-        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider bg-[#16192E] hover:bg-[#25215A] text-slate-200 border border-[#2E2A68] flex items-center justify-center gap-2 active:scale-95 transition"
+        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider bg-[#16192E] hover:bg-[#2A3155] text-slate-200 border border-[#2E2A68] flex items-center justify-center gap-2 active:scale-95 transition"
     >
         <x-icon name="home" class="w-4 h-4" />
         <span>Beranda Kasiva</span>

@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Disallow: /app/
+Disallow: /pos/offline
+Disallow: /admin/
+Disallow: /offline-sync/
+Disallow: /api/
+
+Sitemap: /sitemap.xml

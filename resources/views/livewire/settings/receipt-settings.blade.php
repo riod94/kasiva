@@ -2,7 +2,7 @@
     <!-- Header Page -->
     <div class="flex items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -26,8 +26,8 @@
         <!-- Toggle Logo -->
         <div class="flex items-center justify-between p-4 rounded-2xl bg-[#16192E] border border-[#2E2A68]">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-[#4338CA]/20 text-[#3EDAD7] flex items-center justify-center">
-                    <x-icon name="image" class="w-5 h-5 text-indigo-400" />
+                <div class="w-10 h-10 rounded-xl bg-[#00AAA6]/20 text-[#3EDAD7] flex items-center justify-center">
+                    <x-icon name="image" class="w-5 h-5 text-[#8696ED]" />
                 </div>
                 <div>
                     <h3 class="font-black text-sm text-white">Tampilkan Logo Toko</h3>
@@ -36,7 +36,7 @@
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" wire:model="showLogo" class="sr-only peer">
-                <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4338CA] border border-[#2E2A68]"></div>
+                <div class="w-11 h-6 bg-[#0F172A] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00AAA6] border border-[#2E2A68]"></div>
             </label>
         </div>
 
@@ -47,7 +47,7 @@
                 <button 
                     type="button" 
                     wire:click="$set('paperWidth', '58mm')"
-                    class="p-4 rounded-2xl border text-left transition {{ $paperWidth === '58mm' ? 'bg-[#4338CA]/20 border-[#4338CA] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
+                    class="p-4 rounded-2xl border text-left transition {{ $paperWidth === '58mm' ? 'bg-[#00AAA6]/20 border-[#00AAA6] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
                 >
                     <p class="font-black text-xs">Standard 58mm</p>
                     <p class="text-[10px] mt-0.5 opacity-80">Printer Bluetooth Portabel Mini</p>
@@ -55,7 +55,7 @@
                 <button 
                     type="button" 
                     wire:click="$set('paperWidth', '80mm')"
-                    class="p-4 rounded-2xl border text-left transition {{ $paperWidth === '80mm' ? 'bg-[#4338CA]/20 border-[#4338CA] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
+                    class="p-4 rounded-2xl border text-left transition {{ $paperWidth === '80mm' ? 'bg-[#00AAA6]/20 border-[#00AAA6] text-white shadow-sm' : 'bg-[#16192E] border-[#2E2A68] text-slate-400 hover:text-white' }}"
                 >
                     <p class="font-black text-xs">Desktop 80mm</p>
                     <p class="text-[10px] mt-0.5 opacity-80">Printer Kasir Station USB / LAN</p>
@@ -70,7 +70,7 @@
                 wire:model="footerText" 
                 rows="3" 
                 placeholder="— TERIMA KASIH —&#10;Follow IG: @kasiva.pos"
-                class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-medium placeholder-slate-500 focus:outline-none focus:border-[#4338CA] transition text-center"
+                class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-medium placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] transition text-center"
             ></textarea>
         </div>
 
@@ -84,7 +84,7 @@
         <div class="pt-3 border-t border-[#2E2A68]">
             <button 
                 wire:click="saveSettings"
-                class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2"
+                class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2"
             >
                 Simpan Pengaturan Struk
             </button>

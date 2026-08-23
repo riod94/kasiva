@@ -3,11 +3,12 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | NativePHP Kasiva SaaS POS Configuration
+    | NativePHP Kasiva POS Configuration
     |--------------------------------------------------------------------------
     |
-    | Konfigurasi pembungkusan Kasiva POS menjadi aplikasi Native (Android APK,
-    | iOS IPA, Windows EXE, macOS DMG).
+    | Runtime yang didukung saat ini adalah NativePHP Electron untuk desktop.
+    | Dukungan Android/iOS ditambahkan hanya setelah package dan permission
+    | runtime NativePHP Mobile dipasang serta diuji pada perangkat nyata.
     |
     */
 
@@ -15,21 +16,6 @@ return [
     'app_id' => 'com.kasiva.pos',
     'name' => 'Kasiva POS',
     'author' => 'Kasiva Technologies',
-
-    'mobile' => [
-        'orientation' => 'portrait',
-        'fullscreen' => true,
-        'splash_screen' => [
-            'enabled' => true,
-            'image' => 'public/images/kasiva-logo-full.png',
-            'background_color' => '#272D48',
-        ],
-        'hardware_permissions' => [
-            'camera' => true,      // Untuk pemindaian barcode/QR
-            'bluetooth' => true,   // Untuk printer thermal POS Bluetooth
-            'storage' => true,     // Untuk penyimpanan SQLite lokal & laporan PDF
-        ],
-    ],
 
     'desktop' => [
         'width' => 1280,

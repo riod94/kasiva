@@ -2,7 +2,7 @@
     <!-- Header Page -->
     <div class="flex items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('settings.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -31,30 +31,30 @@
     <!-- Profile Edit Form -->
     <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-6 shadow-xl space-y-4 text-xs">
         <h3 class="text-sm font-black text-white flex items-center gap-2 border-b border-[#2E2A68] pb-3">
-            <x-icon name="users" class="w-4 h-4 text-indigo-400" />
+            <x-icon name="users" class="w-4 h-4 text-[#8696ED]" />
             <span>Data Pengguna</span>
         </h3>
 
         <div>
             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Lengkap</label>
-            <input type="text" wire:model="name" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-bold placeholder-slate-500 focus:outline-none focus:border-[#4338CA] transition">
+            <input type="text" wire:model="name" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-bold placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] transition">
             @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
         </div>
 
         <div>
             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Alamat Email</label>
-            <input type="email" wire:model="email" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-medium placeholder-slate-500 focus:outline-none focus:border-[#4338CA] transition">
+            <input type="email" wire:model="email" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-medium placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] transition">
             @error('email') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
         </div>
 
         <div>
             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nomor WhatsApp</label>
-            <input type="text" wire:model="phone" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-medium placeholder-slate-500 focus:outline-none focus:border-[#4338CA] transition">
+            <input type="text" wire:model="phone" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-medium placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] transition">
         </div>
 
         <button 
             wire:click="updateProfile"
-            class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2"
+            class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2"
         >
             Simpan Perubahan Profil
         </button>
@@ -70,13 +70,13 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
                 <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">PIN Baru (6 Digit)</label>
-                <input type="password" maxlength="6" wire:model="new_pin" placeholder="123456" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-mono text-center tracking-widest focus:outline-none focus:border-[#4338CA] transition">
+                <input type="password" maxlength="6" wire:model="new_pin" placeholder="123456" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-mono text-center tracking-widest focus:outline-none focus:border-[#00AAA6] transition">
                 @error('new_pin') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
             </div>
 
             <div>
                 <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Konfirmasi PIN Baru</label>
-                <input type="password" maxlength="6" wire:model="new_pin_confirmation" placeholder="123456" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-mono text-center tracking-widest focus:outline-none focus:border-[#4338CA] transition">
+                <input type="password" maxlength="6" wire:model="new_pin_confirmation" placeholder="123456" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-2xl text-white font-mono text-center tracking-widest focus:outline-none focus:border-[#00AAA6] transition">
             </div>
         </div>
 

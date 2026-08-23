@@ -98,12 +98,13 @@ it('encrypted credential round-trips and is not plaintext on disk', function () 
     @unlink($path);
 });
 
-it('hardware bridge stubs do not throw and report availability', function () {
-    $b = new HardwareBridge();
-    expect($b->getNetworkState())->toBeString();
-    expect($b->getLifecycleState())->toBeString();
-    expect($b->printEscPos('hello'))->toBeTrue();
-    expect($b->openCashDrawer())->toBeTrue();
+it('hardware bridge reports unsupported actions explicitly', function () {
+    $bridge = new HardwareBridge();
+
+    expect($bridge->getNetworkState())->toBeString();
+    expect($bridge->getLifecycleState())->toBeString();
+    expect($bridge->printEscPos('hello'))->toBeFalse();
+    expect($bridge->openCashDrawer())->toBeFalse();
     expect(HardwareBridge::isNativeAvailable())->toBeBool();
 });
 

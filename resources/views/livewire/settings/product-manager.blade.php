@@ -2,7 +2,7 @@
     <!-- Header Page & Action Button -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition" title="Kembali ke Inventaris">
+            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition" title="Kembali ke Inventaris">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -14,7 +14,7 @@
         </div>
         <button 
             wire:click="openCreateModal"
-            class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
+            class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
         >
             <x-icon name="plus" class="w-4 h-4" />
             <span>Tambah Produk</span>
@@ -36,7 +36,7 @@
                 type="text" 
                 wire:model.live.debounce.250ms="search"
                 placeholder="Cari nama produk atau SKU..."
-                class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] transition"
+                class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00AAA6] transition"
             >
         </div>
 
@@ -44,14 +44,14 @@
         <div class="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 scrollbar-hide">
             <button 
                 wire:click="$set('categoryFilter', 'ALL')"
-                class="px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider transition shrink-0 {{ $categoryFilter === 'ALL' ? 'bg-[#4338CA] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
+                class="px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider transition shrink-0 {{ $categoryFilter === 'ALL' ? 'bg-[#00AAA6] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
             >
                 Semua Kategori
             </button>
             @foreach($categories as $cat)
                 <button 
                     wire:click="$set('categoryFilter', '{{ $cat->id }}')"
-                    class="px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider transition whitespace-nowrap shrink-0 {{ $categoryFilter == $cat->id ? 'bg-[#4338CA] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
+                    class="px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider transition whitespace-nowrap shrink-0 {{ $categoryFilter == $cat->id ? 'bg-[#00AAA6] text-white shadow-md' : 'bg-[#1E1B4B] text-slate-400 hover:text-white border border-[#2E2A68]' }}"
                 >
                     {{ $cat->name }}
                 </button>
@@ -63,7 +63,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         @forelse($products as $product)
             @php $tier = $product->margin_tier; @endphp
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] rounded-3xl p-4 shadow-md transition flex flex-col justify-between group">
+            <div class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] rounded-3xl p-4 shadow-md transition flex flex-col justify-between group">
                 <div class="space-y-3">
                     <!-- Image & Status Row -->
                     <div class="relative aspect-square w-full rounded-2xl bg-[#0F172A] border border-[#2E2A68] overflow-hidden flex items-center justify-center">
@@ -117,7 +117,7 @@
                 <div class="flex items-center gap-2 pt-3 mt-3 border-t border-[#2E2A68]">
                     <button 
                         wire:click="openEditModal('{{ $product->id }}')" 
-                        class="flex-1 py-2 bg-[#16192E] hover:bg-[#4338CA] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center justify-center gap-1.5"
+                        class="flex-1 py-2 bg-[#16192E] hover:bg-[#00AAA6] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center justify-center gap-1.5"
                     >
                         <x-icon name="edit" class="w-3.5 h-3.5" />
                         <span>Edit</span>
@@ -176,9 +176,9 @@
                                 </button>
                             </div>
                         @else
-                            <label class="flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-[#2E2A68] hover:border-[#4338CA] rounded-2xl cursor-pointer bg-[#16192E] transition group">
+                            <label class="flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-[#2E2A68] hover:border-[#00AAA6] rounded-2xl cursor-pointer bg-[#16192E] transition group">
                                 <input type="file" wire:model="image" accept="image/*" class="hidden">
-                                <x-icon name="upload" class="w-6 h-6 text-slate-400 group-hover:text-indigo-400 transition" />
+                                <x-icon name="upload" class="w-6 h-6 text-slate-400 group-hover:text-[#8696ED] transition" />
                                 <div class="text-center">
                                     <span class="text-xs font-bold text-slate-200">Unggah Gambar Produk</span>
                                     <p class="text-[10px] text-slate-400 mt-0.5">PNG, JPG, Maks 2MB</p>
@@ -191,14 +191,14 @@
                     <!-- General Fields -->
                     <div>
                         <label class="block font-bold text-slate-300 mb-1">Nama Produk</label>
-                        <input type="text" wire:model="name" placeholder="cth: Matcha Latte Premium" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="name" placeholder="cth: Matcha Latte Premium" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-300 mb-1">Kategori Menu</label>
-                            <select wire:model="category_id" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#4338CA]">
+                            <select wire:model="category_id" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#00AAA6]">
                                 <option value="">Pilih Kategori...</option>
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -207,18 +207,18 @@
                         </div>
                         <div>
                             <label class="block font-bold text-slate-300 mb-1">SKU / Barcode</label>
-                            <input type="text" wire:model="sku" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl font-mono text-white focus:outline-none focus:border-[#4338CA]">
+                            <input type="text" wire:model="sku" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl font-mono text-white focus:outline-none focus:border-[#00AAA6]">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-300 mb-1">Harga Jual (Rp)</label>
-                            <input type="number" wire:model.live="price" placeholder="12000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl focus:outline-none focus:border-[#4338CA] font-bold text-[#3EDAD7]">
+                            <input type="number" wire:model.live="price" placeholder="12000" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl focus:outline-none focus:border-[#00AAA6] font-bold text-[#3EDAD7]">
                         </div>
                         <div>
                             <label class="block font-bold text-slate-300 mb-1">Stok Awal</label>
-                            <input type="number" wire:model="current_stock" placeholder="100" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#4338CA]">
+                            <input type="number" wire:model="current_stock" placeholder="100" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white focus:outline-none focus:border-[#00AAA6]">
                         </div>
                     </div>
 
@@ -235,13 +235,13 @@
                         <div class="space-y-2">
                             @foreach($selectedMaterials as $index => $matRow)
                                 <div class="flex items-center gap-2">
-                                    <select wire:model="selectedMaterials.{{ $index }}.material_id" wire:change="calculateHpp" class="flex-1 px-3 py-2 bg-[#0F172A] border border-[#2E2A68] rounded-xl text-white text-[11px] focus:outline-none focus:border-[#4338CA]">
+                                    <select wire:model="selectedMaterials.{{ $index }}.material_id" wire:change="calculateHpp" class="flex-1 px-3 py-2 bg-[#0F172A] border border-[#2E2A68] rounded-xl text-white text-[11px] focus:outline-none focus:border-[#00AAA6]">
                                         <option value="">Pilih Bahan...</option>
                                         @foreach($allMaterials as $m)
                                             <option value="{{ $m->id }}">{{ $m->name }} (Rp {{ number_format($m->avg_cost, 0) }}/{{ $m->unit }})</option>
                                         @endforeach
                                     </select>
-                                    <input type="number" step="any" wire:model="selectedMaterials.{{ $index }}.quantity" wire:change="calculateHpp" placeholder="Takaran" class="w-20 px-3 py-2 bg-[#0F172A] border border-[#2E2A68] rounded-xl text-white text-[11px] focus:outline-none focus:border-[#4338CA]">
+                                    <input type="number" step="any" wire:model="selectedMaterials.{{ $index }}.quantity" wire:change="calculateHpp" placeholder="Takaran" class="w-20 px-3 py-2 bg-[#0F172A] border border-[#2E2A68] rounded-xl text-white text-[11px] focus:outline-none focus:border-[#00AAA6]">
                                     <button wire:click="removeMaterialRow({{ $index }})" type="button" class="text-rose-400 p-1 hover:text-rose-300">
                                         <x-icon name="trash" class="w-4 h-4" />
                                     </button>
@@ -269,7 +269,7 @@
 
                 <button 
                     wire:click="saveProduct"
-                    class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                    class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                 >
                     {{ $productId ? 'Simpan Perubahan Produk' : 'Terbitkan Produk Baru' }}
                 </button>

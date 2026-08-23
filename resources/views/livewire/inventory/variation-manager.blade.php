@@ -2,7 +2,7 @@
     <!-- Header Page -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -14,7 +14,7 @@
         </div>
         <button 
             wire:click="openCreateModal"
-            class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
+            class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
         >
             <x-icon name="plus" class="w-4 h-4" />
             <span>Tambah Varian</span>
@@ -33,7 +33,7 @@
         <h3 class="font-black text-xs uppercase tracking-widest text-slate-400">Template Library — Pakai Ulang Varian</h3>
         <div class="flex flex-wrap gap-2">
             @foreach($templates as $tpl)
-                <button wire:click="useTemplate('{{ $tpl->id }}')" class="px-3 py-2 rounded-xl bg-[#16192E] hover:bg-[#4338CA] border border-[#2E2A68] text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5">
+                <button wire:click="useTemplate('{{ $tpl->id }}')" class="px-3 py-2 rounded-xl bg-[#16192E] hover:bg-[#00AAA6] border border-[#2E2A68] text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1.5">
                     <span>{{ $tpl->name }}</span>
                     <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10">{{ $tpl->selection_type }}</span>
                     <span class="text-[10px] opacity-70">{{ $tpl->options->count() }} opsi</span>
@@ -51,19 +51,19 @@
             type="text" 
             wire:model.live.debounce.250ms="search"
             placeholder="Cari nama grup varian..."
-            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] transition"
+            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00AAA6] transition"
         >
     </div>
 
     <!-- Variant List -->
     <div class="space-y-4">
         @forelse($variants as $variant)
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md hover:border-[#4338CA] transition space-y-4">
+            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md hover:border-[#00AAA6] transition space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <div class="flex items-center gap-2">
                             <h4 class="font-black text-sm text-white">{{ $variant->name }}</h4>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#4338CA]/30 text-indigo-300 border border-[#4338CA]/50">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#00AAA6]/30 text-[#8696ED] border border-[#00AAA6]/50">
                                 {{ $variant->selection_type === 'SINGLE' ? 'Pilih Satu' : 'Multi Pilihan' }}
                             </span>
                             @if($variant->is_required)
@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <button wire:click="openEditModal('{{ $variant->id }}')" class="px-3 py-1.5 bg-[#16192E] hover:bg-[#4338CA] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center gap-1.5">
+                        <button wire:click="openEditModal('{{ $variant->id }}')" class="px-3 py-1.5 bg-[#16192E] hover:bg-[#00AAA6] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition flex items-center gap-1.5">
                             <x-icon name="edit" class="w-3.5 h-3.5" />
                             <span>Edit</span>
                         </button>
@@ -127,7 +127,7 @@
                 <div class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Produk Target</label>
-                        <select wire:model="productId" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <select wire:model="productId" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                             @forelse($products as $p)
                                 <option value="{{ $p->id }}">{{ $p->name }} (Rp {{ number_format($p->price, 0, ',', '.') }})</option>
                             @empty
@@ -138,20 +138,20 @@
 
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Grup Varian</label>
-                        <input type="text" wire:model="name" placeholder="cth: Ukuran Cup / Tingkat Manis" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="name" placeholder="cth: Ukuran Cup / Tingkat Manis" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Tipe Pilihan</label>
-                            <select wire:model="selection_type" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                            <select wire:model="selection_type" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                                 <option value="SINGLE">Pilih Satu (Single)</option>
                                 <option value="MULTIPLE">Pilih Banyak (Multiple)</option>
                             </select>
                         </div>
                         <div class="flex items-center pt-6 gap-2">
-                            <input type="checkbox" id="isRequired" wire:model="is_required" class="w-4 h-4 rounded bg-[#16192E] border-[#2E2A68] text-[#4338CA] focus:ring-0">
+                            <input type="checkbox" id="isRequired" wire:model="is_required" class="w-4 h-4 rounded bg-[#16192E] border-[#2E2A68] text-[#00AAA6] focus:ring-0">
                             <label for="isRequired" class="font-bold text-slate-300 cursor-pointer">Wajib Dipilih?</label>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
 
                 <button 
                     wire:click="saveVariant"
-                    class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                    class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                 >
                     {{ $variantId ? 'Simpan Perubahan' : 'Simpan Varian' }}
                 </button>

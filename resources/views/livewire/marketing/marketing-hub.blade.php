@@ -12,7 +12,7 @@
     <!-- Marketing Modules Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- 1. Members & QR Code -->
-        <a href="{{ route('marketing.members') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('marketing.members') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="users" class="w-6 h-6 text-emerald-400" />
             </div>
@@ -26,7 +26,7 @@
         </a>
 
         <!-- 2. Program Loyalty & Stamp -->
-        <a href="{{ route('marketing.loyalty') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('marketing.loyalty') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="gift" class="w-6 h-6 text-amber-400" />
             </div>
@@ -40,9 +40,9 @@
         </a>
 
         <!-- 3. Bundle Produk (Paket Hemat) -->
-        <a href="{{ route('marketing.bundles') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="package" class="w-6 h-6 text-indigo-400" />
+        <a href="{{ route('marketing.bundles') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+            <div class="w-12 h-12 rounded-2xl bg-[#8696ED]/20 text-[#8696ED] flex items-center justify-center border border-[#8696ED]/40 group-hover:scale-105 transition shrink-0">
+                <x-icon name="package" class="w-6 h-6 text-[#8696ED]" />
             </div>
             <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between">
@@ -54,7 +54,7 @@
         </a>
 
         <!-- 4. Diskon & Voucher Promo -->
-        <a href="{{ route('marketing.discounts') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('marketing.discounts') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="tag" class="w-6 h-6 text-blue-400" />
             </div>
@@ -68,7 +68,7 @@
         </a>
 
         <!-- 5. Kampanye & Promosi Khusus -->
-        <a href="{{ route('marketing.campaigns') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('marketing.campaigns') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center border border-pink-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="megaphone" class="w-6 h-6 text-pink-400" />
             </div>

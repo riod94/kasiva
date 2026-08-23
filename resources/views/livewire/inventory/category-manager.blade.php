@@ -2,7 +2,7 @@
     <!-- Header Page & Back Button -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('inventory.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -14,7 +14,7 @@
         </div>
         <button 
             wire:click="openCreateModal"
-            class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
+            class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
         >
             <x-icon name="plus" class="w-4 h-4" />
             <span>Tambah Kategori</span>
@@ -35,14 +35,14 @@
             type="text" 
             wire:model.live.debounce.250ms="search"
             placeholder="Cari nama kategori..."
-            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] transition"
+            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00AAA6] transition"
         >
     </div>
 
     <!-- Category Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($categories as $category)
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 flex items-center justify-between shadow-md hover:border-[#4338CA] transition group">
+            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 flex items-center justify-between shadow-md hover:border-[#00AAA6] transition group">
                 <div class="flex items-center gap-3.5">
                     <div class="w-12 h-12 rounded-2xl bg-[#16192E] text-2xl flex items-center justify-center border border-[#2E2A68] shadow-inner">
                         {{ $category->icon ?? '🏷️' }}
@@ -56,7 +56,7 @@
                 <div class="flex items-center gap-2">
                     <button 
                         wire:click="openEditModal('{{ $category->id }}')" 
-                        class="p-2.5 bg-[#16192E] hover:bg-[#4338CA] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition"
+                        class="p-2.5 bg-[#16192E] hover:bg-[#00AAA6] text-slate-200 hover:text-white rounded-xl text-xs font-bold border border-[#2E2A68] transition"
                         title="Edit Kategori"
                     >
                         <x-icon name="edit" class="w-3.5 h-3.5" />
@@ -98,7 +98,7 @@
                 <div class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Kategori</label>
-                        <input type="text" wire:model="name" placeholder="cth: Kopi & Espresso" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="name" placeholder="cth: Kopi & Espresso" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('name') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
@@ -113,7 +113,7 @@
                                 <button 
                                     type="button" 
                                     wire:click="$set('icon', '{{ $pIcon }}')"
-                                    class="h-9 rounded-xl flex items-center justify-center text-base transition {{ $icon === $pIcon ? 'bg-[#4338CA] shadow-md scale-105' : 'hover:bg-[#25215A]' }}"
+                                    class="h-9 rounded-xl flex items-center justify-center text-base transition {{ $icon === $pIcon ? 'bg-[#00AAA6] shadow-md scale-105' : 'hover:bg-[#2A3155]' }}"
                                 >
                                     {{ $pIcon }}
                                 </button>
@@ -124,18 +124,18 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Ikon Kustom</label>
-                            <input type="text" wire:model="icon" placeholder="☕" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-center text-lg text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                            <input type="text" wire:model="icon" placeholder="☕" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-center text-lg text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         </div>
                         <div>
                             <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Urutan Indeks</label>
-                            <input type="number" wire:model="order_index" placeholder="1" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                            <input type="number" wire:model="order_index" placeholder="1" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         </div>
                     </div>
                 </div>
 
                 <button 
                     wire:click="saveCategory"
-                    class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                    class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                 >
                     {{ $categoryId ? 'Simpan Perubahan' : 'Terbitkan Kategori' }}
                 </button>

@@ -10,7 +10,7 @@
             <p class="text-xs text-slate-400 font-medium mt-1">Kelola katalog produk, resep HPP, master bahan baku, kategori, dan grup varian</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('settings.products') }}" class="px-4 py-2.5 bg-[#4338CA] hover:bg-[#3730A3] text-white text-xs font-extrabold uppercase tracking-wider rounded-2xl shadow transition active:scale-95 flex items-center gap-1.5">
+            <a href="{{ route('settings.products') }}" class="px-4 py-2.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white text-xs font-extrabold uppercase tracking-wider rounded-2xl shadow transition active:scale-95 flex items-center gap-1.5">
                 <x-icon name="plus" class="w-3.5 h-3.5" />
                 <span>Tambah Menu</span>
             </a>
@@ -46,9 +46,9 @@
     <!-- Sub-Module Navigation Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- 1. Katalog Produk & Resep HPP -->
-        <a href="{{ route('settings.products') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-14 h-14 rounded-2xl bg-[#4338CA]/20 text-indigo-400 flex items-center justify-center border border-[#4338CA]/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="shopping-bag" class="w-7 h-7 text-indigo-400" />
+        <a href="{{ route('settings.products') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+            <div class="w-14 h-14 rounded-2xl bg-[#00AAA6]/20 text-[#8696ED] flex items-center justify-center border border-[#00AAA6]/40 group-hover:scale-105 transition shrink-0">
+                <x-icon name="shopping-bag" class="w-7 h-7 text-[#8696ED]" />
             </div>
             <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between">
@@ -63,7 +63,7 @@
         </a>
 
         <!-- 2. Master Bahan Baku & Restok -->
-        <a href="{{ route('inventory.materials') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('inventory.materials') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="package" class="w-7 h-7 text-emerald-400" />
             </div>
@@ -80,9 +80,9 @@
         </a>
 
         <!-- 3. Master Kategori Menu -->
-        <a href="{{ route('inventory.categories') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center border border-indigo-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="tag" class="w-7 h-7 text-indigo-400" />
+        <a href="{{ route('inventory.categories') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+            <div class="w-14 h-14 rounded-2xl bg-[#8696ED]/20 text-[#8696ED] flex items-center justify-center border border-[#8696ED]/40 group-hover:scale-105 transition shrink-0">
+                <x-icon name="tag" class="w-7 h-7 text-[#8696ED]" />
             </div>
             <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between">
@@ -97,7 +97,7 @@
         </a>
 
         <!-- 4. Master Template Varian & Modifiers -->
-        <a href="{{ route('inventory.variations') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#4338CA] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
+        <a href="{{ route('inventory.variations') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
             <div class="w-14 h-14 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/40 group-hover:scale-105 transition shrink-0">
                 <x-icon name="layers" class="w-7 h-7 text-purple-400" />
             </div>

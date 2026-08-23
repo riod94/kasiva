@@ -1,5 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 @import 'tailwindcss';
+
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('../fonts/plus-jakarta-sans-400.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('../fonts/plus-jakarta-sans-500.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('../fonts/plus-jakarta-sans-600.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('../fonts/plus-jakarta-sans-700.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url('../fonts/plus-jakarta-sans-800.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
+
+/* Dark mode mengikuti class .dark pada <html> (toggle kasiva_theme), bukan preferensi OS */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -8,14 +16,23 @@
 @theme {
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
 
-  /* Official Brand Palette Tokens */
-  --color-primary: #4338CA;
-  --color-primary-hover: #3730A3;
-  --color-primary-light: #6366F1;
-  --color-secondary: #F97316;
-  --color-dark-bg: #0F172A;
-  --color-dark-card: #1E1B4B;
-  --color-dark-border: #2E2A68;
+  /* ═══ Official Kasiva Brand Palette (kasiva-design-system) ═══ */
+  --color-brand: #00AAA6;            /* Kasiva Teal — primary action / CTA */
+  --color-brand-hover: #008F8C;      /* Teal gelap — hover state */
+  --color-navy: #272D48;             /* Kasiva Navy — canvas layout */
+  --color-blue-violet: #505B93;      /* Border / divider / elemen sekunder */
+  --color-periwinkle: #8696ED;       /* Aksen badge & status */
+  --color-cyan-teal: #3EDAD7;        /* Indikator aktif / nominal uang */
+
+  /* Alias primary untuk kompatibilitas komponen lama */
+  --color-primary: #00AAA6;
+  --color-primary-hover: #008F8C;
+  --color-primary-light: #8696ED;
+
+  --color-dark-bg: #272D48;
+  --color-dark-card: #303858;
+  --color-dark-border: #505B93;
+  --color-surface-hover: #3B456B;
   --color-kasiva-navy: #272D48;
   --color-kasiva-blue-violet: #505B93;
   --color-kasiva-teal: #00AAA6;
@@ -24,14 +41,16 @@
 }
 
 :root, html.dark {
-  --app-bg: #0F172A;
-  --header-bg: rgba(30, 27, 75, 0.95);
-  --card-bg: #1E1B4B;
-  --card-sub-bg: #16192E;
-  --border-color: #2E2A68;
+  --app-bg: #272D48;
+  --header-bg: rgb(39 45 72 / 0.95);
+  --card-bg: #303858;
+  --card-sub-bg: #222842;
+  --border-color: #505B93;
   --text-main: #FFFFFF;
-  --text-muted: #94A3B8;
+  --text-muted: #CBD5E1;
   --text-accent: #3EDAD7;
+  --brand-accent: #00AAA6;
+  --focus-ring: #3EDAD7;
   color-scheme: dark;
 }
 
@@ -44,6 +63,7 @@ html.light {
   --text-main: #0F172A;
   --text-muted: #64748B;
   --text-accent: #00AAA6;
+  --brand-accent: #00AAA6;
   color-scheme: light;
 }
 
@@ -63,7 +83,7 @@ html.light {
   }
 }
 
-/* Light Theme Overrides & High Contrast Styling */
+/* ═══ Light Theme Overrides & High Contrast Styling ═══ */
 html.light body {
   background-color: #F8FAFC !important;
   color: #0F172A !important;
@@ -80,7 +100,7 @@ html.light .bg-\[\#1E1B4B\],
 html.light .bg-\[\#1E1B4B\]\/95 {
   background-color: #FFFFFF !important;
   border-color: #E2E8F0 !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
 }
 
 html.light .bg-\[\#16192E\] {
@@ -126,7 +146,7 @@ html.light .text-slate-500 {
   color: #64748B !important;
 }
 
-html.light .hover\:bg-\[\#25215A\]:hover {
+html.light .hover\:bg-\[\#2A3155\]:hover {
   background-color: #F1F5F9 !important;
 }
 
@@ -151,11 +171,11 @@ html.light textarea::placeholder {
 html.light input:not([type="checkbox"]):not([type="radio"]):focus,
 html.light select:focus,
 html.light textarea:focus {
-  border-color: #4338CA !important;
-  box-shadow: 0 0 0 1px #4338CA !important;
+  border-color: #00AAA6 !important;
+  box-shadow: 0 0 0 1px #00AAA6 !important;
 }
 
-/* ═══════════════ TOGGLE SWITCHES (Dark & Light Mode) ═══════════════ */
+/* ═══ TOGGLE SWITCHES (Dark & Light Mode) ═══ */
 label:has(input[type="checkbox"].peer) div.peer,
 input[type="checkbox"].peer + div {
   background-color: #334155 !important;
@@ -169,8 +189,8 @@ input[type="checkbox"].peer + div::after {
 }
 
 input[type="checkbox"].peer:checked + div {
-  background-color: #4338CA !important;
-  border-color: #6366F1 !important;
+  background-color: #00AAA6 !important;
+  border-color: #008F8C !important;
 }
 
 /* Light mode specific toggle rules */
@@ -186,8 +206,8 @@ html.light input[type="checkbox"].peer:not(:checked) + div::after {
 }
 
 html.light input[type="checkbox"].peer:checked + div {
-  background-color: #4338CA !important; /* Rich vibrant brand indigo when ON */
-  border-color: #3730A3 !important;
+  background-color: #00AAA6 !important; /* Kasiva Teal resmi saat ON */
+  border-color: #008F8C !important;
 }
 
 html.light input[type="checkbox"].peer:checked + div::after {
@@ -196,9 +216,9 @@ html.light input[type="checkbox"].peer:checked + div::after {
 }
 
 /* Primary Action Buttons & Colored Badges (Must maintain white text) */
-html.light .bg-\[\#4338CA\],
-html.light .bg-\[\#3730A3\],
-html.light .bg-indigo-600,
+html.light .bg-\[\#00AAA6\],
+html.light .bg-\[\#008F8C\],
+html.light .bg-\[\#8696ED\],
 html.light .bg-emerald-600,
 html.light .bg-rose-600,
 html.light .bg-rose-500,
@@ -207,9 +227,9 @@ html.light .bg-emerald-500 {
   color: #FFFFFF !important;
 }
 
-html.light .bg-\[\#4338CA\] *,
-html.light .bg-\[\#3730A3\] *,
-html.light .bg-indigo-600 *,
+html.light .bg-\[\#00AAA6\] *,
+html.light .bg-\[\#008F8C\] *,
+html.light .bg-\[\#8696ED\] *,
 html.light .bg-emerald-600 *,
 html.light .bg-rose-600 * {
   color: #FFFFFF !important;
@@ -221,11 +241,7 @@ html.light .text-\[\#3EDAD7\] {
 }
 
 html.light .text-\[\#8696ED\] {
-  color: #4338CA !important;
-}
-
-html.light .text-indigo-300 {
-  color: #4338CA !important;
+  color: #505B93 !important;
 }
 
 html.light .text-emerald-300 {
@@ -289,10 +305,10 @@ html.light .bg-purple-500\/20 {
 html.light .bg-orange-500\/20 {
   background-color: #FFF7ED !important;
 }
-html.light .bg-\[\#4338CA\]\/30,
-html.light .bg-\[\#4338CA\]\/20,
-html.light .bg-\[\#4338CA\]\/10 {
-  background-color: #EEF2FF !important;
+html.light .bg-\[\#00AAA6\]\/30,
+html.light .bg-\[\#00AAA6\]\/20,
+html.light .bg-\[\#00AAA6\]\/10 {
+  background-color: #E0F5F4 !important;
 }
 
 /* Utilities */
@@ -311,7 +327,7 @@ html.light .glass {
 }
 
 .premium-shadow {
-  box-shadow: 0 10px 30px -10px rgba(67, 56, 202, 0.3), 0 4px 12px -2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px -10px rgba(0, 170, 166, 0.28), 0 4px 12px -2px rgba(0, 0, 0, 0.2);
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -338,5 +354,5 @@ html.light ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4338CA;
+  background: #505B93;
 }

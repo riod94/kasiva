@@ -1,5 +1,5 @@
 <x-layouts.guest>
-<div class="flex flex-col min-h-screen bg-[#0F172A] text-slate-100 selection:bg-[#4338CA]/30 selection:text-[#3EDAD7]">
+<div class="flex flex-col min-h-screen bg-[#0F172A] text-slate-100 selection:bg-[#00AAA6]/30 selection:text-[#3EDAD7]">
     <!-- Header -->
     <header class="flex items-center justify-between p-4 md:px-8 border-b border-[#2E2A68] backdrop-blur-md sticky top-0 z-50 bg-[#1E1B4B]/90 shadow-sm">
         <div class="flex items-center gap-3">
@@ -8,7 +8,7 @@
                 <span class="font-black text-lg text-white tracking-tight">Kasiva</span>
             </a>
         </div>
-        <a href="{{ route('pos.cashier') }}" class="rounded-xl font-extrabold px-5 py-2.5 border border-[#2E2A68] text-xs md:text-sm bg-[#4338CA] hover:bg-[#3730A3] text-white transition flex items-center gap-2 shadow-sm">
+        <a href="{{ route('pos.cashier') }}" class="rounded-xl font-extrabold px-5 py-2.5 border border-[#2E2A68] text-xs md:text-sm bg-[#00AAA6] hover:bg-[#008F8C] text-white transition flex items-center gap-2 shadow-sm">
             <x-icon name="store" class="w-4 h-4" />
             <span>Buka Kasir POS</span>
         </a>
@@ -16,9 +16,9 @@
 
     <main class="flex-1">
         <!-- Hero Section -->
-        <section class="py-14 md:py-20 bg-gradient-to-br from-[#4338CA]/15 via-[#1E1B4B] to-[#0F172A] border-b border-[#2E2A68]/60 text-center px-4">
+        <section class="py-14 md:py-20 bg-gradient-to-br from-[#00AAA6]/15 via-[#1E1B4B] to-[#0F172A] border-b border-[#2E2A68]/60 text-center px-4">
             <div class="max-w-3xl mx-auto space-y-4">
-                <div class="inline-flex items-center gap-2 bg-[#4338CA]/20 px-4 py-1.5 rounded-full border border-[#4338CA]/40 text-[#8696ED] text-xs font-black uppercase tracking-widest">
+                <div class="inline-flex items-center gap-2 bg-[#00AAA6]/20 px-4 py-1.5 rounded-full border border-[#00AAA6]/40 text-[#8696ED] text-xs font-black uppercase tracking-widest">
                     <span>Kebijakan Privasi</span>
                 </div>
                 <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
@@ -84,10 +84,10 @@
             </div>
 
             <!-- Kontak Box -->
-            <div class="bg-gradient-to-br from-[#4338CA]/20 to-[#1E1B4B] p-6 md:p-8 rounded-3xl border border-[#4338CA]/40 text-center space-y-3">
+            <div class="bg-gradient-to-br from-[#00AAA6]/20 to-[#1E1B4B] p-6 md:p-8 rounded-3xl border border-[#00AAA6]/40 text-center space-y-3">
                 <h3 class="text-base md:text-lg font-black text-white">Pertanyaan Mengenai Privasi & Keamanan Data?</h3>
                 <p class="text-xs text-slate-300 max-w-md mx-auto">Kami berdedikasi menjaga keamanan data Anda. Hubungi tim kami:</p>
-                <a href="mailto:privacy@kasiva.id" class="inline-flex items-center justify-center px-6 py-2.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-bold text-xs rounded-xl shadow transition">
+                <a href="mailto:privacy@kasiva.id" class="inline-flex items-center justify-center px-6 py-2.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-bold text-xs rounded-xl shadow transition">
                     privacy@kasiva.id
                 </a>
             </div>

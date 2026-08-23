@@ -2,7 +2,7 @@
     <!-- Header Page -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
         <div class="flex items-center gap-3">
-            <a href="{{ route('marketing.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#25215A] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
+            <a href="{{ route('marketing.index') }}" class="w-10 h-10 rounded-2xl bg-[#16192E] hover:bg-[#2A3155] text-slate-300 flex items-center justify-center font-bold text-sm border border-[#2E2A68] transition">
                 <x-icon name="arrow-left" class="w-4 h-4" />
             </a>
             <div>
@@ -14,7 +14,7 @@
         </div>
         <button 
             wire:click="openCreateMemberModal"
-            class="px-5 py-3 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
+            class="px-5 py-3 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition shrink-0"
         >
             <x-icon name="plus" class="w-4 h-4" />
             <span>Daftarkan Member</span>
@@ -32,7 +32,7 @@
     <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md space-y-3">
         <div class="flex items-center justify-between">
             <h3 class="font-black text-xs uppercase tracking-widest text-slate-400">Program Loyalitas Terkonfigurasi</h3>
-            <button wire:click="openProgramModal()" class="px-3 py-2 bg-[#16192E] hover:bg-[#4338CA] text-slate-200 hover:text-white rounded-xl text-[11px] font-black border border-[#2E2A68] transition flex items-center gap-1.5">
+            <button wire:click="openProgramModal()" class="px-3 py-2 bg-[#16192E] hover:bg-[#00AAA6] text-slate-200 hover:text-white rounded-xl text-[11px] font-black border border-[#2E2A68] transition flex items-center gap-1.5">
                 <x-icon name="plus" class="w-3.5 h-3.5" />
                 <span>Program Baru</span>
             </button>
@@ -40,12 +40,12 @@
         @forelse($programs as $pr)
             <div class="bg-[#16192E] border border-[#2E2A68] rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                    <p class="text-sm font-black text-white">{{ $pr->name }} <span class="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-[#4338CA]/30 text-indigo-300 border border-[#4338CA]/40">{{ $pr->reward_type ?? 'FREE_PRODUCT' }} {{ $pr->reward_value ? number_format($pr->reward_value,0,',','.') : '' }}</span></p>
+                    <p class="text-sm font-black text-white">{{ $pr->name }} <span class="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-[#00AAA6]/30 text-[#8696ED] border border-[#00AAA6]/40">{{ $pr->reward_type ?? 'FREE_PRODUCT' }} {{ $pr->reward_value ? number_format($pr->reward_value,0,',','.') : '' }}</span></p>
                     <p class="text-[11px] text-slate-400 mt-0.5">{{ $pr->target_stamps }} stempel → reward • Min. Rp {{ number_format($pr->min_transaction ?? $pr->minTransaction ?? 0,0,',','.') }} • Exp. {{ $pr->expiry_months ?? $pr->expiryMonths ?? 12 }} bulan • Klaim {{ $pr->reward_claim_days ?? 30 }} hari • {{ ($pr->allow_with_promo ?? $pr->allowWithPromo) ? 'Boleh promo' : 'Tanpa promo' }} • {{ ($pr->after_claim ?? $pr->afterClaim ?? 'RESET') === 'RESET' ? 'Reset setelah klaim' : 'Selesai' }}</p>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
                     <span class="text-[10px] font-black px-2.5 py-1 rounded-full {{ $pr->is_active ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-slate-700 text-slate-400 border border-slate-600' }}">{{ $pr->is_active ? 'Aktif' : 'Nonaktif' }}</span>
-                    <button wire:click="openProgramModal('{{ $pr->id }}')" class="px-2.5 py-1.5 bg-[#1E1B4B] hover:bg-[#4338CA] text-slate-300 hover:text-white rounded-xl text-[11px] font-bold border border-[#2E2A68]">Edit</button>
+                    <button wire:click="openProgramModal('{{ $pr->id }}')" class="px-2.5 py-1.5 bg-[#1E1B4B] hover:bg-[#00AAA6] text-slate-300 hover:text-white rounded-xl text-[11px] font-bold border border-[#2E2A68]">Edit</button>
                 </div>
             </div>
         @empty
@@ -60,7 +60,7 @@
             type="text" 
             wire:model.live.debounce.250ms="search"
             placeholder="Cari nama atau nomor WhatsApp..."
-            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#4338CA] transition"
+            class="w-full pl-10 pr-4 py-2.5 bg-[#1E1B4B] border border-[#2E2A68] rounded-2xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#00AAA6] transition"
         >
     </div>
 
@@ -80,14 +80,14 @@
                 }
                 $target = $activeProgram->target_stamps ?? 10;
             @endphp
-            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md hover:border-[#4338CA] transition space-y-4 flex flex-col justify-between group">
+            <div class="bg-[#1E1B4B] border border-[#2E2A68] rounded-3xl p-5 shadow-md hover:border-[#00AAA6] transition space-y-4 flex flex-col justify-between group">
                 <div class="space-y-3">
                     <div class="flex items-start justify-between gap-2">
                         <div>
                             <h4 class="font-black text-sm text-white">{{ $member->name }}</h4>
                             <p class="text-[11px] text-slate-400 font-mono mt-0.5">{{ $member->phone }}</p>
                         </div>
-                        <span class="text-[10px] font-black px-2.5 py-1 rounded-full bg-[#4338CA]/20 text-indigo-300 border border-[#4338CA]/40 shrink-0">
+                        <span class="text-[10px] font-black px-2.5 py-1 rounded-full bg-[#00AAA6]/20 text-[#8696ED] border border-[#00AAA6]/40 shrink-0">
                             {{ $member->total_visits }}x Kunjungan
                         </span>
                     </div>
@@ -122,7 +122,7 @@
                 <div class="pt-2 border-t border-[#2E2A68]">
                     <button 
                         wire:click="openStampModal('{{ $member->id }}')" 
-                        class="w-full py-2.5 bg-[#4338CA]/20 hover:bg-[#4338CA] text-indigo-200 hover:text-white font-extrabold text-xs uppercase tracking-wider rounded-xl border border-[#4338CA]/40 transition flex items-center justify-center gap-1.5 active:scale-95"
+                        class="w-full py-2.5 bg-[#00AAA6]/20 hover:bg-[#00AAA6] text-[#8696ED] hover:text-white font-extrabold text-xs uppercase tracking-wider rounded-xl border border-[#00AAA6]/40 transition flex items-center justify-center gap-1.5 active:scale-95"
                     >
                         <x-icon name="gift" class="w-3.5 h-3.5" />
                         <span>Kelola Stempel</span>
@@ -153,18 +153,18 @@
                 <div class="space-y-4 text-xs">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Lengkap Pelanggan</label>
-                        <input type="text" wire:model="memberName" placeholder="cth: Rian Pratama" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="memberName" placeholder="cth: Rian Pratama" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('memberName') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nomor WhatsApp</label>
-                        <input type="text" wire:model="memberPhone" placeholder="cth: 081234567890" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]">
+                        <input type="text" wire:model="memberPhone" placeholder="cth: 081234567890" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]">
                         @error('memberPhone') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <button 
                     wire:click="saveMember"
-                    class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
+                    class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95"
                 >
                     Simpan & Beri Stempel Awal
                 </button>
@@ -190,7 +190,7 @@
                 <div class="space-y-2.5">
                     <button 
                         wire:click="addStamp"
-                        class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition flex items-center justify-center gap-1.5 active:scale-95"
+                        class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition flex items-center justify-center gap-1.5 active:scale-95"
                     >
                         <x-icon name="plus" class="w-4 h-4" />
                         <span>Tambah 1 Stempel Kunjungan</span>
@@ -219,7 +219,7 @@
                     <button wire:click="$set('showProgramModal', false)" class="text-slate-400 hover:text-white font-bold p-1">✕</button>
                 </div>
                 <div class="space-y-3 text-xs max-h-[60vh] overflow-y-auto pr-1">
-                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Program</label><input type="text" wire:model="programName" placeholder="10 Stempel Gratis 1 Kopi" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#4338CA]"></div>
+                    <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Nama Program</label><input type="text" wire:model="programName" placeholder="10 Stempel Gratis 1 Kopi" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6]"></div>
                     <div class="grid grid-cols-2 gap-3">
                         <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Target Stempel</label><input type="number" wire:model="targetStamps" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white"></div>
                         <div><label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Min. Transaksi (Rp)</label><input type="number" wire:model="minTransaction" class="w-full px-3.5 py-2.5 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white"></div>
@@ -238,7 +238,7 @@
                     </div>
                     <label class="flex items-center gap-2 text-xs font-bold text-slate-300"><input type="checkbox" wire:model.live="programIsActive" class="rounded"> Aktif</label>
                 </div>
-                <button wire:click="saveProgram" class="w-full py-3.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95">{{ $programId ? 'Simpan Perubahan' : 'Buat Program' }}</button>
+                <button wire:click="saveProgram" class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95">{{ $programId ? 'Simpan Perubahan' : 'Buat Program' }}</button>
             </div>
         </div>
     @endif
