@@ -21,6 +21,7 @@
 /public/storage
 /playwright-report/
 /test-results/
+/tests/e2e/.agnes/
 /storage/*.key
 /storage/pail
 /vendor
