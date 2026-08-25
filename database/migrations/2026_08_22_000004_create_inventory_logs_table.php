@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (!Schema::hasTable('inventory_logs')) {
+        if (! Schema::hasTable('inventory_logs')) {
             Schema::create('inventory_logs', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->foreignUuid('material_id')->constrained('materials')->cascadeOnDelete();
@@ -21,7 +21,7 @@ return new class extends Migration
             });
         }
         // Add voided status + voided_at to transactions if missing
-        if (Schema::hasTable('transactions') && !Schema::hasColumn('transactions', 'status')) {
+        if (Schema::hasTable('transactions') && ! Schema::hasColumn('transactions', 'status')) {
             Schema::table('transactions', function (Blueprint $table) {
                 $table->string('status')->default('COMPLETED')->after('sync_status');
                 $table->dateTime('voided_at')->nullable()->after('status');

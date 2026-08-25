@@ -554,12 +554,20 @@
                         </div>
                         <p class="text-xs text-slate-300 font-semibold">Tunjukkan kode QR kepada pelanggan untuk di-scan</p>
 
+                        <label class="flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition {{ $qrisConfirmed ? 'bg-emerald-500/15 border-emerald-500/50' : 'bg-[#16192E] border-[#2E2A68] hover:border-[#00AAA6]/50' }}">
+                            <input type="checkbox" wire:model.live="qrisConfirmed" class="w-5 h-5 rounded-md border-2 border-[#2E2A68] bg-[#1E1B4B] text-emerald-500 focus:ring-emerald-500 focus:ring-offset-0">
+                            <span class="text-sm font-bold {{ $qrisConfirmed ? 'text-emerald-300' : 'text-slate-300' }}">Pelanggan sudah melakukan pembayaran QRIS</span>
+                        </label>
+                        @error('qrisConfirmed') <p class="text-xs font-bold text-rose-400 text-left">{{ $message }}</p> @enderror
+
                         <button 
                             wire:click="processCheckout"
-                            class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
+                            @if(!$qrisConfirmed) disabled @endif
+                            class="w-full py-4 font-black text-sm rounded-2xl shadow-xl transition active:scale-95 {{ $qrisConfirmed ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-60' }}"
                         >
                             Konfirmasi Pembayaran Selesai
                         </button>
+                        @if(!$qrisConfirmed) <p class="text-[11px] text-slate-500 font-medium">Centang konfirmasi di atas untuk melanjutkan.</p> @endif
                     </div>
 
                 <!-- Step 5: SPLIT_PAYMENT -->
@@ -585,14 +593,20 @@
                             <input type="number" inputmode="decimal" wire:model.live="splitQrisAmount" class="w-full px-4 py-3 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white font-black text-base sm:text-sm">
                         </div>
 
-                        <div class="p-3 bg-[#16192E] rounded-xl border border-[#2E2A68] flex justify-between font-bold">
-                            <span class="text-slate-400">Total Pembayaran Split:</span>
-                            <span class="text-[#3EDAD7]">Rp {{ number_format($splitCashAmount + $splitQrisAmount, 0, ',', '.') }}</span>
+                        @php $splitSum = $splitCashAmount + $splitQrisAmount; $splitValid = abs($splitSum - $totalAmount) < 0.01; @endphp
+                        <div class="p-3 rounded-xl border flex justify-between font-bold {{ $splitValid ? 'bg-[#16192E] border-[#2E2A68]' : 'bg-rose-500/10 border-rose-500/30' }}">
+                            <span class="{{ $splitValid ? 'text-slate-400' : 'text-rose-300' }}">Total Pembayaran Split:</span>
+                            <span class="{{ $splitValid ? 'text-[#3EDAD7]' : 'text-rose-400' }}">Rp {{ number_format($splitSum, 0, ',', '.') }}</span>
                         </div>
+                        @if(!$splitValid)
+                            <p class="text-xs font-bold text-rose-400">Jumlah split harus sama persis dengan total tagihan Rp {{ number_format($totalAmount, 0, ',', '.') }}.</p>
+                        @endif
+                        @error('splitQrisAmount') <p class="text-xs font-bold text-rose-400">{{ $message }}</p> @enderror
 
                         <button 
                             wire:click="processCheckout"
-                            class="w-full py-4 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-black text-sm rounded-2xl shadow-xl transition active:scale-95"
+                            @if(!$splitValid) disabled @endif
+                            class="w-full py-4 font-black text-sm rounded-2xl shadow-xl transition active:scale-95 {{ $splitValid ? 'bg-[#00AAA6] hover:bg-[#008F8C] text-white' : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-60' }}"
                         >
                             Simpan Pembayaran Split
                         </button>

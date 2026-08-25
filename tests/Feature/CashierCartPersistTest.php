@@ -1,18 +1,19 @@
 <?php
 
 use App\Livewire\Pos\CashierScreen;
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\User;
-use Livewire\Livewire;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('cashier cart persist di session dan survive mount ulang', function () {
     $user = User::factory()->create();
-    $cat = Category::create(['name'=>'Test']);
-    $prod = Product::create(['category_id'=>$cat->id,'name'=>'Teh','sku'=>'TEH-01','price'=>10000,'hpp'=>4000,'current_stock'=>50,'is_active'=>true]);
+    $cat = Category::create(['name' => 'Test']);
+    $prod = Product::create(['category_id' => $cat->id, 'name' => 'Teh', 'sku' => 'TEH-01', 'price' => 10000, 'hpp' => 4000, 'current_stock' => 50, 'is_active' => true]);
     $this->actingAs($user);
 
     $comp = Livewire::test(CashierScreen::class);
@@ -27,9 +28,9 @@ test('cashier cart persist di session dan survive mount ulang', function () {
 
 test('cashier multi-cart 3 slot dan switch', function () {
     $user = User::factory()->create();
-    $cat = Category::create(['name'=>'Test']);
-    $p1 = Product::create(['category_id'=>$cat->id,'name'=>'Kopi','sku'=>'KPI-01','price'=>20000,'hpp'=>8000,'current_stock'=>50,'is_active'=>true]);
-    $p2 = Product::create(['category_id'=>$cat->id,'name'=>'Teh','sku'=>'TEH-02','price'=>10000,'hpp'=>4000,'current_stock'=>50,'is_active'=>true]);
+    $cat = Category::create(['name' => 'Test']);
+    $p1 = Product::create(['category_id' => $cat->id, 'name' => 'Kopi', 'sku' => 'KPI-01', 'price' => 20000, 'hpp' => 8000, 'current_stock' => 50, 'is_active' => true]);
+    $p2 = Product::create(['category_id' => $cat->id, 'name' => 'Teh', 'sku' => 'TEH-02', 'price' => 10000, 'hpp' => 4000, 'current_stock' => 50, 'is_active' => true]);
     $this->actingAs($user);
 
     $comp = Livewire::test(CashierScreen::class);

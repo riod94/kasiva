@@ -21,8 +21,8 @@ class Role extends Model
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'role_permissions')
-                    ->using(RolePermission::class)
-                    ->withTimestamps();
+            ->using(RolePermission::class)
+            ->withTimestamps();
     }
 
     public function users(): HasMany
@@ -60,7 +60,7 @@ class Role extends Model
             ? Permission::firstOrCreate(['slug' => $permission], ['name' => ucwords(str_replace('_', ' ', strtolower($permission)))])
             : $permission;
 
-        if (!$this->permissions()->where('permissions.id', $permissionModel->id)->exists()) {
+        if (! $this->permissions()->where('permissions.id', $permissionModel->id)->exists()) {
             $this->permissions()->attach($permissionModel->id);
         }
     }

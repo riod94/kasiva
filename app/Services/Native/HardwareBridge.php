@@ -3,6 +3,7 @@
 namespace App\Services\Native;
 
 use Illuminate\Support\Facades\Log;
+use Native\Electron\Facades\Window;
 
 class HardwareBridge
 {
@@ -12,7 +13,10 @@ class HardwareBridge
         return 'unknown';
     }
 
-    public function getLifecycleState(): string { return 'foreground'; }
+    public function getLifecycleState(): string
+    {
+        return 'foreground';
+    }
 
     public function printEscPos(string $payload, ?string $printerName = null): bool
     {
@@ -30,11 +34,13 @@ class HardwareBridge
 
     public function scanBarcode(?string $source = null): ?string
     {
-        Log::info('HardwareBridge.scanBarcode stub'); return null;
+        Log::info('HardwareBridge.scanBarcode stub');
+
+        return null;
     }
 
     public static function isNativeAvailable(): bool
     {
-        return class_exists(\Native\Electron\Facades\Window::class) || class_exists(\Native\Mobile\Facades\Window::class);
+        return class_exists(Window::class) || class_exists(\Native\Mobile\Facades\Window::class);
     }
 }

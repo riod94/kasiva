@@ -15,9 +15,13 @@ class PaymentSettings extends Component
     use WithFileUploads;
 
     public ?string $qris_image = null;
+
     public $qris_file = null;
+
     public bool $enable_gofood = true;
+
     public bool $enable_grabfood = true;
+
     public bool $enable_shopeefood = true;
 
     public function mount(): void
@@ -51,13 +55,13 @@ class PaymentSettings extends Component
     public function togglePlatform(string $key): void
     {
         if ($key === 'enable_gofood') {
-            $this->enable_gofood = !$this->enable_gofood;
+            $this->enable_gofood = ! $this->enable_gofood;
             PaymentSetting::setValue('enable_gofood', $this->enable_gofood ? 'true' : 'false');
         } elseif ($key === 'enable_grabfood') {
-            $this->enable_grabfood = !$this->enable_grabfood;
+            $this->enable_grabfood = ! $this->enable_grabfood;
             PaymentSetting::setValue('enable_grabfood', $this->enable_grabfood ? 'true' : 'false');
         } elseif ($key === 'enable_shopeefood') {
-            $this->enable_shopeefood = !$this->enable_shopeefood;
+            $this->enable_shopeefood = ! $this->enable_shopeefood;
             PaymentSetting::setValue('enable_shopeefood', $this->enable_shopeefood ? 'true' : 'false');
         }
 
@@ -71,7 +75,7 @@ class PaymentSettings extends Component
         ]);
 
         $path = $this->qris_file->store('qris', 'public');
-        $this->qris_image = '/storage/' . $path;
+        $this->qris_image = '/storage/'.$path;
         PaymentSetting::setValue('qris_image', $this->qris_image);
         $this->qris_file = null;
 

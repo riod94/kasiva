@@ -2,8 +2,9 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('legal legacy URLs permanently redirect to their canonical routes', function (string $legacy, string $canonical) {
     $this->get($legacy)

@@ -2,16 +2,17 @@
 
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
-use App\Livewire\LandingPage;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('halaman landing page dapat diakses dengan sukses', function () {
     $this->get('/')
         ->assertStatus(200)
-        ->assertSee('Kelola Transaksi Outlet');
+        ->assertSee('Kendali Penuh Profit');
 });
 
 test('halaman login dan register dapat diakses dengan sukses', function () {

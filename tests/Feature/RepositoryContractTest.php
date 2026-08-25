@@ -4,14 +4,22 @@ use App\Contracts\SyncRepositoryInterface;
 use App\DTO\CatalogItem;
 use App\DTO\SyncOperation;
 use App\DTO\TransactionSyncData;
+use App\Models\Expense;
+use App\Models\Product;
+use App\Models\SyncDevice;
+use App\Models\SyncQueue;
+use App\Models\Transaction;
+use App\Models\User;
+use Database\Seeders\KasivaTestFixturesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Tests\TestCase;
 
-uses(\Tests\TestCase::class, RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->seed(\Database\Seeders\KasivaTestFixturesSeeder::class);
+    $this->seed(KasivaTestFixturesSeeder::class);
 });
 
 describe('SyncOperation DTO', function () {
@@ -111,7 +119,7 @@ describe('CatalogItem DTO', function () {
     });
 
     it('builds from Product model with relations', function () {
-        $product = \App\Models\Product::where('sku', 'KSV-TEST-001')->first();
+        $product = Product::where('sku', 'KSV-TEST-001')->first();
 
         $item = CatalogItem::fromModel($product->load(['category', 'variants.options', 'recipes']));
 
@@ -175,7 +183,7 @@ describe('TransactionSyncData DTO', function () {
 
 describe('Model schema parity with contracts', function () {
     it('Transaction has all contract-required fields', function () {
-        $tx = new \App\Models\Transaction();
+        $tx = new Transaction;
 
         expect($tx->getFillable())->toContain('receipt_number')
             ->and($tx->getFillable())->toContain('payment_method')
@@ -190,7 +198,7 @@ describe('Model schema parity with contracts', function () {
     });
 
     it('Expense has client_expense_id and sync_status', function () {
-        $exp = new \App\Models\Expense();
+        $exp = new Expense;
 
         expect($exp->getFillable())->toContain('title')
             ->and($exp->getFillable())->toContain('amount')
@@ -206,7 +214,7 @@ describe('Model schema parity with contracts', function () {
     });
 
     it('Product has catalog fields required by CatalogRepository', function () {
-        $product = new \App\Models\Product();
+        $product = new Product;
 
         expect($product->getFillable())->toContain('name')
             ->and($product->getFillable())->toContain('sku')
@@ -220,9 +228,9 @@ describe('Model schema parity with contracts', function () {
 
 describe('Sync invariants', function () {
     it('enqueueing a transaction requires outbox entry (sync invariant)', function () {
-        $device = \App\Models\SyncDevice::create([
+        $device = SyncDevice::create([
             'id' => (string) Str::uuid(),
-            'user_id' => \App\Models\User::first()->id,
+            'user_id' => User::first()->id,
             'platform' => 'web',
         ]);
 
@@ -235,6 +243,6 @@ describe('Sync invariants', function () {
         );
 
         expect($opId)->not->toBeEmpty()
-            ->and(\App\Models\SyncQueue::find($opId)->operation)->toBe('UPSERT_TRANSACTION');
+            ->and(SyncQueue::find($opId)->operation)->toBe('UPSERT_TRANSACTION');
     });
 });

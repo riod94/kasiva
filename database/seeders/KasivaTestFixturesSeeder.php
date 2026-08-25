@@ -8,14 +8,9 @@ use App\Models\LoyaltyProgram;
 use App\Models\Material;
 use App\Models\Outlet;
 use App\Models\PaymentSetting;
-use App\Models\Permission;
 use App\Models\Product;
 use App\Models\Role;
-use App\Models\Transaction;
 use App\Models\User;
-use App\Models\VariantOption;
-use App\Models\VariantTemplate;
-use App\Models\VariantTemplateOption;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -46,7 +41,7 @@ class KasivaTestFixturesSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role_id' => $roleOwner->id,
                 'outlet_id' => $outlet->id,
-                'pin' => '123456',
+                'pin' => Hash::make('123456'),
                 'phone' => '081234567890',
                 'is_active' => true,
             ]
@@ -59,7 +54,7 @@ class KasivaTestFixturesSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role_id' => $roleCashier->id,
                 'outlet_id' => $outlet->id,
-                'pin' => '111111',
+                'pin' => Hash::make('111111'),
                 'phone' => '081987654321',
                 'is_active' => true,
             ]

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\OfflineSyncController;
+use App\Http\Controllers\SyncController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Expenses\ExpenseManager;
@@ -150,8 +152,8 @@ Route::middleware(['auth'])->group(function () {
 if (app()->environment('local', 'testing')) {
     Route::get('/error-preview/{code}', function ($code) {
         $validCodes = [400, 401, 403, 404, 419, 429, 500, 502, 503];
-        $statusCode = (int)$code;
-        if (!in_array($statusCode, $validCodes)) {
+        $statusCode = (int) $code;
+        if (! in_array($statusCode, $validCodes)) {
             abort(404, 'Kode error pengujian tidak ditemukan.');
         }
         $customMessage = request('message');
@@ -162,16 +164,15 @@ if (app()->environment('local', 'testing')) {
     })->name('error.preview');
 }
 
-
 Route::middleware('auth')->prefix('offline-sync')->group(function () {
-    Route::post('/transactions', [\App\Http\Controllers\OfflineSyncController::class, 'transactions'])->middleware('permission:POS_ACCESS');
-    Route::post('/expenses', [\App\Http\Controllers\OfflineSyncController::class, 'expenses'])->middleware('permission:MANAGE_EXPENSES');
+    Route::post('/transactions', [OfflineSyncController::class, 'transactions'])->middleware('permission:POS_ACCESS');
+    Route::post('/expenses', [OfflineSyncController::class, 'expenses'])->middleware('permission:MANAGE_EXPENSES');
 });
 
 Route::middleware('auth')->prefix('api/v1/sync')->group(function () {
-    Route::post('/devices', [\App\Http\Controllers\SyncController::class, 'registerDevice']);
-    Route::post('/push', [\App\Http\Controllers\SyncController::class, 'push']);
-    Route::post('/pull', [\App\Http\Controllers\SyncController::class, 'pull']);
+    Route::post('/devices', [SyncController::class, 'registerDevice']);
+    Route::post('/push', [SyncController::class, 'push']);
+    Route::post('/pull', [SyncController::class, 'pull']);
 });
 
 // Local-first operational app. Route ini tidak memakai Livewire agar dapat di-reload offline.

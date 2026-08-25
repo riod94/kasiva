@@ -16,13 +16,21 @@ class CampaignManager extends Component
     use WithPagination;
 
     public bool $showModal = false;
+
     public ?string $campaignId = null;
+
     public string $name = '';
+
     public string $description = '';
+
     public string $type = 'BUNDLE';
+
     public bool $is_active = true;
+
     public int $priority = 1;
+
     public string $reward_type = 'PERCENT_DISCOUNT';
+
     public float $reward_value = 10;
 
     public function mount(): void
@@ -46,11 +54,12 @@ class CampaignManager extends Component
         $this->is_active = $c->is_active;
         $this->priority = $c->priority;
         $this->reward_type = $c->reward_type;
-        $this->reward_value = (float)$c->reward_value;
+        $this->reward_value = (float) $c->reward_value;
         $this->showModal = true;
     }
 
     public array $selectedProducts = []; // product_id => qty/role
+
     public array $rewardItems = [];
 
     public function saveCampaign(): void
@@ -72,10 +81,12 @@ class CampaignManager extends Component
             ]
         );
         // If campaign_items selected, sync (optional)
-        if(!empty($this->selectedProducts)){
+        if (! empty($this->selectedProducts)) {
             $camp->items()->delete();
-            foreach($this->selectedProducts as $pid=>$qty){
-                if($qty>0) $camp->items()->create(['product_id'=>$pid,'quantity'=>(int)$qty,'role'=>'BUY']);
+            foreach ($this->selectedProducts as $pid => $qty) {
+                if ($qty > 0) {
+                    $camp->items()->create(['product_id' => $pid, 'quantity' => (int) $qty, 'role' => 'BUY']);
+                }
             }
         }
         $this->showModal = false;
@@ -85,7 +96,7 @@ class CampaignManager extends Component
     public function toggleActive(string $id): void
     {
         $c = Campaign::findOrFail($id);
-        $c->is_active = !$c->is_active;
+        $c->is_active = ! $c->is_active;
         $c->save();
     }
 
@@ -98,7 +109,7 @@ class CampaignManager extends Component
     public function render()
     {
         return view('livewire.marketing.campaign-manager', [
-            'campaigns' => Campaign::with(['items.product','rewards'])->latest()->paginate(9),
+            'campaigns' => Campaign::with(['items.product', 'rewards'])->latest()->paginate(9),
             'products' => Product::orderBy('name')->get(),
         ]);
     }

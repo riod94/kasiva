@@ -3,8 +3,11 @@
 use App\Models\Material;
 use App\Models\Product;
 use App\Services\HppCalculatorService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('menghitung HPP moving average bahan baku saat restok dengan tepat', function () {
     $material = Material::create([
@@ -15,7 +18,7 @@ test('menghitung HPP moving average bahan baku saat restok dengan tepat', functi
         'avg_cost' => 1000.0,
     ]);
 
-    $service = new HppCalculatorService();
+    $service = new HppCalculatorService;
     $newAvgCost = $service->recalculateMovingAverage($material, 10, 2000.0);
 
     expect($newAvgCost)->toBe(1500.0);
@@ -51,7 +54,7 @@ test('menghitung total HPP produk dari resep bahan baku', function () {
         $milk->id => ['quantity' => 150],   // 150 * 20 = 3,000
     ]);
 
-    $service = new HppCalculatorService();
+    $service = new HppCalculatorService;
     $totalHpp = $service->calculateProductHpp($product);
 
     expect($totalHpp)->toBe(6600.0);
@@ -80,10 +83,10 @@ test('menolak checkout ketika stok bahan resep tidak mencukupi tanpa mengubah st
 test('uses the caller transaction without opening a nested transaction', function () {
     [$product, $material] = recipeProduct(productStock: 4, materialStock: 12, recipeQuantity: 3);
 
-    Illuminate\Support\Facades\DB::transaction(function () use ($product): void {
-        $level = Illuminate\Support\Facades\DB::transactionLevel();
+    DB::transaction(function () use ($product): void {
+        $level = DB::transactionLevel();
         app(HppCalculatorService::class)->deductRecipeStockForCheckout($product, 2);
-        expect(Illuminate\Support\Facades\DB::transactionLevel())->toBe($level);
+        expect(DB::transactionLevel())->toBe($level);
     });
 
     expect($product->fresh()->current_stock)->toBe(2.0)
@@ -101,7 +104,7 @@ function recipeProduct(float $productStock, float $materialStock, float $recipeQ
 
     $product = Product::create([
         'name' => 'Produk Uji',
-        'sku' => 'SKU-' . uniqid(),
+        'sku' => 'SKU-'.uniqid(),
         'price' => 10000.0,
         'hpp' => 1000.0,
         'current_stock' => $productStock,

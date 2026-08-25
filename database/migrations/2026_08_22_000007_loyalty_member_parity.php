@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 return new class extends Migration
@@ -12,19 +12,19 @@ return new class extends Migration
     {
         // loyalty_members — tambah kolom parity Ngepos
         Schema::table('loyalty_members', function (Blueprint $t) {
-            if (!Schema::hasColumn('loyalty_members', 'qr_code')) {
+            if (! Schema::hasColumn('loyalty_members', 'qr_code')) {
                 $t->string('qr_code')->nullable()->unique()->after('phone');
             }
-            if (!Schema::hasColumn('loyalty_members', 'status')) {
+            if (! Schema::hasColumn('loyalty_members', 'status')) {
                 $t->string('status')->default('ASSIGNED')->after('qr_code');
             }
-            if (!Schema::hasColumn('loyalty_members', 'email')) {
+            if (! Schema::hasColumn('loyalty_members', 'email')) {
                 $t->string('email')->nullable()->after('status');
             }
-            if (!Schema::hasColumn('loyalty_members', 'notes')) {
+            if (! Schema::hasColumn('loyalty_members', 'notes')) {
                 $t->text('notes')->nullable()->after('email');
             }
-            if (!Schema::hasColumn('loyalty_members', 'assigned_at')) {
+            if (! Schema::hasColumn('loyalty_members', 'assigned_at')) {
                 $t->dateTime('assigned_at')->nullable()->after('notes');
             }
         });
@@ -59,10 +59,10 @@ return new class extends Migration
         try {
             $members = DB::table('loyalty_members')->whereNull('qr_code')->get();
             foreach ($members as $m) {
-                $code = 'KSV-MBR-' . strtoupper(Str::random(8));
+                $code = 'KSV-MBR-'.strtoupper(Str::random(8));
                 // ensure unique
                 while (DB::table('loyalty_members')->where('qr_code', $code)->exists()) {
-                    $code = 'KSV-MBR-' . strtoupper(Str::random(8));
+                    $code = 'KSV-MBR-'.strtoupper(Str::random(8));
                 }
                 DB::table('loyalty_members')->where('id', $m->id)->update([
                     'qr_code' => $code,
@@ -70,23 +70,27 @@ return new class extends Migration
                     'assigned_at' => $m->name ? ($m->created_at ?? now()) : null,
                 ]);
             }
-        } catch (\Throwable $e) {}
+        } catch (Throwable $e) {
+        }
 
         // loyalty_stamps — tambah program_id + stamped_at
         Schema::table('loyalty_stamps', function (Blueprint $t) {
-            if (!Schema::hasColumn('loyalty_stamps', 'program_id')) {
+            if (! Schema::hasColumn('loyalty_stamps', 'program_id')) {
                 $t->foreignUuid('program_id')->nullable()->after('loyalty_member_id')->constrained('loyalty_programs')->nullOnDelete();
             }
-            if (!Schema::hasColumn('loyalty_stamps', 'stamped_at')) {
+            if (! Schema::hasColumn('loyalty_stamps', 'stamped_at')) {
                 $t->dateTime('stamped_at')->nullable()->after('stamps_earned');
             }
         });
 
         // backfill stamped_at dari created_at
-        try { DB::statement("UPDATE loyalty_stamps SET stamped_at = created_at WHERE stamped_at IS NULL"); } catch (\Throwable $e) {}
+        try {
+            DB::statement('UPDATE loyalty_stamps SET stamped_at = created_at WHERE stamped_at IS NULL');
+        } catch (Throwable $e) {
+        }
 
         // customer_rewards — tabel per-customer reward (AVAILABLE/CLAIMED/EXPIRED) seperti Ngepos customerRewards
-        if (!Schema::hasTable('customer_rewards')) {
+        if (! Schema::hasTable('customer_rewards')) {
             Schema::create('customer_rewards', function (Blueprint $t) {
                 $t->uuid('id')->primary();
                 $t->foreignUuid('loyalty_member_id')->constrained('loyalty_members')->cascadeOnDelete();
@@ -108,17 +112,27 @@ return new class extends Migration
         }
         Schema::table('loyalty_stamps', function (Blueprint $t) {
             if (Schema::hasColumn('loyalty_stamps', 'claimed_transaction_id')) {
-                try { $t->dropForeign(['claimed_transaction_id']); } catch (\Throwable $e) {}
+                try {
+                    $t->dropForeign(['claimed_transaction_id']);
+                } catch (Throwable $e) {
+                }
             }
             if (Schema::hasColumn('loyalty_stamps', 'program_id')) {
-                try { $t->dropForeign(['program_id']); } catch (\Throwable $e) {}
+                try {
+                    $t->dropForeign(['program_id']);
+                } catch (Throwable $e) {
+                }
                 $t->dropColumn('program_id');
             }
-            if (Schema::hasColumn('loyalty_stamps', 'stamped_at')) $t->dropColumn('stamped_at');
+            if (Schema::hasColumn('loyalty_stamps', 'stamped_at')) {
+                $t->dropColumn('stamped_at');
+            }
         });
         Schema::table('loyalty_members', function (Blueprint $t) {
-            foreach (['assigned_at','notes','email','status','qr_code'] as $col) {
-                if (Schema::hasColumn('loyalty_members', $col)) $t->dropColumn($col);
+            foreach (['assigned_at', 'notes', 'email', 'status', 'qr_code'] as $col) {
+                if (Schema::hasColumn('loyalty_members', $col)) {
+                    $t->dropColumn($col);
+                }
             }
         });
     }

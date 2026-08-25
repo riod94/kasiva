@@ -15,7 +15,7 @@ class RequirePermission
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             abort(401, 'Sesi login diperlukan untuk mengakses halaman ini.');
         }
 
@@ -36,6 +36,6 @@ class RequirePermission
             }
         }
 
-        abort(403, 'Akses Ditolak: Peran akun Anda (' . ($user->role?->name ?? 'Kasir') . ') tidak memiliki izin untuk mengakses modul ini.');
+        abort(403, 'Akses Ditolak: Peran akun Anda ('.($user->role?->name ?? 'Kasir').') tidak memiliki izin untuk mengakses modul ini.');
     }
 }

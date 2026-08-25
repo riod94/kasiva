@@ -14,5 +14,5 @@ interface CatalogRepositoryInterface
 
     public function stockSnapshot(): array;
 
-    public function bootstrapFromCloud(string $deviceId, string $cursor = null): int;
+    public function bootstrapFromCloud(string $deviceId, ?string $cursor = null): int;
 }

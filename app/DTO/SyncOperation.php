@@ -8,9 +8,13 @@ use Illuminate\Support\Str;
 class SyncOperation
 {
     public const STATUS_PENDING = 'PENDING';
+
     public const STATUS_SENDING = 'SENDING';
+
     public const STATUS_SYNCED = 'SYNCED';
+
     public const STATUS_CONFLICT = 'CONFLICT';
+
     public const STATUS_FAILED = 'FAILED';
 
     public function __construct(

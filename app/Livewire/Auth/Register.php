@@ -13,9 +13,13 @@ use Livewire\Component;
 class Register extends Component
 {
     public $outlet_name = '';
+
     public $name = '';
+
     public $email = '';
+
     public $password = '';
+
     public $phone = '';
 
     public function register()
@@ -47,7 +51,7 @@ class Register extends Component
             'phone' => $this->phone,
             'role_id' => $ownerRole->id,
             'outlet_id' => $outlet->id,
-            'pin' => '123456',
+            'pin' => Hash::make('123456'),
         ]);
 
         Auth::login($user);

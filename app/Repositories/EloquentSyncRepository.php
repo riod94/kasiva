@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Contracts\SyncRepositoryInterface;
 use App\DTO\SyncOperation;
+use App\Models\SyncDevice;
 use App\Models\SyncQueue;
-use Carbon\Carbon;
 
 class EloquentSyncRepository implements SyncRepositoryInterface
 {
@@ -18,7 +18,7 @@ class EloquentSyncRepository implements SyncRepositoryInterface
             payload: $payload,
         );
 
-        $deviceId = $deviceId ?? \App\Models\SyncDevice::query()->first()?->id;
+        $deviceId = $deviceId ?? SyncDevice::query()->first()?->id;
 
         $queue = SyncQueue::create([
             'device_id' => $deviceId,

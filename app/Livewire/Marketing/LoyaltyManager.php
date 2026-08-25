@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Marketing;
 
+use App\Models\CustomerReward;
 use App\Models\LoyaltyMember;
 use App\Models\LoyaltyProgram;
 use App\Models\Product;
@@ -14,28 +15,46 @@ class LoyaltyManager extends Component
     use WithPagination;
 
     public string $search = '';
+
     public bool $showMemberModal = false;
+
     public string $memberName = '';
+
     public string $memberPhone = '';
 
     public ?string $selectedMemberId = null;
+
     public $selectedMember = null;
+
     public bool $showStampModal = false;
+
     public ?string $selectedProgramId = null;
 
     // Program config
     public bool $showProgramModal = false;
+
     public ?string $programId = null;
+
     public string $programName = '';
+
     public int $targetStamps = 10;
+
     public float $minTransaction = 0;
+
     public int $expiryMonths = 12;
+
     public string $rewardType = 'FREE_PRODUCT';
+
     public float $rewardValue = 0;
+
     public int $rewardClaimDays = 30;
+
     public string $afterClaim = 'RESET';
+
     public bool $allowWithPromo = false;
+
     public bool $programIsActive = true;
+
     public array $excludedProductIds = [];
 
     protected function memberRules(): array
@@ -93,16 +112,19 @@ class LoyaltyManager extends Component
 
     public function addStamp(): void
     {
-        if (!$this->selectedMember) return;
+        if (! $this->selectedMember) {
+            return;
+        }
 
         $member = LoyaltyMember::findOrFail($this->selectedMember->id);
         $program = $this->selectedProgramId
             ? LoyaltyProgram::findOrFail($this->selectedProgramId)
             : LoyaltyProgram::where('is_active', true)->first();
 
-        if (!$program) {
+        if (! $program) {
             session()->flash('message', 'Belum ada program loyalitas aktif.');
             $this->showStampModal = false;
+
             return;
         }
 
@@ -115,30 +137,35 @@ class LoyaltyManager extends Component
         if ($progress['isEligibleForReward']) {
             session()->flash('message', '1 stempel ditambahkan. Member sudah berhak klaim reward!');
         } else {
-            session()->flash('message', '1 Stempel berhasil ditambahkan untuk ' . $member->name . '.');
+            session()->flash('message', '1 Stempel berhasil ditambahkan untuk '.$member->name.'.');
         }
     }
 
     public function redeemReward(): void
     {
-        if (!$this->selectedMember) return;
+        if (! $this->selectedMember) {
+            return;
+        }
         $member = LoyaltyMember::findOrFail($this->selectedMember->id);
         $program = $this->selectedProgramId
             ? LoyaltyProgram::findOrFail($this->selectedProgramId)
             : LoyaltyProgram::where('is_active', true)->first();
 
-        if (!$program) return;
+        if (! $program) {
+            return;
+        }
 
         $progress = LoyaltyService::getCustomerProgress($member, $program);
-        if (!$progress['isEligibleForReward']) {
+        if (! $progress['isEligibleForReward']) {
             session()->flash('message', 'Belum cukup stempel untuk klaim.');
+
             return;
         }
 
         // cari reward AVAILABLE, jika belum ada buat satu (parity Ngepos checkAndCreateReward)
-        $reward = \App\Models\CustomerReward::where('loyalty_member_id', $member->id)
-            ->where('program_id', $program->id)->where('status','AVAILABLE')->where('expires_at','>', now())->first();
-        if (!$reward) {
+        $reward = CustomerReward::where('loyalty_member_id', $member->id)
+            ->where('program_id', $program->id)->where('status', 'AVAILABLE')->where('expires_at', '>', now())->first();
+        if (! $reward) {
             $reward = LoyaltyService::checkAndCreateReward($member, $program);
         }
         if ($reward) {
@@ -148,7 +175,7 @@ class LoyaltyManager extends Component
             LoyaltyService::resetStamps($member, $program);
         }
 
-        session()->flash('message', 'Reward berhasil diklaim untuk ' . $member->name . '!');
+        session()->flash('message', 'Reward berhasil diklaim untuk '.$member->name.'!');
         $this->showStampModal = false;
     }
 
@@ -158,47 +185,63 @@ class LoyaltyManager extends Component
         return LoyaltyService::getCustomerProgress($member, $program);
     }
 
-    public function openProgramModal(?string $id=null): void {
-        if($id){
+    public function openProgramModal(?string $id = null): void
+    {
+        if ($id) {
             $pr = LoyaltyProgram::findOrFail($id);
-            $this->programId=$pr->id; $this->programName=$pr->name; $this->targetStamps=(int)$pr->target_stamps;
-            $this->minTransaction=(float)$pr->min_transaction; $this->expiryMonths=(int)$pr->expiry_months;
-            $this->rewardType=$pr->reward_type ?? 'FREE_PRODUCT'; $this->rewardValue=(float)($pr->reward_value ?? 0);
-            $this->rewardClaimDays=(int)($pr->reward_claim_days ?? 30); $this->afterClaim=$pr->after_claim ?? 'RESET';
-            $this->allowWithPromo=(bool)($pr->allow_with_promo ?? false); $this->programIsActive=(bool)$pr->is_active;
-            $this->excludedProductIds=$pr->excluded_product_ids ?? [];
+            $this->programId = $pr->id;
+            $this->programName = $pr->name;
+            $this->targetStamps = (int) $pr->target_stamps;
+            $this->minTransaction = (float) $pr->min_transaction;
+            $this->expiryMonths = (int) $pr->expiry_months;
+            $this->rewardType = $pr->reward_type ?? 'FREE_PRODUCT';
+            $this->rewardValue = (float) ($pr->reward_value ?? 0);
+            $this->rewardClaimDays = (int) ($pr->reward_claim_days ?? 30);
+            $this->afterClaim = $pr->after_claim ?? 'RESET';
+            $this->allowWithPromo = (bool) ($pr->allow_with_promo ?? false);
+            $this->programIsActive = (bool) $pr->is_active;
+            $this->excludedProductIds = $pr->excluded_product_ids ?? [];
         } else {
-            $this->reset(['programId','programName']); $this->targetStamps=10; $this->minTransaction=0; $this->expiryMonths=12;
-            $this->rewardType='FREE_PRODUCT'; $this->rewardValue=0; $this->rewardClaimDays=30; $this->afterClaim='RESET';
-            $this->allowWithPromo=false; $this->programIsActive=true; $this->excludedProductIds=[];
+            $this->reset(['programId', 'programName']);
+            $this->targetStamps = 10;
+            $this->minTransaction = 0;
+            $this->expiryMonths = 12;
+            $this->rewardType = 'FREE_PRODUCT';
+            $this->rewardValue = 0;
+            $this->rewardClaimDays = 30;
+            $this->afterClaim = 'RESET';
+            $this->allowWithPromo = false;
+            $this->programIsActive = true;
+            $this->excludedProductIds = [];
         }
-        $this->showProgramModal=true;
+        $this->showProgramModal = true;
     }
 
-    public function saveProgram(): void {
+    public function saveProgram(): void
+    {
         $this->validate([
-            'programName'=>'required|string|max:120',
-            'targetStamps'=>'required|integer|min:2|max:50',
-            'minTransaction'=>'required|numeric|min:0',
-            'expiryMonths'=>'required|integer|min:1|max:60',
-            'rewardType'=>'required|in:FREE_PRODUCT,PERCENT_DISCOUNT,FIXED_DISCOUNT',
-            'rewardValue'=>'required|numeric|min:0',
-            'rewardClaimDays'=>'required|integer|min:1|max:365',
-            'afterClaim'=>'required|in:RESET,COMPLETE',
+            'programName' => 'required|string|max:120',
+            'targetStamps' => 'required|integer|min:2|max:50',
+            'minTransaction' => 'required|numeric|min:0',
+            'expiryMonths' => 'required|integer|min:1|max:60',
+            'rewardType' => 'required|in:FREE_PRODUCT,PERCENT_DISCOUNT,FIXED_DISCOUNT',
+            'rewardValue' => 'required|numeric|min:0',
+            'rewardClaimDays' => 'required|integer|min:1|max:365',
+            'afterClaim' => 'required|in:RESET,COMPLETE',
         ]);
 
         $data = [
-            'name'=>$this->programName,
-            'target_stamps'=>$this->targetStamps,
-            'min_transaction'=>$this->minTransaction,
-            'expiry_months'=>$this->expiryMonths,
-            'reward_type'=>$this->rewardType,
-            'reward_value'=>$this->rewardValue,
-            'reward_claim_days'=>$this->rewardClaimDays,
-            'after_claim'=>$this->afterClaim,
-            'allow_with_promo'=>$this->allowWithPromo,
-            'is_active'=>$this->programIsActive,
-            'excluded_product_ids'=>$this->excludedProductIds,
+            'name' => $this->programName,
+            'target_stamps' => $this->targetStamps,
+            'min_transaction' => $this->minTransaction,
+            'expiry_months' => $this->expiryMonths,
+            'reward_type' => $this->rewardType,
+            'reward_value' => $this->rewardValue,
+            'reward_claim_days' => $this->rewardClaimDays,
+            'after_claim' => $this->afterClaim,
+            'allow_with_promo' => $this->allowWithPromo,
+            'is_active' => $this->programIsActive,
+            'excluded_product_ids' => $this->excludedProductIds,
         ];
 
         if ($this->programId) {
@@ -206,20 +249,22 @@ class LoyaltyManager extends Component
         } else {
             LoyaltyProgram::create($data);
         }
-        $this->showProgramModal=false; session()->flash('message','Program loyalitas berhasil disimpan.');
+        $this->showProgramModal = false;
+        session()->flash('message', 'Program loyalitas berhasil disimpan.');
     }
 
     public function render()
     {
         $members = LoyaltyMember::query()
             ->when($this->search, function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('phone', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('phone', 'like', '%'.$this->search.'%');
             })
             ->latest()
             ->paginate(10);
         $programs = LoyaltyProgram::orderByDesc('is_active')->orderBy('name')->get();
-        $products = Product::orderBy('name')->limit(50)->get(['id','name']);
+        $products = Product::orderBy('name')->limit(50)->get(['id', 'name']);
+
         return view('livewire.marketing.loyalty-manager', [
             'members' => $members,
             'programs' => $programs,

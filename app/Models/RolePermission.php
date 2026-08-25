@@ -12,5 +12,6 @@ class RolePermission extends Pivot
     protected $table = 'role_permissions';
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 }

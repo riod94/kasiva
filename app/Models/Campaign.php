@@ -34,6 +34,13 @@ class Campaign extends Model
         ];
     }
 
-    public function items(): HasMany { return $this->hasMany(CampaignItem::class); }
-    public function rewards(): HasMany { return $this->hasMany(CampaignReward::class); }
+    public function items(): HasMany
+    {
+        return $this->hasMany(CampaignItem::class);
+    }
+
+    public function rewards(): HasMany
+    {
+        return $this->hasMany(CampaignReward::class);
+    }
 }

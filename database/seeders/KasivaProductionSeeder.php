@@ -24,7 +24,6 @@ use App\Models\VariantOption;
 use App\Models\VariantTemplate;
 use App\Models\VariantTemplateOption;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class KasivaProductionSeeder extends Seeder
@@ -109,7 +108,7 @@ class KasivaProductionSeeder extends Seeder
             'VIEW_TRANSACTIONS',
         ]);
 
-        // 3. Users / Staff
+        // 3. Users / Staff — production wajib ganti password di login pertama
         User::firstOrCreate(
             ['email' => 'owner@kasiva.pos'],
             [
@@ -117,9 +116,10 @@ class KasivaProductionSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'role_id' => $roleOwner->id,
                 'outlet_id' => $outlet->id,
-                'pin' => '123456',
+                'pin' => Hash::make('123456'),
                 'phone' => '081234567890',
                 'is_active' => true,
+                'must_change_password' => true,
             ]
         );
 
@@ -130,9 +130,10 @@ class KasivaProductionSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'role_id' => $roleCashier->id,
                 'outlet_id' => $outlet->id,
-                'pin' => '111111',
+                'pin' => Hash::make('111111'),
                 'phone' => '081987654321',
                 'is_active' => true,
+                'must_change_password' => true,
             ]
         );
 
@@ -668,26 +669,26 @@ class KasivaProductionSeeder extends Seeder
         );
 
         // 10a. Loyalty Program Default
-        if (class_exists(\App\Models\LoyaltyProgram::class)) {
-            \App\Models\LoyaltyProgram::firstOrCreate(['name' => '10 Stempel Gratis 1 Menu'], ['target_stamps'=>10,'min_transaction'=>0,'expiry_months'=>12,'is_active'=>true]);
+        if (class_exists(LoyaltyProgram::class)) {
+            LoyaltyProgram::firstOrCreate(['name' => '10 Stempel Gratis 1 Menu'], ['target_stamps' => 10, 'min_transaction' => 0, 'expiry_months' => 12, 'is_active' => true]);
         }
 
         // 10b. Variant Template Library (for reusable variant options)
-        if (class_exists(\App\Models\VariantTemplate::class)) {
-            $tplPedas = \App\Models\VariantTemplate::firstOrCreate(['name' => 'Level Pedas'], ['selection_type'=>'SINGLE','is_required'=>false,'order_index'=>1]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplPedas->id,'name'=>'Tidak Pedas'], ['price_modifier'=>0,'cogs_modifier'=>0]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplPedas->id,'name'=>'Sedang'], ['price_modifier'=>0,'cogs_modifier'=>0]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplPedas->id,'name'=>'Pedas'], ['price_modifier'=>1000,'cogs_modifier'=>300]);
+        if (class_exists(VariantTemplate::class)) {
+            $tplPedas = VariantTemplate::firstOrCreate(['name' => 'Level Pedas'], ['selection_type' => 'SINGLE', 'is_required' => false, 'order_index' => 1]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplPedas->id, 'name' => 'Tidak Pedas'], ['price_modifier' => 0, 'cogs_modifier' => 0]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplPedas->id, 'name' => 'Sedang'], ['price_modifier' => 0, 'cogs_modifier' => 0]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplPedas->id, 'name' => 'Pedas'], ['price_modifier' => 1000, 'cogs_modifier' => 300]);
 
-            $tplExtra = \App\Models\VariantTemplate::firstOrCreate(['name' => 'Extra Topping'], ['selection_type'=>'MULTIPLE','is_required'=>false,'order_index'=>2]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplExtra->id,'name'=>'Keju'], ['price_modifier'=>3000,'cogs_modifier'=>1000]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplExtra->id,'name'=>'Coklat'], ['price_modifier'=>3000,'cogs_modifier'=>1000]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplExtra->id,'name'=>'Boba'], ['price_modifier'=>5000,'cogs_modifier'=>1500]);
+            $tplExtra = VariantTemplate::firstOrCreate(['name' => 'Extra Topping'], ['selection_type' => 'MULTIPLE', 'is_required' => false, 'order_index' => 2]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplExtra->id, 'name' => 'Keju'], ['price_modifier' => 3000, 'cogs_modifier' => 1000]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplExtra->id, 'name' => 'Coklat'], ['price_modifier' => 3000, 'cogs_modifier' => 1000]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplExtra->id, 'name' => 'Boba'], ['price_modifier' => 5000, 'cogs_modifier' => 1500]);
 
-            $tplSugar = \App\Models\VariantTemplate::firstOrCreate(['name' => 'Level Gula Global'], ['selection_type'=>'SINGLE','is_required'=>true,'order_index'=>3]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplSugar->id,'name'=>'Normal'], ['price_modifier'=>0,'cogs_modifier'=>0]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplSugar->id,'name'=>'Less Sugar'], ['price_modifier'=>0,'cogs_modifier'=>0]);
-            \App\Models\VariantTemplateOption::firstOrCreate(['variant_template_id'=>$tplSugar->id,'name'=>'No Sugar'], ['price_modifier'=>0,'cogs_modifier'=>0]);
+            $tplSugar = VariantTemplate::firstOrCreate(['name' => 'Level Gula Global'], ['selection_type' => 'SINGLE', 'is_required' => true, 'order_index' => 3]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplSugar->id, 'name' => 'Normal'], ['price_modifier' => 0, 'cogs_modifier' => 0]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplSugar->id, 'name' => 'Less Sugar'], ['price_modifier' => 0, 'cogs_modifier' => 0]);
+            VariantTemplateOption::firstOrCreate(['variant_template_id' => $tplSugar->id, 'name' => 'No Sugar'], ['price_modifier' => 0, 'cogs_modifier' => 0]);
         }
 
         // 11. Sample Transactions
@@ -699,7 +700,7 @@ class KasivaProductionSeeder extends Seeder
                 $txDate = now()->subHours($i * 2);
 
                 $tx = Transaction::create([
-                    'receipt_number' => 'KSV-' . $txDate->format('Ymd') . '-' . sprintf('%04d', $i),
+                    'receipt_number' => 'KSV-'.$txDate->format('Ymd').'-'.sprintf('%04d', $i),
                     'payment_method' => $method,
                     'total_amount' => $pSample->price * 2,
                     'total_hpp' => $pSample->hpp * 2,

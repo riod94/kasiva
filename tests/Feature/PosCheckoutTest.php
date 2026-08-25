@@ -6,9 +6,11 @@ use App\Models\Material;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('komponen cashier screen dapat di-render dengan sukses setelah login', function () {
     $user = User::factory()->create();
@@ -21,7 +23,7 @@ test('komponen cashier screen dapat di-render dengan sukses setelah login', func
 test('kasir dapat menambah produk ke keranjang dan melakukan checkout tunai', function () {
     $user = User::factory()->create();
     $cat = Category::create(['name' => 'Kopi', 'order_index' => 1]);
-    
+
     $beans = Material::create([
         'name' => 'Biji Kopi',
         'unit' => 'gram',
@@ -51,7 +53,7 @@ test('kasir dapat menambah produk ke keranjang dan melakukan checkout tunai', fu
         ->assertSet('showReceiptModal', true);
 
     expect(Transaction::count())->toBe(1);
-    
+
     $tx = Transaction::first();
     expect($tx->receipt_number)->toContain('KSV-');
     expect($tx->total_amount)->toBe(18000.0);

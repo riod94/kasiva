@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use App\Models\Product;
+
 class CatalogItem
 {
     public function __construct(
@@ -55,7 +57,7 @@ class CatalogItem
         );
     }
 
-    public static function fromModel(\App\Models\Product $product): self
+    public static function fromModel(Product $product): self
     {
         return new self(
             id: $product->id,

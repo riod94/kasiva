@@ -2,7 +2,6 @@
 
 namespace App\Services\Native;
 
-use Illuminate\Support\Facades\DB;
 use PDO;
 
 class SqliteConnection
@@ -11,18 +10,26 @@ class SqliteConnection
     {
         $path ??= self::path();
         $dir = dirname($path);
-        if (!is_dir($dir)) mkdir($dir, 0755, true);
-        $pdo = new PDO('sqlite:' . $path);
+        if (! is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+        $pdo = new PDO('sqlite:'.$path);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->exec('PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA foreign_keys=ON;');
+
         return $pdo;
     }
 
     public static function path(?string $override = null): string
     {
-        if ($override) return $override;
+        if ($override) {
+            return $override;
+        }
         $base = env('NATIVE_SQLITE_PATH');
-        if ($base) return $base;
+        if ($base) {
+            return $base;
+        }
+
         return storage_path('native/kasiva-offline.sqlite');
     }
 

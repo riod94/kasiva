@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\SyncRepositoryInterface;
+use App\Repositories\EloquentSyncRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,8 +14,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Contracts\SyncRepositoryInterface::class,
-            \App\Repositories\EloquentSyncRepository::class
+            SyncRepositoryInterface::class,
+            EloquentSyncRepository::class
         );
     }
 

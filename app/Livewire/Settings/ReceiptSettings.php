@@ -12,8 +12,10 @@ use Livewire\Component;
 class ReceiptSettings extends Component
 {
     public bool $showLogo = true;
+
     public string $footerText = "— TERIMA KASIH —\nFollow IG: @kasiva.pos";
-    public string $paperWidth = "58mm";
+
+    public string $paperWidth = '58mm';
 
     public function mount(): void
     {

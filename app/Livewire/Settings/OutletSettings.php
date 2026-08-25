@@ -8,9 +8,13 @@ use Livewire\Component;
 class OutletSettings extends Component
 {
     public string $name = 'Kasiva Coffee & Kitchen';
+
     public string $address = 'Jl. Kemang Raya No. 45, Jakarta Selatan';
+
     public string $phone = '081298765432';
+
     public float $tax_percentage = 10.0;
+
     public float $service_charge_percentage = 5.0;
 
     public function mount(): void
@@ -22,8 +26,8 @@ class OutletSettings extends Component
             $this->name = $outlet->name;
             $this->address = $outlet->address ?? '';
             $this->phone = $outlet->phone ?? '';
-            $this->tax_percentage = (float)$outlet->tax_percentage;
-            $this->service_charge_percentage = (float)$outlet->service_charge_percentage;
+            $this->tax_percentage = (float) $outlet->tax_percentage;
+            $this->service_charge_percentage = (float) $outlet->service_charge_percentage;
         }
     }
 

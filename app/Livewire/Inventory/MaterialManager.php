@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Inventory;
 
-use App\Models\InventoryLog;
 use App\Models\Material;
+use App\Services\HppCalculatorService;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,23 +12,35 @@ class MaterialManager extends Component
     use WithPagination;
 
     public string $search = '';
-    
+
     // Create / Edit Modal State
     public bool $showModal = false;
+
     public ?string $materialId = null;
+
     public string $name = '';
+
     public string $unit = 'gram';
+
     public float $current_stock = 0.0;
+
     public float $min_stock = 100.0;
+
     public float $avg_cost = 0.0;
 
     // Restock Modal State
     public bool $showRestockModal = false;
+
     public ?string $restockMaterialId = null;
+
     public string $restockMaterialName = '';
+
     public string $restockUnit = '';
+
     public float $restockQuantity = 0.0;
+
     public float $restockTotalCost = 0.0;
+
     public string $restockNotes = '';
 
     protected $rules = [
@@ -57,9 +69,9 @@ class MaterialManager extends Component
         $this->materialId = $material->id;
         $this->name = $material->name;
         $this->unit = $material->unit;
-        $this->current_stock = (float)$material->current_stock;
-        $this->min_stock = (float)$material->min_stock;
-        $this->avg_cost = (float)$material->avg_cost;
+        $this->current_stock = (float) $material->current_stock;
+        $this->min_stock = (float) $material->min_stock;
+        $this->avg_cost = (float) $material->avg_cost;
         $this->showModal = true;
     }
 
@@ -117,7 +129,7 @@ class MaterialManager extends Component
         $incomingTotalCost = (float) $this->restockTotalCost;
         $unitPrice = $incomingQty > 0 ? $incomingTotalCost / $incomingQty : 0;
 
-        app(\App\Services\HppCalculatorService::class)->recalculateMovingAverage(
+        app(HppCalculatorService::class)->recalculateMovingAverage(
             $material,
             $incomingQty,
             $unitPrice,
@@ -138,7 +150,7 @@ class MaterialManager extends Component
     public function render()
     {
         $materials = Material::query()
-            ->when($this->search, fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
+            ->when($this->search, fn ($q) => $q->where('name', 'like', '%'.$this->search.'%'))
             ->orderBy('name')
             ->paginate(12);
 

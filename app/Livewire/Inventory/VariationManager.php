@@ -14,11 +14,17 @@ class VariationManager extends Component
     use WithPagination;
 
     public string $search = '';
+
     public bool $showModal = false;
+
     public ?string $variantId = null;
+
     public ?string $productId = null;
+
     public string $name = '';
+
     public string $selection_type = 'SINGLE'; // SINGLE or MULTIPLE
+
     public bool $is_required = false;
 
     // Options dynamic list: [['name' => '', 'price_modifier' => 0, 'cogs_modifier' => 0]]
@@ -72,11 +78,11 @@ class VariationManager extends Component
         $this->productId = $variant->product_id;
         $this->name = $variant->name;
         $this->selection_type = $variant->selection_type;
-        $this->is_required = (bool)$variant->is_required;
-        $this->options = $variant->options->map(fn($opt) => [
+        $this->is_required = (bool) $variant->is_required;
+        $this->options = $variant->options->map(fn ($opt) => [
             'name' => $opt->name,
-            'price_modifier' => (float)$opt->price_modifier,
-            'cogs_modifier' => (float)$opt->cogs_modifier,
+            'price_modifier' => (float) $opt->price_modifier,
+            'cogs_modifier' => (float) $opt->cogs_modifier,
         ])->toArray();
         $this->showModal = true;
     }
@@ -136,8 +142,10 @@ class VariationManager extends Component
         $this->name = $tpl->name;
         $this->selection_type = $tpl->selection_type;
         $this->is_required = (bool) $tpl->is_required;
-        $this->options = $tpl->options->map(fn($o)=>['name'=>$o->name,'price_modifier'=>(float)$o->price_modifier,'cogs_modifier'=>(float)$o->cogs_modifier])->toArray();
-        if(empty($this->options)) $this->options = [['name'=>'Regular','price_modifier'=>0,'cogs_modifier'=>0]];
+        $this->options = $tpl->options->map(fn ($o) => ['name' => $o->name, 'price_modifier' => (float) $o->price_modifier, 'cogs_modifier' => (float) $o->cogs_modifier])->toArray();
+        if (empty($this->options)) {
+            $this->options = [['name' => 'Regular', 'price_modifier' => 0, 'cogs_modifier' => 0]];
+        }
     }
 
     public function deleteVariant(string $id): void
@@ -149,7 +157,7 @@ class VariationManager extends Component
     public function render()
     {
         $variants = ProductVariant::with(['product', 'options'])
-            ->when($this->search, fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
+            ->when($this->search, fn ($q) => $q->where('name', 'like', '%'.$this->search.'%'))
             ->latest()
             ->paginate(10);
 

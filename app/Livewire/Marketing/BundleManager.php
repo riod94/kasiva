@@ -16,11 +16,17 @@ class BundleManager extends Component
     use WithPagination;
 
     public bool $showModal = false;
+
     public ?string $bundleId = null;
+
     public string $name = '';
+
     public float $price = 0;
+
     public float $cogs = 0;
+
     public bool $is_active = true;
+
     public array $items = [];
 
     public function mount(): void
@@ -40,8 +46,8 @@ class BundleManager extends Component
         $bundle = Bundle::findOrFail($id);
         $this->bundleId = $bundle->id;
         $this->name = $bundle->name;
-        $this->price = (float)$bundle->price;
-        $this->cogs = (float)$bundle->cogs;
+        $this->price = (float) $bundle->price;
+        $this->cogs = (float) $bundle->cogs;
         $this->is_active = $bundle->is_active;
         $this->items = is_array($bundle->items) ? $bundle->items : [];
         $this->showModal = true;
@@ -63,10 +69,10 @@ class BundleManager extends Component
     {
         $totalCogs = 0;
         foreach ($this->items as $item) {
-            if (!empty($item['product_id'])) {
+            if (! empty($item['product_id'])) {
                 $p = Product::find($item['product_id']);
                 if ($p) {
-                    $qty = (int)($item['quantity'] ?? 1);
+                    $qty = (int) ($item['quantity'] ?? 1);
                     $totalCogs += ($p->hpp * $qty);
                 }
             }
@@ -85,12 +91,12 @@ class BundleManager extends Component
 
         $formattedItems = [];
         foreach ($this->items as $item) {
-            if (!empty($item['product_id'])) {
+            if (! empty($item['product_id'])) {
                 $p = Product::find($item['product_id']);
                 $formattedItems[] = [
                     'product_id' => $item['product_id'],
                     'product_name' => $p?->name ?? 'Produk',
-                    'quantity' => (int)($item['quantity'] ?? 1),
+                    'quantity' => (int) ($item['quantity'] ?? 1),
                 ];
             }
         }
@@ -113,7 +119,7 @@ class BundleManager extends Component
     public function toggleActive(string $id): void
     {
         $b = Bundle::findOrFail($id);
-        $b->is_active = !$b->is_active;
+        $b->is_active = ! $b->is_active;
         $b->save();
     }
 

@@ -2,9 +2,12 @@
 
 namespace App\Livewire\History;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
+use App\Services\HppCalculatorService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -16,9 +19,13 @@ use Livewire\Component;
 class BackdateTransaction extends Component
 {
     public string $transactionDate = '';
+
     public string $transactionTime = '12:00';
+
     public string $paymentMethod = 'CASH';
+
     public string $search = '';
+
     public string $categoryFilter = 'all';
 
     /** @var array<int, array{product_id:string, name:string, price:float, hpp:float, qty:int, subtotal:float}> */
@@ -40,6 +47,7 @@ class BackdateTransaction extends Component
             if ($item['product_id'] === $productId) {
                 $this->cart[$idx]['qty']++;
                 $this->cart[$idx]['subtotal'] = $this->cart[$idx]['qty'] * $this->cart[$idx]['price'];
+
                 return;
             }
         }
@@ -55,14 +63,18 @@ class BackdateTransaction extends Component
 
     public function incrementQty(int $index): void
     {
-        if (!isset($this->cart[$index])) return;
+        if (! isset($this->cart[$index])) {
+            return;
+        }
         $this->cart[$index]['qty']++;
         $this->cart[$index]['subtotal'] = $this->cart[$index]['qty'] * $this->cart[$index]['price'];
     }
 
     public function decrementQty(int $index): void
     {
-        if (!isset($this->cart[$index])) return;
+        if (! isset($this->cart[$index])) {
+            return;
+        }
         $this->cart[$index]['qty']--;
         $this->cart[$index]['subtotal'] = $this->cart[$index]['qty'] * $this->cart[$index]['price'];
         if ($this->cart[$index]['qty'] <= 0) {
@@ -72,7 +84,9 @@ class BackdateTransaction extends Component
 
     public function removeFromCart(int $index): void
     {
-        if (!isset($this->cart[$index])) return;
+        if (! isset($this->cart[$index])) {
+            return;
+        }
         array_splice($this->cart, $index, 1);
     }
 
@@ -84,7 +98,10 @@ class BackdateTransaction extends Component
     public function getTotalHppProperty(): float
     {
         $sum = 0;
-        foreach ($this->cart as $item) $sum += $item['hpp'] * $item['qty'];
+        foreach ($this->cart as $item) {
+            $sum += $item['hpp'] * $item['qty'];
+        }
+
         return $sum;
     }
 
@@ -97,13 +114,13 @@ class BackdateTransaction extends Component
             'cart' => 'required|array|min:1',
         ], ['cart.required' => 'Keranjang tidak boleh kosong. Pilih minimal 1 produk.']);
 
-        $dateTime = \Carbon\Carbon::parse($this->transactionDate . ' ' . $this->transactionTime . ':00');
+        $dateTime = Carbon::parse($this->transactionDate.' '.$this->transactionTime.':00');
         $user = Auth::user();
         $cashierName = $user?->name ?? 'Kasir Utama';
-        $receiptNumber = 'BD-' . strtoupper(substr(md5(uniqid((string) rand(), true)), 0, 5)) . '-' . $dateTime->format('Ymd');
+        $receiptNumber = 'BD-'.strtoupper(substr(md5(uniqid((string) rand(), true)), 0, 5)).'-'.$dateTime->format('Ymd');
 
         DB::transaction(function () use ($dateTime, $cashierName, $receiptNumber) {
-            $tx = new Transaction();
+            $tx = new Transaction;
             $tx->timestamps = false;
             $tx->receipt_number = $receiptNumber;
             $tx->payment_method = $this->paymentMethod;
@@ -133,24 +150,25 @@ class BackdateTransaction extends Component
                 if ($this->affectStock) {
                     $product = Product::with('materials')->find($item['product_id']);
                     if ($product) {
-                        app(\App\Services\HppCalculatorService::class)->deductRecipeStockForCheckout($product, (int) $item['qty']);
+                        app(HppCalculatorService::class)->deductRecipeStockForCheckout($product, (int) $item['qty']);
                     }
                 }
             }
         });
 
-        session()->flash('message', 'Transaksi lampau berhasil dicatat: ' . count($this->cart) . ' item, Rp ' . number_format($this->totalAmount, 0, ',', '.'));
+        session()->flash('message', 'Transaksi lampau berhasil dicatat: '.count($this->cart).' item, Rp '.number_format($this->totalAmount, 0, ',', '.'));
         $this->redirect(route('history.index'), navigate: true);
     }
 
     public function render()
     {
         $productsQuery = Product::with('category')->where('is_active', true)
-            ->when($this->search, fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
-            ->when($this->categoryFilter !== 'all', fn($q) => $q->where('category_id', $this->categoryFilter))
+            ->when($this->search, fn ($q) => $q->where('name', 'like', '%'.$this->search.'%'))
+            ->when($this->categoryFilter !== 'all', fn ($q) => $q->where('category_id', $this->categoryFilter))
             ->orderBy('name');
         $products = $productsQuery->get();
-        $categories = \App\Models\Category::orderBy('order_index')->get();
+        $categories = Category::orderBy('order_index')->get();
+
         return view('livewire.history.backdate-transaction', [
             'products' => $products,
             'categories' => $categories,

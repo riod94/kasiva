@@ -5,7 +5,6 @@ namespace App\Livewire\Settings;
 use App\Models\Category;
 use App\Models\Material;
 use App\Models\Product;
-use App\Models\ProductRecipe;
 use App\Models\ProductVariant;
 use App\Models\VariantOption;
 use Livewire\Attributes\Layout;
@@ -18,22 +17,33 @@ use Livewire\WithPagination;
 #[Title('Manajemen Produk & Resep HPP — Kasiva POS')]
 class ProductManager extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public string $search = '';
+
     public string $categoryFilter = 'ALL';
+
     public bool $showModal = false;
+
     public ?string $productId = null;
 
     // Form fields
     public string $name = '';
+
     public string $sku = '';
+
     public ?string $category_id = '';
+
     public float $price = 0;
+
     public float $hpp = 0;
+
     public float $current_stock = 100;
+
     public $image = null; // File upload object
+
     public ?string $image_url = null; // Stored path
+
     public bool $is_active = true;
 
     // Recipe Builder: [['material_id' => '...', 'quantity' => 1]]
@@ -50,7 +60,7 @@ class ProductManager extends Component
     public function openCreateModal(): void
     {
         $this->reset(['productId', 'name', 'sku', 'category_id', 'price', 'hpp', 'current_stock', 'image', 'image_url', 'is_active', 'selectedMaterials', 'variants']);
-        $this->sku = 'KSV-' . strtoupper(substr(md5((string)microtime()), 0, 6));
+        $this->sku = 'KSV-'.strtoupper(substr(md5((string) microtime()), 0, 6));
         $this->is_active = true;
         $this->current_stock = 100;
         $this->showModal = true;
@@ -63,19 +73,19 @@ class ProductManager extends Component
         $this->name = $product->name;
         $this->sku = $product->sku ?? '';
         $this->category_id = $product->category_id;
-        $this->price = (float)$product->price;
-        $this->hpp = (float)$product->hpp;
-        $this->current_stock = (float)$product->current_stock;
+        $this->price = (float) $product->price;
+        $this->hpp = (float) $product->hpp;
+        $this->current_stock = (float) $product->current_stock;
         $this->image = null;
         $this->image_url = $product->image_url;
-        $this->is_active = (bool)$product->is_active;
+        $this->is_active = (bool) $product->is_active;
 
         // Load existing recipes
         $this->selectedMaterials = [];
         foreach ($product->materials as $mat) {
             $this->selectedMaterials[] = [
                 'material_id' => $mat->id,
-                'quantity' => (float)$mat->pivot->quantity,
+                'quantity' => (float) $mat->pivot->quantity,
             ];
         }
 
@@ -86,7 +96,7 @@ class ProductManager extends Component
             foreach ($variant->options as $opt) {
                 $opts[] = [
                     'name' => $opt->name,
-                    'price_modifier' => (float)$opt->price_modifier,
+                    'price_modifier' => (float) $opt->price_modifier,
                 ];
             }
             $this->variants[] = [
@@ -122,10 +132,10 @@ class ProductManager extends Component
     {
         $totalHpp = 0;
         foreach ($this->selectedMaterials as $item) {
-            if (!empty($item['material_id']) && !empty($item['quantity'])) {
+            if (! empty($item['material_id']) && ! empty($item['quantity'])) {
                 $material = Material::find($item['material_id']);
                 if ($material) {
-                    $totalHpp += ($material->avg_cost * (float)$item['quantity']);
+                    $totalHpp += ($material->avg_cost * (float) $item['quantity']);
                 }
             }
         }
@@ -145,7 +155,7 @@ class ProductManager extends Component
 
         if ($this->image) {
             $path = $this->image->store('products', 'public');
-            $this->image_url = '/storage/' . $path;
+            $this->image_url = '/storage/'.$path;
         }
 
         $product = Product::updateOrCreate(
@@ -165,17 +175,17 @@ class ProductManager extends Component
         // Sync Recipe Materials
         $attachData = [];
         foreach ($this->selectedMaterials as $item) {
-            if (!empty($item['material_id']) && !empty($item['quantity'])) {
-                $attachData[$item['material_id']] = ['quantity' => (float)$item['quantity']];
+            if (! empty($item['material_id']) && ! empty($item['quantity'])) {
+                $attachData[$item['material_id']] = ['quantity' => (float) $item['quantity']];
             }
         }
         $product->materials()->sync($attachData);
 
         // Sync Variants
-        if (!empty($this->variants)) {
+        if (! empty($this->variants)) {
             ProductVariant::where('product_id', $product->id)->delete();
             foreach ($this->variants as $vIdx => $v) {
-                if (!empty($v['name'])) {
+                if (! empty($v['name'])) {
                     $variantGroup = ProductVariant::create([
                         'product_id' => $product->id,
                         'name' => $v['name'],
@@ -184,11 +194,11 @@ class ProductManager extends Component
                     ]);
 
                     foreach ($v['options'] as $opt) {
-                        if (!empty($opt['name'])) {
+                        if (! empty($opt['name'])) {
                             VariantOption::create([
                                 'product_variant_id' => $variantGroup->id,
                                 'name' => $opt['name'],
-                                'price_modifier' => (float)($opt['price_modifier'] ?? 0),
+                                'price_modifier' => (float) ($opt['price_modifier'] ?? 0),
                             ]);
                         }
                     }
@@ -203,7 +213,7 @@ class ProductManager extends Component
     public function toggleActive(string $id): void
     {
         $product = Product::findOrFail($id);
-        $product->is_active = !$product->is_active;
+        $product->is_active = ! $product->is_active;
         $product->save();
     }
 
@@ -223,8 +233,8 @@ class ProductManager extends Component
 
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('sku', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('sku', 'like', '%'.$this->search.'%');
             });
         }
 

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         // 1. Loyalty Rewards
-        if (!Schema::hasTable('loyalty_rewards')) {
+        if (! Schema::hasTable('loyalty_rewards')) {
             Schema::create('loyalty_rewards', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->string('title');
@@ -21,7 +21,7 @@ return new class extends Migration
         }
 
         // 2. Loyalty Stamps Log
-        if (!Schema::hasTable('loyalty_stamps')) {
+        if (! Schema::hasTable('loyalty_stamps')) {
             Schema::create('loyalty_stamps', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->foreignUuid('loyalty_member_id')->constrained('loyalty_members')->cascadeOnDelete();
@@ -32,7 +32,7 @@ return new class extends Migration
         }
 
         // 3. Promotions & Discounts
-        if (!Schema::hasTable('promotions')) {
+        if (! Schema::hasTable('promotions')) {
             Schema::create('promotions', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->string('name');
@@ -47,7 +47,7 @@ return new class extends Migration
         }
 
         // 4. Bundles (Paket Hemat)
-        if (!Schema::hasTable('bundles')) {
+        if (! Schema::hasTable('bundles')) {
             Schema::create('bundles', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->string('name');
@@ -61,7 +61,7 @@ return new class extends Migration
         }
 
         // 5. Campaigns (Kampanye Promosi)
-        if (!Schema::hasTable('campaigns')) {
+        if (! Schema::hasTable('campaigns')) {
             Schema::create('campaigns', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->string('name');
@@ -78,7 +78,7 @@ return new class extends Migration
         }
 
         // 6. Audit Logs
-        if (!Schema::hasTable('audit_logs')) {
+        if (! Schema::hasTable('audit_logs')) {
             Schema::create('audit_logs', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->string('user_name');

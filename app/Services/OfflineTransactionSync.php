@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Product;
@@ -24,8 +25,11 @@ class OfflineTransactionSync
         if ($data['payment_method'] === 'QRIS_STATIC' && empty($data['payment_confirmed_manually'])) {
             throw ValidationException::withMessages(['payment_confirmed_manually' => 'Konfirmasi QRIS statis diperlukan.']);
         }
+
         return DB::transaction(function () use ($data, $cashierName): Transaction {
-            if ($existing = Transaction::where('client_transaction_id', $data['client_transaction_id'])->first()) return $existing;
+            if ($existing = Transaction::where('client_transaction_id', $data['client_transaction_id'])->first()) {
+                return $existing;
+            }
             $transaction = Transaction::create([
                 'receipt_number' => $data['receipt_number'], 'payment_method' => $data['payment_method'],
                 'total_amount' => $data['total_amount'], 'total_hpp' => $data['total_hpp'], 'paid_amount' => $data['paid_amount'],
@@ -35,11 +39,16 @@ class OfflineTransactionSync
             ]);
             foreach ($data['items'] as $item) {
                 $product = Product::find($item['product_id']);
-                if (!$product) throw ValidationException::withMessages(['items' => 'Produk tidak ditemukan.']);
-                if ((float) $product->current_stock < (int) $item['quantity']) throw ValidationException::withMessages(['items' => "Stok {$product->name} tidak mencukupi."]);
+                if (! $product) {
+                    throw ValidationException::withMessages(['items' => 'Produk tidak ditemukan.']);
+                }
+                if ((float) $product->current_stock < (int) $item['quantity']) {
+                    throw ValidationException::withMessages(['items' => "Stok {$product->name} tidak mencukupi."]);
+                }
                 $product->decrement('current_stock', (int) $item['quantity']);
                 TransactionItem::create(['transaction_id' => $transaction->id, 'product_id' => $product->id, 'product_name' => $item['product_name'], 'unit_price' => $item['unit_price'], 'unit_hpp' => $item['unit_hpp'], 'quantity' => $item['quantity'], 'subtotal' => $item['subtotal']]);
             }
+
             return $transaction->load('items');
         });
     }

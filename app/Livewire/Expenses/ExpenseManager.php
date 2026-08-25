@@ -11,10 +11,15 @@ class ExpenseManager extends Component
     use WithPagination;
 
     public $title = '';
+
     public $amount = '';
+
     public $category = 'OPERATIONAL';
+
     public $expense_date = '';
+
     public $notes = '';
+
     public $showCreateModal = false;
 
     public function mount()
@@ -62,8 +67,8 @@ class ExpenseManager extends Component
     {
         $expenses = Expense::latest('expense_date')->paginate(15);
         $totalThisMonth = Expense::whereMonth('expense_date', now()->month)
-                                 ->whereYear('expense_date', now()->year)
-                                 ->sum('amount');
+            ->whereYear('expense_date', now()->year)
+            ->sum('amount');
 
         return view('livewire.expenses.expense-manager', [
             'expenses' => $expenses,

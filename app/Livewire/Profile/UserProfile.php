@@ -10,11 +10,20 @@ use Livewire\Component;
 class UserProfile extends Component
 {
     public string $name = 'Owner Kasiva';
+
     public string $email = 'owner@kasiva.id';
+
     public string $phone = '081234567890';
+
     public string $current_pin = '';
+
     public string $new_pin = '';
+
     public string $new_pin_confirmation = '';
+
+    public string $password = '';
+
+    public string $password_confirmation = '';
 
     public function mount(): void
     {
@@ -40,9 +49,29 @@ class UserProfile extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
+                'must_change_password' => false,
             ]);
         }
         session()->flash('message', 'Profil pengguna berhasil diperbarui.');
+    }
+
+    public function updatePassword(): void
+    {
+        $this->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        $user = Auth::user() ?? User::first();
+        if ($user) {
+            $user->update([
+                'password' => Hash::make($this->password ?? request('password')),
+                'must_change_password' => false,
+            ]);
+            // sync property if exists on component
+            if (property_exists($this, 'password')) {
+                $this->reset('password', 'password_confirmation');
+            }
+        }
+        session()->flash('message', 'Password berhasil diperbarui.');
     }
 
     public function updatePin(): void
@@ -55,6 +84,7 @@ class UserProfile extends Component
         if ($user) {
             $user->update([
                 'pin' => Hash::make($this->new_pin),
+                'must_change_password' => false,
             ]);
         }
         $this->reset(['current_pin', 'new_pin', 'new_pin_confirmation']);

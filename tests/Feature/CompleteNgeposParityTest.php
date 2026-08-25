@@ -4,23 +4,18 @@ use App\Livewire\History\BackdateTransaction;
 use App\Livewire\Pos\CashierScreen;
 use App\Livewire\Settings\PaymentSettings;
 use App\Livewire\Settings\ProductManager;
-use App\Models\Bundle;
-use App\Models\Campaign;
 use App\Models\Category;
 use App\Models\Material;
 use App\Models\PaymentSetting;
 use App\Models\Product;
-use App\Models\ProductVariant;
-use App\Models\Promotion;
-use App\Models\LoyaltyMember;
 use App\Models\Transaction;
 use App\Models\User;
-use App\Models\Role;
-use App\Models\Outlet;
 use Database\Seeders\KasivaProductionSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('tamu belum login otomatis di redirect ke login saat mengakses rute terproteksi', function () {
     $this->get('/pos')->assertRedirect('/login');
@@ -97,19 +92,19 @@ test('kasiva production seeder memuat persis 5 kategori, 28 bahan baku, dan 19 p
 
     $matchaOriginal = Product::where('name', 'Matcha Original')->first();
     expect($matchaOriginal)->not->toBeNull();
-    expect((float)$matchaOriginal->price)->toBe(10000.0);
-    expect((float)$matchaOriginal->hpp)->toBe(3785.0);
+    expect((float) $matchaOriginal->price)->toBe(10000.0);
+    expect((float) $matchaOriginal->hpp)->toBe(3785.0);
     expect($matchaOriginal->materials()->count())->toBe(7);
 
     $matchaLatte = Product::where('name', 'Matcha Latte')->first();
     expect($matchaLatte)->not->toBeNull();
-    expect((float)$matchaLatte->price)->toBe(12000.0);
-    expect((float)$matchaLatte->hpp)->toBe(7250.0);
+    expect((float) $matchaLatte->price)->toBe(12000.0);
+    expect((float) $matchaLatte->hpp)->toBe(7250.0);
 
     $kopiAren = Product::where('name', 'Kopi Susu Gula Aren')->first();
     expect($kopiAren)->not->toBeNull();
-    expect((float)$kopiAren->price)->toBe(12000.0);
-    expect((float)$kopiAren->hpp)->toBe(7205.0);
+    expect((float) $kopiAren->price)->toBe(12000.0);
+    expect((float) $kopiAren->hpp)->toBe(7205.0);
 
     // 4. Verifikasi Varian Default
     expect($matchaOriginal->variants()->count())->toBe(2);
@@ -127,7 +122,7 @@ test('product manager livewire component mendukung CRUD lengkap dan kalkulasi re
         ->set('sku', 'KSV-TEST-001')
         ->set('price', 15000)
         ->set('selectedMaterials', [
-            ['material_id' => $mat->id, 'quantity' => 100]
+            ['material_id' => $mat->id, 'quantity' => 100],
         ])
         ->call('calculateHpp')
         ->assertSet('hpp', 2000.0)
@@ -136,7 +131,7 @@ test('product manager livewire component mendukung CRUD lengkap dan kalkulasi re
     $product = Product::where('sku', 'KSV-TEST-001')->first();
     expect($product)->not->toBeNull();
     expect($product->name)->toBe('Kopi Susu Spesial');
-    expect((float)$product->hpp)->toBe(2000.0);
+    expect((float) $product->hpp)->toBe(2000.0);
 
     // Edit Product
     Livewire::actingAs($user)
@@ -145,7 +140,7 @@ test('product manager livewire component mendukung CRUD lengkap dan kalkulasi re
         ->set('price', 18000)
         ->call('saveProduct');
 
-    expect((float)$product->fresh()->price)->toBe(18000.0);
+    expect((float) $product->fresh()->price)->toBe(18000.0);
 
     // Toggle Active
     Livewire::actingAs($user)
@@ -199,13 +194,13 @@ test('cashier screen mendukung platform adjustment untuk input net received amou
     $tx = Transaction::latest()->first();
     expect($tx)->not->toBeNull();
     expect($tx->payment_method)->toBe('GOFOOD');
-    expect((float)$tx->total_amount)->toBe(16000.0);
+    expect((float) $tx->total_amount)->toBe(16000.0);
 });
 
 test('backdate transaction mencatat transaksi manual masa lalu', function () {
     $user = User::factory()->create();
-    $cat = Category::firstOrCreate(['name'=>'Test Backdate Cat'], ['icon'=>'🧪']);
-    $prod = Product::firstOrCreate(['name'=>'Backdate Parity Prod'], ['sku'=>'KSV-BACK-PARITY','price'=>75000,'hpp'=>30000,'current_stock'=>50,'category_id'=>$cat->id,'is_active'=>true]);
+    $cat = Category::firstOrCreate(['name' => 'Test Backdate Cat'], ['icon' => '🧪']);
+    $prod = Product::firstOrCreate(['name' => 'Backdate Parity Prod'], ['sku' => 'KSV-BACK-PARITY', 'price' => 75000, 'hpp' => 30000, 'current_stock' => 50, 'category_id' => $cat->id, 'is_active' => true]);
 
     Livewire::actingAs($user)
         ->test(BackdateTransaction::class)
@@ -215,9 +210,9 @@ test('backdate transaction mencatat transaksi manual masa lalu', function () {
         ->set('paymentMethod', 'QRIS')
         ->call('saveTransaction');
 
-    $tx = Transaction::whereDate('transaction_date', '2026-08-01')->orWhereDate('created_at','2026-08-01')->first();
+    $tx = Transaction::whereDate('transaction_date', '2026-08-01')->orWhereDate('created_at', '2026-08-01')->first();
     expect($tx)->not->toBeNull();
-    expect((float)$tx->total_amount)->toBe(75000.0);
+    expect((float) $tx->total_amount)->toBe(75000.0);
     expect($tx->payment_method)->toBe('QRIS');
     expect($tx->is_backdated)->toBeTrue();
 });

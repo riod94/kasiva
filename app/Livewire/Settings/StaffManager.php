@@ -13,13 +13,21 @@ class StaffManager extends Component
     use WithPagination;
 
     public string $search = '';
+
     public bool $showModal = false;
+
     public ?int $userId = null;
+
     public string $name = '';
+
     public string $email = '';
+
     public string $phone = '';
+
     public string $pin = '';
+
     public ?string $roleId = null;
+
     public bool $is_active = true;
 
     protected $rules = [
@@ -54,7 +62,7 @@ class StaffManager extends Component
         $this->phone = $user->phone ?? '';
         $this->pin = ''; // Keep empty unless updating
         $this->roleId = $user->role_id;
-        $this->is_active = (bool)$user->is_active;
+        $this->is_active = (bool) $user->is_active;
         $this->showModal = true;
     }
 
@@ -71,7 +79,7 @@ class StaffManager extends Component
                 'role_id' => $this->roleId,
                 'is_active' => $this->is_active,
             ];
-            if (!empty($this->pin)) {
+            if (! empty($this->pin)) {
                 $data['pin'] = Hash::make($this->pin);
             }
             $user->update($data);
@@ -82,7 +90,7 @@ class StaffManager extends Component
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'password' => Hash::make('kasir12345'),
-                'pin' => !empty($this->pin) ? Hash::make($this->pin) : Hash::make('123456'),
+                'pin' => ! empty($this->pin) ? Hash::make($this->pin) : Hash::make('123456'),
                 'role_id' => $this->roleId,
                 'is_active' => $this->is_active,
             ]);
@@ -96,7 +104,7 @@ class StaffManager extends Component
     public function toggleStatus(int $id): void
     {
         $user = User::findOrFail($id);
-        $user->update(['is_active' => !$user->is_active]);
+        $user->update(['is_active' => ! $user->is_active]);
         session()->flash('message', 'Status akun staf berhasil diubah.');
     }
 
@@ -110,8 +118,8 @@ class StaffManager extends Component
     {
         $staffMembers = User::with('role')
             ->when($this->search, function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%');
             })
             ->latest()
             ->paginate(10);

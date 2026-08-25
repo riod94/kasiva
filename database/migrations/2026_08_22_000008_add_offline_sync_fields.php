@@ -9,13 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table): void {
-            if (!Schema::hasColumn('transactions', 'client_transaction_id')) {
+            if (! Schema::hasColumn('transactions', 'client_transaction_id')) {
                 $table->uuid('client_transaction_id')->nullable()->unique()->after('sync_status');
             }
-            if (!Schema::hasColumn('transactions', 'sync_error')) {
+            if (! Schema::hasColumn('transactions', 'sync_error')) {
                 $table->text('sync_error')->nullable()->after('client_transaction_id');
             }
-            if (!Schema::hasColumn('transactions', 'payment_confirmed_manually')) {
+            if (! Schema::hasColumn('transactions', 'payment_confirmed_manually')) {
                 $table->boolean('payment_confirmed_manually')->default(false)->after('sync_error');
             }
         });

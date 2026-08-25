@@ -10,6 +10,8 @@ class ProductRecipe extends Pivot
     use HasUuids;
 
     protected $table = 'product_recipes';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
 }

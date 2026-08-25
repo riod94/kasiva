@@ -4,11 +4,13 @@ use App\Models\Category;
 use App\Models\Material;
 use App\Models\Product;
 use App\Services\HppCalculatorService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class, Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 test('kalkulasi moving average cost bahan baku berfungsi presisi', function () {
-    $calculator = new HppCalculatorService();
+    $calculator = new HppCalculatorService;
 
     $material = Material::create([
         'name' => 'Biji Kopi Arabika',

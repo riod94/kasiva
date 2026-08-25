@@ -11,10 +11,15 @@ class CategoryManager extends Component
     use WithPagination;
 
     public string $search = '';
+
     public bool $showModal = false;
+
     public ?string $categoryId = null;
+
     public string $name = '';
+
     public string $icon = '📦';
+
     public int $order_index = 0;
 
     protected $rules = [
@@ -80,7 +85,7 @@ class CategoryManager extends Component
     public function render()
     {
         $categories = Category::query()
-            ->when($this->search, fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
+            ->when($this->search, fn ($q) => $q->where('name', 'like', '%'.$this->search.'%'))
             ->orderBy('order_index')
             ->paginate(10);
 

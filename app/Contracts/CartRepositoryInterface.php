@@ -22,7 +22,7 @@ interface CartRepositoryInterface
 
     public function saveCarts(array $carts): void;
 
-    public function createNewCart(string $name = null): void;
+    public function createNewCart(?string $name = null): void;
 
     public function closeCart(int $index): void;
 }

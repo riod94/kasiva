@@ -15,8 +15,11 @@ class RbacSecurityTest extends TestCase
     use RefreshDatabase;
 
     protected User $owner;
+
     protected User $cashier;
+
     protected Role $roleOwner;
+
     protected Role $roleCashier;
 
     protected function setUp(): void
@@ -44,7 +47,7 @@ class RbacSecurityTest extends TestCase
             'MANAGE_PRODUCTS', 'VIEW_MATERIALS', 'MANAGE_MATERIALS', 'MANAGE_CATEGORIES',
             'MANAGE_PROMOS', 'VIEW_MEMBERS', 'MANAGE_MEMBERS', 'MANAGE_LOYALTY',
             'VIEW_REPORTS', 'MANAGE_EXPENSES', 'MANAGE_OUTLET', 'MANAGE_PRINTER',
-            'MANAGE_PAYMENTS', 'MANAGE_STAFF', 'MANAGE_ROLES'
+            'MANAGE_PAYMENTS', 'MANAGE_STAFF', 'MANAGE_ROLES',
         ];
 
         foreach ($permissions as $slug) {

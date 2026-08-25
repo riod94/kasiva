@@ -10,12 +10,18 @@ return new class extends Migration
         if (DB::getDriverName() === 'pgsql') {
             DB::statement('ALTER TABLE loyalty_members ALTER COLUMN name DROP NOT NULL');
             DB::statement('ALTER TABLE loyalty_members ALTER COLUMN phone DROP NOT NULL');
-            try { DB::statement('ALTER TABLE loyalty_members DROP CONSTRAINT loyalty_members_phone_unique'); } catch (\Throwable $e) {}
+            try {
+                DB::statement('ALTER TABLE loyalty_members DROP CONSTRAINT loyalty_members_phone_unique');
+            } catch (Throwable $e) {
+            }
             DB::statement('CREATE UNIQUE INDEX IF NOT EXISTS loyalty_members_phone_unique ON loyalty_members (phone) WHERE phone IS NOT NULL');
         }
 
         if (DB::getDriverName() === 'sqlite') {
-            try { DB::statement('ALTER TABLE loyalty_members ALTER COLUMN name DROP NOT NULL'); } catch (\Throwable $e) {}
+            try {
+                DB::statement('ALTER TABLE loyalty_members ALTER COLUMN name DROP NOT NULL');
+            } catch (Throwable $e) {
+            }
         }
     }
 

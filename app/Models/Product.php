@@ -39,9 +39,9 @@ class Product extends Model
     public function materials(): BelongsToMany
     {
         return $this->belongsToMany(Material::class, 'product_recipes')
-                    ->using(ProductRecipe::class)
-                    ->withPivot('quantity')
-                    ->withTimestamps();
+            ->using(ProductRecipe::class)
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 
     public function recipes(): HasMany

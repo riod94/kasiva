@@ -11,12 +11,19 @@ class DiscountManager extends Component
     use WithPagination;
 
     public string $search = '';
+
     public bool $showModal = false;
+
     public ?string $promoId = null;
+
     public string $name = '';
+
     public string $type = 'PERCENTAGE'; // PERCENTAGE or FIXED_AMOUNT
+
     public float $discount_value = 10.0;
+
     public float $min_purchase = 0.0;
+
     public bool $is_active = true;
 
     protected $rules = [
@@ -47,9 +54,9 @@ class DiscountManager extends Component
         $this->promoId = $promo->id;
         $this->name = $promo->name;
         $this->type = $promo->type;
-        $this->discount_value = (float)$promo->discount_value;
-        $this->min_purchase = (float)$promo->min_purchase;
-        $this->is_active = (bool)$promo->is_active;
+        $this->discount_value = (float) $promo->discount_value;
+        $this->min_purchase = (float) $promo->min_purchase;
+        $this->is_active = (bool) $promo->is_active;
         $this->showModal = true;
     }
 
@@ -85,7 +92,7 @@ class DiscountManager extends Component
     public function toggleActive(string $id): void
     {
         $promo = Promotion::findOrFail($id);
-        $promo->update(['is_active' => !$promo->is_active]);
+        $promo->update(['is_active' => ! $promo->is_active]);
         session()->flash('message', 'Status promo berhasil diubah.');
     }
 
@@ -98,7 +105,7 @@ class DiscountManager extends Component
     public function render()
     {
         $promotions = Promotion::query()
-            ->when($this->search, fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
+            ->when($this->search, fn ($q) => $q->where('name', 'like', '%'.$this->search.'%'))
             ->latest()
             ->paginate(10);
 

@@ -5,7 +5,7 @@
 | Metadata | Detail |
 |---|---|
 | **Namespace Utama** | `App\` |
-| **Framework Base** | Laravel 13 |
+| **Framework Base** | Laravel 12 |
 | **Component System** | Livewire 4 Components & Blade Views |
 
 ---

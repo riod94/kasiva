@@ -12,10 +12,15 @@ use Livewire\Component;
 class RoleManager extends Component
 {
     public bool $showModal = false;
+
     public ?string $roleId = null;
+
     public string $name = '';
+
     public string $slug = '';
+
     public string $description = '';
+
     public array $selectedPermissions = ['POS_ACCESS'];
 
     public array $permissionCategories = [
@@ -116,6 +121,7 @@ class RoleManager extends Component
         $role = Role::findOrFail($id);
         if ($role->slug === 'owner') {
             session()->flash('error', 'Peran Owner/Super Admin tidak dapat dihapus.');
+
             return;
         }
         $role->delete();

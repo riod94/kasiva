@@ -30,7 +30,18 @@ class CustomerReward extends Model
         'claimed_at' => 'datetime',
     ];
 
-    public function member(): BelongsTo { return $this->belongsTo(LoyaltyMember::class, 'loyalty_member_id'); }
-    public function program(): BelongsTo { return $this->belongsTo(LoyaltyProgram::class, 'program_id'); }
-    public function claimedTransaction(): BelongsTo { return $this->belongsTo(Transaction::class, 'claimed_transaction_id'); }
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(LoyaltyMember::class, 'loyalty_member_id');
+    }
+
+    public function program(): BelongsTo
+    {
+        return $this->belongsTo(LoyaltyProgram::class, 'program_id');
+    }
+
+    public function claimedTransaction(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class, 'claimed_transaction_id');
+    }
 }

@@ -4,9 +4,9 @@
 
 | Metadata | Detail |
 |---|---|
-| **Model Arsitektur** | Hybrid Offline-First Single Codebase (Laravel 13 Core + NativePHP Bridge) |
+| **Model Arsitektur** | Hybrid Offline-First Single Codebase (Laravel 12 Core + NativePHP Bridge) |
 | **Frontend UI** | Livewire 4 + Blade + TailwindCSS v4 (@theme CSS Engine) |
-| **Backend Engine** | Laravel 13 (PHP 8.3+) |
+| **Backend Engine** | Laravel 12 (PHP 8.3+) |
 | **Local Client DB** | On-Device SQLite (`database.sqlite`) |
 | **Cloud Server DB** | Centralized PostgreSQL (SaaS Master DB) |
 
