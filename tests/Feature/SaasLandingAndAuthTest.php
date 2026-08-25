@@ -12,7 +12,41 @@ uses(TestCase::class, RefreshDatabase::class);
 test('halaman landing page dapat diakses dengan sukses', function () {
     $this->get('/')
         ->assertStatus(200)
-        ->assertSee('Kendali Penuh Profit');
+        ->assertSee('Kasiva menjaga profit');
+});
+
+test('landing page memiliki metadata SEO dan schema terstruktur', function () {
+    $response = $this->get('/')->assertOk();
+
+    $response
+        ->assertSee('<title>Kasiva POS — Aplikasi Kasir, HPP, Stok &amp; Laporan Profit F&amp;B</title>', false)
+        ->assertSee('name="description"', false)
+        ->assertSee('rel="canonical"', false)
+        ->assertSee('property="og:image" content="'.asset('images/kasiva-social-preview.png').'"', false)
+        ->assertSee('property="og:image:width" content="1200"', false)
+        ->assertSee('property="og:image:height" content="630"', false)
+        ->assertSee('name="twitter:card" content="summary_large_image"', false);
+
+    preg_match_all('/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/s', $response->getContent(), $matches);
+    $schemas = array_map(fn (string $json): array => json_decode($json, true, 512, JSON_THROW_ON_ERROR), $matches[1]);
+
+    expect(array_column($schemas, '@type'))->toContain('Organization', 'SoftwareApplication', 'FAQPage');
+    expect(array_unique(array_column($schemas, '@context')))->toBe(['https://schema.org']);
+});
+
+test('landing page tidak memuat runtime aplikasi POS yang tidak diperlukan', function () {
+    $response = $this->get('/')->assertOk();
+
+    $response
+        ->assertDontSee('resources/js/app.js', false)
+        ->assertSee('kasiva-logo-icon-128.png', false);
+});
+
+test('social preview landing tersedia dalam format PNG', function () {
+    $path = public_path('images/kasiva-social-preview.png');
+
+    expect($path)->toBeFile();
+    expect(getimagesize($path))->toMatchArray([0 => 1200, 1 => 630, 'mime' => 'image/png']);
 });
 
 test('halaman login dan register dapat diakses dengan sukses', function () {
