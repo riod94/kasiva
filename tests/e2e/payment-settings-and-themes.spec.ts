@@ -18,7 +18,7 @@ test.describe('Kasiva POS - Payment Settings & Theme Contrast E2E Tests', () => 
       await page.fill('input[type="email"]', 'owner@kasiva.pos');
       await page.fill('input[type="password"]', 'password123');
       await page.click('button[type="submit"]');
-      await page.waitForURL('**/pos');
+      await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname));
       await page.waitForLoadState('networkidle');
     }
   }
@@ -90,7 +90,7 @@ test.describe('Kasiva POS - Payment Settings & Theme Contrast E2E Tests', () => 
     await page.waitForTimeout(300);
 
     // Verify Cashier Screen Elements
-    await expect(page.locator('header img[alt="Kasiva POS"]')).toBeVisible();
+    await expect(page.getByRole('link', { name: /Kasiva POS, buka kasir/i })).toBeVisible();
     await page.screenshot({ path: path.join(proofDir, 'cashier-screen-light.png'), fullPage: true });
 
     // Switch back to Dark Theme

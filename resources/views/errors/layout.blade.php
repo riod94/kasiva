@@ -2,7 +2,7 @@
 <html lang="id" class="h-full antialiased">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
     <!-- Universal Theme Engine (Anti-FOUC & Global Toggle) -->
     <script>
@@ -36,9 +36,11 @@
 
     <title>@yield('code') — @yield('title') · Kasiva POS</title>
     
-    <link rel="icon" type="image/png" href="{{ asset('images/kasiva-logo-icon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/kasiva-logo-icon.png') }}">
-    <meta name="theme-color" content="#272D48">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <link rel="icon" type="image/png" href="{{ asset('images/kasiva-logo-icon-128.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/kasiva-logo-icon-128.png') }}">
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#171C31" media="(prefers-color-scheme: dark)">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -59,7 +61,7 @@
     <!-- ═══════════════ HEADER BAR ═══════════════ -->
     <header class="w-full max-w-5xl mx-auto flex items-center justify-between relative z-10">
         <a href="{{ route('pos.cashier') }}" class="flex items-center gap-2.5 active:scale-95 transition-all">
-            <img src="/images/kasiva-logo-full.png" alt="Kasiva POS" class="h-9 md:h-10 object-contain bg-white/95 p-1.5 rounded-2xl shadow-md">
+            <img src="{{ asset('images/kasiva-logo-icon-128.png') }}" alt="" width="40" height="40" class="h-10 w-10 rounded-xl bg-white p-1 shadow-md"><span class="font-black text-[var(--text-main)]">Kasiva</span>
         </a>
 
         <div class="flex items-center gap-2">
@@ -69,6 +71,7 @@
                 onclick="window.toggleKasivaTheme()"
                 class="w-10 h-10 rounded-2xl bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] text-slate-300 hover:text-white flex items-center justify-center transition active:scale-95 shadow-md cursor-pointer"
                 title="Ganti Tema (Dark / Light)"
+                aria-label="Ganti tema terang atau gelap"
             >
                 <x-icon name="sun" class="w-4 h-4 text-amber-400 block dark:hidden" />
                 <x-icon name="moon" class="w-4 h-4 text-[#8696ED] hidden dark:block" />

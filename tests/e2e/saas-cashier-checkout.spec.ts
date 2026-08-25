@@ -17,7 +17,7 @@ test.describe('Kasiva SaaS POS E2E Proof Screenshots', () => {
     await page.fill('input[type="email"]', 'owner@kasiva.pos');
     await page.fill('input[type="password"]', 'password123');
     await page.click('button[type="submit"]');
-    await page.waitForURL('**/pos');
+    await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname));
   }
 
   test('Capture Landing Page E2E Proof', async ({ page }) => {
@@ -31,7 +31,7 @@ test.describe('Kasiva SaaS POS E2E Proof Screenshots', () => {
     await loginAsOwner(page);
     await page.goto('/pos');
     await page.waitForLoadState('networkidle');
-    await expect(page.locator('header img[alt="Kasiva POS"]')).toBeVisible();
+    await expect(page.getByRole('link', { name: /Kasiva POS, buka kasir/i })).toBeVisible();
     await page.screenshot({ path: path.join(proofDir, '02-cashier-screen.png'), fullPage: true });
   });
 

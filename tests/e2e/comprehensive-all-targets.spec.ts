@@ -15,7 +15,7 @@ async function loginAsOwner(page: Page) {
   await page.fill('input[type="email"]', 'owner@kasiva.pos');
   await page.fill('input[type="password"]', 'password123');
   await page.click('button[type="submit"]');
-  await page.waitForURL('**/pos');
+  await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname));
 }
 
 targets.forEach((target) => {
@@ -47,14 +47,14 @@ targets.forEach((target) => {
     test(`02 - Capture Sign In Page [${target.name}]`, async ({ page }) => {
       await page.goto('/login');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Masuk Akun Kasiva/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Masuk ke Kasiva/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '02-signin-page.png'), fullPage: true });
     });
 
     test(`03 - Capture Sign Up Page [${target.name}]`, async ({ page }) => {
       await page.goto('/register');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Pendaftaran Akun Outlet/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Daftarkan outlet/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '03-signup-page.png'), fullPage: true });
     });
 
@@ -62,7 +62,7 @@ targets.forEach((target) => {
       await loginAsOwner(page);
       await page.goto('/pos');
       await page.waitForLoadState('networkidle');
-      await expect(page.locator('header img[alt="Kasiva POS"]')).toBeVisible();
+      await expect(page.getByRole('link', { name: /Kasiva POS, buka kasir/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '04-pos-cashier-screen.png'), fullPage: true });
     });
 
@@ -103,7 +103,7 @@ targets.forEach((target) => {
       await loginAsOwner(page);
       await page.goto('/expenses');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Pengeluaran/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Pengeluaran Operasional Toko/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '07-expense-manager.png'), fullPage: true });
     });
 
@@ -135,12 +135,12 @@ targets.forEach((target) => {
       await loginAsOwner(page);
       await page.goto('/inventory');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Hub Inventaris/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Manajemen Inventaris & Menu/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '11-inventory-hub.png'), fullPage: true });
 
       await page.goto('/inventory/categories');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Kategori/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Kategori Menu/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '11-inventory-categories.png'), fullPage: true });
     });
 
@@ -156,7 +156,7 @@ targets.forEach((target) => {
       await loginAsOwner(page);
       await page.goto('/inventory/variations');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Varian/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Master Varian & Opsi Tambahan/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '13-inventory-variations.png'), fullPage: true });
     });
 
@@ -169,7 +169,7 @@ targets.forEach((target) => {
 
       await page.goto('/marketing/loyalty');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Loyalitas/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Program Loyalitas Stempel Digital/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '14-marketing-loyalty.png'), fullPage: true });
     });
 
@@ -177,7 +177,7 @@ targets.forEach((target) => {
       await loginAsOwner(page);
       await page.goto('/marketing/discounts');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Diskon/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Diskon & Voucher Promo/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '15-marketing-discounts.png'), fullPage: true });
     });
 
@@ -198,12 +198,12 @@ targets.forEach((target) => {
       await loginAsOwner(page);
       await page.goto('/settings/staff');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Staf/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Manajemen Staf & PIN Kasir/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '17-settings-staff.png'), fullPage: true });
 
       await page.goto('/profile');
       await page.waitForLoadState('networkidle');
-      await expect(page.getByText(/Profil/i)).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Profil & Keamanan Akun/i })).toBeVisible();
       await page.screenshot({ path: path.join(targetDir, '17-user-profile.png'), fullPage: true });
     });
 

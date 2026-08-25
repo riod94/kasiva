@@ -29,7 +29,7 @@ test.describe('Kasiva POS - Error Pages UI/UX Suite (400, 401, 403, 404, 419, 42
       expect(response?.status()).toBe(err.code);
 
       // Verify Header Logo & Error Card Title
-      await expect(page.locator('header img[alt="Kasiva POS"]')).toBeVisible();
+      await expect(page.getByRole('link', { name: /Kasiva/i }).first()).toBeVisible();
       await expect(page.locator('h1')).toContainText(err.title);
 
       // 1. Dark Mode Screenshot
@@ -60,7 +60,7 @@ test.describe('Kasiva POS - Error Pages UI/UX Suite (400, 401, 403, 404, 419, 42
     await page.fill('input[type="email"]', 'kasir@kasiva.pos');
     await page.fill('input[type="password"]', 'password123');
     await page.click('button[type="submit"]');
-    await page.waitForURL('**/pos');
+    await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname));
 
     // Access Settings directly
     const response = await page.goto('/settings');
@@ -68,7 +68,7 @@ test.describe('Kasiva POS - Error Pages UI/UX Suite (400, 401, 403, 404, 419, 42
 
     // Verify Custom 403 Page with exact RBAC message
     await expect(page.locator('h1')).toContainText('Akses Modul Dibatasi');
-    await expect(page.getByText('Akses Ditolak: Anda tidak memiliki izin untuk mengakses pusat pengaturan sistem.')).toBeVisible();
+    await expect(page.getByText(/Akses Ditolak: Peran akun Anda .* tidak memiliki izin untuk mengakses modul ini\./i)).toBeVisible();
 
     await page.screenshot({ path: path.join(proofDir, 'real-cashier-403-rbac-dark.png'), fullPage: true });
 

@@ -1,7 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test('POS shell reloads and checks out fully offline', async ({ page, context }) => {
+  await page.goto('/login');
+  await page.fill('#login-email', 'kasir@kasiva.pos');
+  await page.fill('#login-password', 'password123');
+  await page.click('button[type="submit"]');
+  await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname));
   await page.goto('/pos/offline');
+  await page.waitForFunction(() => Boolean(window.kasivaShell));
+  await page.waitForSelector('#products .item');
   await page.evaluate(async () => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => { const r=indexedDB.open('kasiva-offline',4); r.onupgradeneeded=()=>['catalog','carts','members','transactions','expenses','pending_operations','sync_meta'].forEach(n=>{if(!r.result.objectStoreNames.contains(n))r.result.createObjectStore(n,{keyPath:'id'})}); r.onsuccess=()=>resolve(r.result); r.onerror=()=>reject(r.error); });
     await new Promise<void>((resolve,reject)=>{ const t=db.transaction('catalog','readwrite'); t.objectStore('catalog').put({id:'11111111-1111-4111-8111-111111111111',name:'Kopi Offline',sku:'OFF-1',price:15000,hpp:6000,current_stock:5,is_active:true}); t.oncomplete=()=>resolve(); t.onerror=()=>reject(t.error); });
@@ -10,6 +17,8 @@ test('POS shell reloads and checks out fully offline', async ({ page, context })
     await navigator.serviceWorker.ready;
     if (!navigator.serviceWorker.controller) await new Promise<void>(resolve => navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true }));
   });
+  await page.reload({ waitUntil: 'networkidle' });
+  await expect(page.getByText('Kopi Offline')).toBeVisible();
   await context.setOffline(true);
   await page.reload();
   await expect(page.getByText('Kopi Offline')).toBeVisible();
@@ -30,5 +39,5 @@ test('POS shell reloads and checks out fully offline', async ({ page, context })
   expect(state.transactions).toHaveLength(1);
   expect(state.transactions[0].sync_status).toBe('PENDING_SYNC');
   expect(state.pending).toHaveLength(1);
-  expect(state.catalog[0].current_stock).toBe(4);
+  expect(state.catalog.find(product => product.id === '11111111-1111-4111-8111-111111111111')?.current_stock).toBe(4);
 });

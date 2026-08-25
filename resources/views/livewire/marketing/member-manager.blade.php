@@ -51,7 +51,7 @@
     <div class="flex flex-col gap-2.5">
         @forelse($members as $member)
             @php $isSel = in_array($member->id, $selectedIds, true); @endphp
-            <div wire:click="openProfile('{{ $member->id }}')" class="flex items-center gap-3 bg-[#1E1B4B] px-3.5 py-3 rounded-2xl border transition cursor-pointer shadow-sm {{ $isSel ? 'border-[#00AAA6] bg-[#00AAA6]/10 ring-1 ring-[#00AAA6]/20' : 'border-[#2E2A68] hover:border-[#00AAA6]/40' }}">
+            <div data-testid="member-card" wire:click="openProfile('{{ $member->id }}')" class="flex items-center gap-3 bg-[#1E1B4B] px-3.5 py-3 rounded-2xl border transition cursor-pointer shadow-sm {{ $isSel ? 'border-[#00AAA6] bg-[#00AAA6]/10 ring-1 ring-[#00AAA6]/20' : 'border-[#2E2A68] hover:border-[#00AAA6]/40' }}">
                 <button wire:click.stop="toggleSelect('{{ $member->id }}')" class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border bg-white overflow-hidden relative {{ $isSel ? 'border-[#00AAA6] ring-2 ring-[#00AAA6]/20' : 'border-slate-200' }}">
                     @if($isSel)
                         <span class="absolute inset-0 bg-[#00AAA6] flex items-center justify-center text-white"><x-icon name="check" class="w-5 h-5" /></span>
@@ -115,9 +115,9 @@
 
     <!-- Batch Generate Dialog -->
     @if($showBatchModal)
-        <div class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/40 backdrop-blur-[2px]">
+        <div class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/40 backdrop-blur-[2px]" role="dialog" aria-modal="true" aria-labelledby="batch-qr-title">
             <div class="bg-[#1E1B4B] border border-[#2E2A68] w-full max-w-[320px] rounded-[24px] shadow-2xl p-6 space-y-6">
-                <div class="text-center"><h2 class="text-lg font-black text-white uppercase tracking-tight">Generate QR</h2><p class="text-[10px] font-bold text-slate-400 mt-1">Pilih jumlah kartu member kosong</p></div>
+                <div class="text-center"><h2 id="batch-qr-title" class="text-lg font-black text-white uppercase tracking-tight">Generate QR</h2><p class="text-[10px] font-bold text-slate-400 mt-1">Pilih jumlah kartu member kosong</p></div>
                 <div class="grid grid-cols-3 gap-2">
                     @foreach([5,10,15,25,50] as $num)
                         <button wire:click="$set('batchCount', {{ $num }})" class="h-10 rounded-xl border-2 font-black text-[10px] transition {{ $batchCount===$num ? 'border-[#00AAA6] bg-[#00AAA6]/20 text-white' : 'border-[#2E2A68] text-slate-400 hover:bg-[#16192E]' }}">{{ $num }} PCS</button>
@@ -202,12 +202,12 @@
 
     <!-- Print Preview Overlay -->
     @if($showPrintPreview)
-        <div id="member-print-portal" class="fixed inset-0 z-[9999] bg-white overflow-y-auto">
+        <div id="member-print-portal" class="fixed inset-0 z-[9999] bg-white overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="print-preview-title">
             <div class="no-print fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur border-b border-slate-200 flex items-center justify-between px-4 z-[10000]">
-                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-[#00AAA6]/10 flex items-center justify-center text-[#00AAA6]"><x-icon name="printer" class="w-5 h-5" /></span><div><p class="font-black text-sm text-slate-900">Pratinjau Cetak</p><p class="text-[10px] font-bold text-slate-500">{{ $printMembers->count() }} Kartu Member</p></div></div>
+                <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-xl bg-[#00AAA6]/10 flex items-center justify-center text-[#00AAA6]"><x-icon name="printer" class="w-5 h-5" /></span><div><p id="print-preview-title" class="font-black text-sm text-slate-900">Pratinjau Cetak</p><p class="text-[10px] font-bold text-slate-500">{{ $printMembers->count() }} Kartu Member</p></div></div>
                 <div class="flex items-center gap-2">
                     <button onclick="window.print()" class="px-5 h-10 bg-[#00AAA6] text-white rounded-full font-black text-xs uppercase tracking-widest">Cetak</button>
-                    <button wire:click="closePrintPreview" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">✕</button>
+                    <button wire:click="closePrintPreview" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center" aria-label="Tutup pratinjau cetak">✕</button>
                 </div>
             </div>
             <div class="pt-20 pb-10 px-4 flex justify-center bg-slate-50 min-h-screen print:pt-0 print:bg-white">

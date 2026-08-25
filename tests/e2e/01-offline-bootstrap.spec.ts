@@ -10,7 +10,7 @@ test.describe('Phase 1: Offline bootstrap and reload', () => {
         await page.fill('form input[type="email"]', TEST_USER);
         await page.fill('form input[type="password"]', TEST_PASS);
         await page.click('button[type="submit"]');
-        await page.waitForFunction(() => window.location.pathname === '/pos', { timeout: 30000 });
+        await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname), { timeout: 30000 });
 
         // --- 2. Navigate to local-first POS ---
         await page.goto('/app/pos');

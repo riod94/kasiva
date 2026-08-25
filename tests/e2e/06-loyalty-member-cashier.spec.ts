@@ -7,7 +7,7 @@ async function login(page: any, email = 'owner@kasiva.pos', password = 'password
   await page.fill('input[type="email"]', email);
   await page.fill('input[type="password"]', password);
   await page.click('button[type="submit"]');
-  await page.waitForURL('**/pos');
+  await page.waitForURL((url: URL) => ['/pos', '/profile'].includes(url.pathname));
 }
 
 test.describe('Kasiva Loyalty & Member Parity E2E', () => {
@@ -24,13 +24,16 @@ test.describe('Kasiva Loyalty & Member Parity E2E', () => {
     if (await batchBtn.isVisible()) {
       await batchBtn.click();
       await page.waitForTimeout(300);
-      const optCount5 = page.getByRole('button', { name: /^5$/ });
+      const dialog = page.getByRole('dialog');
+      const optCount5 = dialog.getByRole('button', { name: /^5 PCS$/i });
       if (await optCount5.isVisible()) await optCount5.click();
-      else {
-        const genBtn = page.getByRole('button', { name: /Generate/i });
-        if (await genBtn.isVisible()) await genBtn.click();
-      }
-      await page.waitForTimeout(500);
+      const generateBtn = dialog.getByRole('button', { name: /Generate & Print/i });
+      if (await generateBtn.isVisible()) await generateBtn.click();
+      const printPreview = page.locator('#member-print-portal');
+      await expect(printPreview).toBeVisible();
+      await expect(printPreview.locator('canvas.print-qr')).toHaveCount(5);
+      await page.getByRole('button', { name: /Tutup pratinjau cetak/i }).click();
+      await expect(printPreview).toBeHidden();
     }
 
     // tab Navigasi: Semua / Terdaftar / Kosong (atau ALL/ASSIGNED/UNASSIGNED)

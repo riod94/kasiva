@@ -392,9 +392,16 @@ function updateStatus() {
 async function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         try {
-            const reg = await navigator.serviceWorker.register('/sw.js');
-            if (navigator.serviceWorker.controller && reg.active) {
-                await navigator.serviceWorker.ready;
+            await navigator.serviceWorker.register('/sw.js');
+            const reg = await navigator.serviceWorker.ready;
+            const worker = navigator.serviceWorker.controller || reg.active;
+            if (worker) {
+                await new Promise((resolve) => {
+                    const channel = new MessageChannel();
+                    const timeout = setTimeout(() => resolve(false), 3000);
+                    channel.port1.onmessage = ({ data }) => { clearTimeout(timeout); resolve(Boolean(data?.cached)); };
+                    worker.postMessage({ type: 'CACHE_SHELL', url: location.pathname }, [channel.port2]);
+                });
             }
         } catch (e) {
             console.warn('SW registration failed:', e);

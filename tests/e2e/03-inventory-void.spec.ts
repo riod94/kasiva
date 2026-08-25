@@ -2,11 +2,11 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Inventory Logs & Void Transaction', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/login');
-    await page.fill('input[type="email"]', 'owner@kasiva.pos');
-    await page.fill('input[type="password"]', 'password123');
-    await page.click('button[type="submit"]');
-    await page.waitForLoadState('networkidle');
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
+    await page.locator('#login-email').fill('owner@kasiva.pos');
+    await page.locator('#login-password').fill('password123');
+    await page.getByRole('button', { name: /Masuk ke Kasiva/i }).click();
+    await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname));
   });
 
   test('owner dapat restok bahan baku & melihat inventory_logs terbuat', async ({ page }) => {

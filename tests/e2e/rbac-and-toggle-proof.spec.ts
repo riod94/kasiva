@@ -18,7 +18,7 @@ test.describe('Kasiva POS - RBAC Access Control, Toggle Switches & Landing Theme
     await page.fill('input[type="email"]', email);
     await page.fill('input[type="password"]', pass);
     await page.click('button[type="submit"]');
-    await page.waitForURL('**/pos');
+    await page.waitForURL(url => ['/pos', '/profile'].includes(url.pathname));
     await page.waitForLoadState('networkidle');
   }
 
@@ -30,7 +30,7 @@ test.describe('Kasiva POS - RBAC Access Control, Toggle Switches & Landing Theme
     await expect(page).toHaveTitle(/Kasiva POS/);
 
     // Verify Theme Switcher Button exists in Navbar
-    const themeBtn = page.locator('header button[title*="Ganti Tema"]');
+    const themeBtn = page.getByRole('button', { name: /Ganti tema terang atau gelap/i });
     await expect(themeBtn).toBeVisible();
 
     // Check current theme and toggle
@@ -85,7 +85,7 @@ test.describe('Kasiva POS - RBAC Access Control, Toggle Switches & Landing Theme
     await loginAsUser(page, 'kasir@kasiva.pos', 'password123');
 
     // 1. Verify Cashier is on POS Screen
-    await expect(page.locator('header img[alt="Kasiva POS"]')).toBeVisible();
+    await expect(page.getByRole('link', { name: /Kasiva POS, buka kasir/i })).toBeVisible();
 
     // 2. Verify Restricted Menus are NOT present in Cashier Navbar
     const desktopNav = page.locator('header nav');
@@ -146,7 +146,7 @@ test.describe('Kasiva POS - RBAC Access Control, Toggle Switches & Landing Theme
       await expect(desktopNav.getByText('Riwayat')).toBeVisible();
       await expect(desktopNav.getByText('Pengeluaran')).toBeVisible();
       await expect(desktopNav.getByText('Laporan')).toBeVisible();
-      await expect(desktopNav.getByText('Pengaturan')).toBeVisible();
+      await expect(desktopNav.getByText('Setelan', { exact: true })).toBeVisible();
     }
 
     // 2. Owner can navigate to /reports -> Expect 200 OK

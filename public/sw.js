@@ -1,5 +1,5 @@
-const CACHE = 'kasiva-shell-v8';
-const STATIC = ['/offline.html', '/images/kasiva-logo-icon.png', '/images/kasiva-logo-full.png'];
+const CACHE = 'kasiva-shell-v9';
+const STATIC = ['/offline.html', '/images/kasiva-logo-icon-128.png', '/images/kasiva-logo-full.png'];
 const ONLINE_ONLY_PREFIXES = ['/admin/'];
 
 async function preCacheManifest(cache) {
@@ -32,6 +32,19 @@ self.addEventListener('activate', event => {
   );
 });
 
+self.addEventListener('message', event => {
+  if (event.data?.type !== 'CACHE_SHELL') return;
+  const url = new URL(event.data.url || '/app/pos', self.location.origin);
+  if (url.origin !== self.location.origin || (!url.pathname.startsWith('/app/') && url.pathname !== '/pos/offline')) return;
+
+  event.waitUntil(
+    fetch(url, { credentials: 'include' })
+      .then(response => response.ok ? caches.open(CACHE).then(cache => cache.put(url, response)) : undefined)
+      .then(() => event.ports[0]?.postMessage({ cached: true }))
+      .catch(() => event.ports[0]?.postMessage({ cached: false }))
+  );
+});
+
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
@@ -41,15 +54,15 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        if (response.ok && url.pathname.startsWith('/build/')) {
-          event.waitUntil(
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone()))
-          );
+        const cacheableAsset = url.pathname.startsWith('/build/');
+        const cacheableShell = event.request.mode === 'navigate' && (url.pathname.startsWith('/app/') || url.pathname === '/pos/offline');
+        if (response.ok && (cacheableAsset || cacheableShell)) {
+          event.waitUntil(caches.open(CACHE).then(cache => cache.put(event.request, response.clone())));
         }
         return response;
       })
       .catch(() => event.request.mode === 'navigate'
-        ? caches.match('/offline.html')
+        ? caches.match(event.request).then(cached => cached || caches.match('/app/pos')).then(cached => cached || caches.match('/pos/offline')).then(cached => cached || caches.match('/offline.html'))
         : caches.match(event.request)
       )
   );
