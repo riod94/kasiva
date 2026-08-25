@@ -1,116 +1,14 @@
 <div class="space-y-6">
-    <!-- Header Banner -->
-    <div class="bg-[#1E1B4B] p-6 md:p-8 rounded-3xl border border-[#2E2A68] shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <div class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#3EDAD7]">
-                <x-icon name="package" class="w-4 h-4 text-[#3EDAD7]" />
-                <span>Pusat Inventaris & Resep HPP</span>
-            </div>
-            <h1 class="text-xl md:text-2xl font-black text-white mt-1">Manajemen Inventaris & Menu</h1>
-            <p class="text-xs text-slate-400 font-medium mt-1">Kelola katalog produk, resep HPP, master bahan baku, kategori, dan grup varian</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <a href="{{ route('settings.products') }}" class="px-4 py-2.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white text-xs font-extrabold uppercase tracking-wider rounded-2xl shadow transition active:scale-95 flex items-center gap-1.5">
-                <x-icon name="plus" class="w-3.5 h-3.5" />
-                <span>Tambah Menu</span>
-            </a>
-            <a href="{{ route('inventory.materials') }}" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold uppercase tracking-wider rounded-2xl shadow transition active:scale-95 flex items-center gap-1.5">
-                <x-icon name="plus" class="w-3.5 h-3.5" />
-                <span>Restok Bahan</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- Metrics Row -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-        <div class="bg-[#1E1B4B] border border-[#2E2A68] p-5 rounded-3xl shadow">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Produk Aktif</p>
-            <p class="text-2xl font-black text-white mt-1">{{ $totalProducts }} <span class="text-xs text-slate-400 font-medium">Menu</span></p>
-        </div>
-        <div class="bg-[#1E1B4B] border border-[#2E2A68] p-5 rounded-3xl shadow">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bahan Baku</p>
-            <p class="text-2xl font-black text-white mt-1">{{ $totalMaterials }} <span class="text-xs text-slate-400 font-medium">Item</span></p>
-        </div>
-        <div class="bg-[#1E1B4B] border border-[#2E2A68] p-5 rounded-3xl shadow">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Stok Menipis</p>
-            <p class="text-2xl font-black {{ $lowStockMaterials > 0 ? 'text-amber-400' : 'text-emerald-400' }} mt-1">
-                {{ $lowStockMaterials }} <span class="text-xs text-slate-400 font-medium">Bahan</span>
-            </p>
-        </div>
-        <div class="bg-[#1E1B4B] border border-[#2E2A68] p-5 rounded-3xl shadow">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kategori & Varian</p>
-            <p class="text-2xl font-black text-[#3EDAD7] mt-1">{{ $totalCategories }} <span class="text-xs text-slate-400 font-medium">/ {{ $totalVariants }} Varian</span></p>
-        </div>
-    </div>
-
-    <!-- Sub-Module Navigation Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- 1. Katalog Produk & Resep HPP -->
-        <a href="{{ route('settings.products') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-14 h-14 rounded-2xl bg-[#00AAA6]/20 text-[#8696ED] flex items-center justify-center border border-[#00AAA6]/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="shopping-bag" class="w-7 h-7 text-[#8696ED]" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-black text-white group-hover:text-[#3EDAD7] transition">Katalog Menu & Resep HPP</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Kelola harga jual, takaran bahan resep per porsi, margin 4-tier, dan foto menu produk.</p>
-                <span class="inline-block mt-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-[#16192E] text-slate-300 border border-[#2E2A68]">
-                    {{ $totalProducts }} Menu Terdaftar
-                </span>
-            </div>
-        </a>
-
-        <!-- 2. Master Bahan Baku & Restok -->
-        <a href="{{ route('inventory.materials') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="package" class="w-7 h-7 text-emerald-400" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-black text-white group-hover:text-emerald-300 transition">Library Bahan Baku & Restok</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Pantau stok bahan mentah, catat pembelian supplier, dan kalkulasi moving average HPP.</p>
-                <span class="inline-block mt-3 text-[10px] font-black px-2.5 py-1 rounded-full {{ $lowStockMaterials > 0 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' }}">
-                    {{ $totalMaterials }} Bahan ({{ $lowStockMaterials }} Menipis)
-                </span>
-            </div>
-        </a>
-
-        <!-- 3. Master Kategori Menu -->
-        <a href="{{ route('inventory.categories') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-14 h-14 rounded-2xl bg-[#8696ED]/20 text-[#8696ED] flex items-center justify-center border border-[#8696ED]/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="tag" class="w-7 h-7 text-[#8696ED]" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-black text-white group-hover:text-[#3EDAD7] transition">Master Kategori Menu</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Kelola pengelompokan menu makanan/minuman, ikon kategori, dan urutan tab di kasir.</p>
-                <span class="inline-block mt-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-[#16192E] text-slate-300 border border-[#2E2A68]">
-                    {{ $totalCategories }} Kategori
-                </span>
-            </div>
-        </a>
-
-        <!-- 4. Master Template Varian & Modifiers -->
-        <a href="{{ route('inventory.variations') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-14 h-14 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="layers" class="w-7 h-7 text-purple-400" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-base font-black text-white group-hover:text-purple-300 transition">Master Varian & Opsi</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Atur opsi ukuran (Regular/Large), level manis, suhu, dan penambahan harga otomatis.</p>
-                <span class="inline-block mt-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-[#16192E] text-slate-300 border border-[#2E2A68]">
-                    {{ $totalVariants }} Grup Varian
-                </span>
-            </div>
-        </a>
-    </div>
+<section class="ks-card relative overflow-hidden p-6 md:p-8"><div class="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-[#00AAA6]/10 blur-3xl"></div><div class="relative flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p class="ks-eyebrow">Inventaris dan HPP</p><h1 class="mt-2 text-2xl font-black md:text-3xl">Manajemen Inventaris &amp; Menu</h1><p class="ks-muted mt-2 max-w-2xl text-sm leading-6">Kelola katalog, resep per porsi, stok bahan, kategori, dan varian.</p></div><div class="flex flex-col gap-2 sm:flex-row"><a href="{{ route('settings.products') }}" class="ks-btn-primary"><x-icon name="plus" class="h-4 w-4"/>Tambah menu</a><a href="{{ route('inventory.materials') }}" class="ks-btn-secondary"><x-icon name="package" class="h-4 w-4 text-[#00AAA6]"/>Restok bahan</a></div></div></section>
+<section aria-label="Ringkasan inventaris" class="grid grid-cols-2 gap-3 md:grid-cols-4">@foreach([
+['Produk aktif',$totalProducts,'Menu',''],['Bahan baku',$totalMaterials,'Item',''],['Stok menipis',$lowStockMaterials,'Bahan',$lowStockMaterials > 0 ? 'text-amber-500' : 'text-emerald-500'],['Kategori / varian',$totalCategories,$totalVariants.' varian','text-[#00AAA6]']
+] as $metric)<div class="ks-card p-5"><p class="ks-muted text-[10px] font-extrabold uppercase tracking-wider">{{ $metric[0] }}</p><p class="mt-2 text-2xl font-black {{ $metric[3] }}">{{ $metric[1] }} <span class="ks-muted text-xs font-semibold">{{ $metric[2] }}</span></p></div>@endforeach</section>
+<section aria-labelledby="inventory-modules"><h2 id="inventory-modules" class="mb-4 text-base font-black">Kelola inventaris</h2><div class="grid gap-4 md:grid-cols-2">
+@foreach([
+['settings.products','shopping-bag','Katalog Menu & Resep HPP','Harga jual, takaran resep, margin, dan foto produk.',$totalProducts.' menu'],
+['inventory.materials','package','Bahan Baku & Restok','Stok, pembelian supplier, dan moving average HPP.',$totalMaterials.' bahan'],
+['inventory.categories','tag','Kategori Menu','Ikon, pengelompokan, dan urutan kategori di kasir.',$totalCategories.' kategori'],
+['inventory.variations','split','Varian & Opsi','Ukuran, level manis, suhu, dan tambahan harga.',$totalVariants.' grup varian'],
+] as $item)<a href="{{ route($item[0]) }}" class="ks-card ks-focus group flex min-h-40 items-start gap-4 p-5 transition hover:-translate-y-0.5 hover:border-[#00AAA6]"><span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#00AAA6]/25 bg-[#00AAA6]/10 text-[#00AAA6]"><x-icon name="{{ $item[1] }}" class="h-6 w-6"/></span><span class="min-w-0 flex-1"><span class="flex items-center justify-between gap-3"><strong class="text-sm font-black">{{ $item[2] }}</strong><x-icon name="chevron-right" class="h-4 w-4 shrink-0 text-[var(--text-muted)] transition group-hover:translate-x-0.5 group-hover:text-[#00AAA6]"/></span><span class="ks-muted mt-2 block text-xs leading-5">{{ $item[3] }}</span><span class="mt-3 inline-flex rounded-full border border-[var(--border-color)] bg-[var(--card-sub-bg)] px-2.5 py-1 text-[10px] font-extrabold">{{ $item[4] }}</span></span></a>@endforeach
+</div></section>
 </div>

@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -18,6 +20,18 @@ test('komponen cashier screen dapat di-render dengan sukses setelah login', func
     $this->actingAs($user)->get('/pos')
         ->assertStatus(200)
         ->assertSee('Kasiva POS');
+});
+
+test('cashier memulihkan cache kategori yang tidak valid', function () {
+    $user = User::factory()->create();
+    Category::create(['name' => 'Kopi', 'order_index' => 1]);
+    Cache::put('kasiva:categories', 'cache-rusak');
+
+    $this->actingAs($user)->get('/pos')
+        ->assertOk()
+        ->assertSee('Kopi');
+
+    expect(Cache::get('kasiva:categories'))->toBeInstanceOf(Collection::class);
 });
 
 test('kasir dapat menambah produk ke keranjang dan melakukan checkout tunai', function () {

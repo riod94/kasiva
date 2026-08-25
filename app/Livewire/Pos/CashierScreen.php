@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Services\CartCalculator;
 use App\Services\CheckoutService;
 use App\Services\LoyaltyService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -628,8 +629,12 @@ class CashierScreen extends Component
 
     public function render()
     {
-        // Cache kategori 5 menit; invalidasi via CategoryManager
-        $categories = Cache::remember('kasiva:categories', 300, fn () => Category::orderBy('order_index')->get());
+        // Cache kategori 5 menit; pulihkan cache lama/korup tanpa menjatuhkan layar kasir.
+        $categories = Cache::get('kasiva:categories');
+        if (! $categories instanceof Collection || $categories->contains(fn ($category) => ! $category instanceof Category)) {
+            Cache::forget('kasiva:categories');
+            $categories = Cache::remember('kasiva:categories', 300, fn () => Category::orderBy('order_index')->get());
+        }
 
         $query = Product::with(['recipes', 'variants.options'])->where('is_active', true);
         if ($this->selectedCategory !== 'ALL') {

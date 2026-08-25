@@ -39,7 +39,7 @@
             ['route' => 'settings.index', 'pattern' => 'settings.*', 'label' => 'Setelan', 'mobile' => 'Setelan', 'icon' => 'settings', 'show' => $user && ($user->isOwner() || $user->hasPermission('MANAGE_OUTLET') || $user->hasPermission('MANAGE_STAFF') || $user->hasPermission('MANAGE_ROLES') || $user->hasPermission('MANAGE_PAYMENTS') || $user->hasPermission('MANAGE_PRINTER'))],
         ];
         $visibleNav = array_values(array_filter($nav, fn (array $item): bool => $item['show']));
-        $mobileNav = count($visibleNav) > 5 ? array_values(array_filter($visibleNav, fn (array $item): bool => in_array($item['route'], ['pos.cashier', 'inventory.index', 'history.index', 'reports.index', 'settings.index']))) : $visibleNav;
+        $mobileNav = $visibleNav;
     @endphp
 
     <a href="#main-content" class="ks-focus fixed left-4 top-4 z-[100] -translate-y-24 rounded-xl bg-[#00AAA6] px-4 py-2.5 text-sm font-extrabold text-white transition-transform focus:translate-y-0">Lewati ke konten utama</a>
@@ -76,10 +76,10 @@
     </main>
 
     <nav class="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--border-color)] bg-[var(--header-bg)] pb-[env(safe-area-inset-bottom)] backdrop-blur-xl print:hidden lg:hidden" aria-label="Navigasi utama mobile">
-        <div class="mx-auto flex h-[68px] max-w-lg items-stretch px-1">
+        <div class="scrollbar-hide mx-auto flex h-[68px] max-w-2xl items-stretch overflow-x-auto px-1">
             @foreach($mobileNav as $item)
                 @php($active = request()->routeIs($item['pattern']))
-                <a href="{{ route($item['route']) }}" @if($active) aria-current="page" @endif class="ks-focus flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold {{ $active ? 'text-[#00AAA6]' : 'text-[var(--text-muted)]' }}">
+                <a href="{{ route($item['route']) }}" @if($active) aria-current="page" @endif class="ks-focus flex min-w-[4.5rem] flex-1 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold {{ $active ? 'text-[#00AAA6]' : 'text-[var(--text-muted)]' }}">
                     <span class="flex h-7 w-9 items-center justify-center rounded-xl {{ $active ? 'bg-[#00AAA6]/15' : '' }}"><x-icon :name="$item['icon']" class="h-5 w-5" /></span><span class="truncate">{{ $item['mobile'] }}</span>
                 </a>
             @endforeach

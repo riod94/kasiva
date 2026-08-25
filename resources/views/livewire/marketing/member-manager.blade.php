@@ -234,15 +234,16 @@
     @endif
 
     @push('scripts')
-    <script type="module">
-        import QRCode from 'qrcode';
+    <script>
         function renderQrs(){
+            const QRCode = window.KasivaQRCode; if (!QRCode) return;
             document.querySelectorAll('canvas.member-qr-mini, canvas.print-qr, #profile-qr').forEach(c=>{
                 const v=c.getAttribute('data-qr'); if(!v) return;
                 QRCode.toCanvas(c, v, {width: parseInt(c.getAttribute('width')||'100'), margin:1, color:{dark:'#0F172A', light:'#ffffff'}}).catch(()=>{});
             });
         }
         renderQrs();
+        document.addEventListener('kasiva:qrcode-ready', renderQrs);
         document.addEventListener('livewire:navigated', renderQrs);
         // re-render after Livewire updates
         if(window.Livewire) Livewire.hook('morph.updated', ()=> setTimeout(renderQrs, 50));

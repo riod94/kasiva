@@ -1,98 +1,13 @@
 <div class="space-y-6">
-    <!-- Header Page -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E1B4B] p-5 md:p-6 rounded-3xl border border-[#2E2A68] shadow-lg">
-        <div>
-            <h1 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
-                <span>Pusat Pengaturan Outlet</span>
-            </h1>
-            <p class="text-xs text-slate-400 font-medium mt-0.5">Konfigurasi outlet, format cetak struk thermal, QRIS, staf PIN, dan hak akses</p>
-        </div>
-    </div>
-
-    <!-- Settings Navigation Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- 1. Informasi Outlet -->
-        <a href="{{ route('settings.outlet') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-orange-500/20 text-orange-400 flex items-center justify-center border border-orange-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="store" class="w-6 h-6 text-orange-400" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-black text-white group-hover:text-[#3EDAD7] transition">Informasi Outlet</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Nama toko di struk, alamat outlet, nomor telepon, dan pajak PB1.</p>
-            </div>
-        </a>
-
-        <!-- 2. Pengaturan Struk Thermal -->
-        <a href="{{ route('settings.receipt') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="printer" class="w-6 h-6 text-cyan-400" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-black text-white group-hover:text-[#3EDAD7] transition">Pengaturan Struk</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Kustomisasi logo toko, footer struk promosi, dan lebar kertas 58mm/80mm.</p>
-            </div>
-        </a>
-
-        <!-- 3. Metode Pembayaran & QRIS -->
-        <a href="{{ route('settings.payment') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="qr-code" class="w-6 h-6 text-emerald-400" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-black text-white group-hover:text-emerald-300 transition">Metode Pembayaran</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Unggah QRIS statis outlet dan aktivasi kanal GoFood, GrabFood, ShopeeFood.</p>
-            </div>
-        </a>
-
-        <!-- 4. Manajemen Staff & PIN -->
-        <a href="{{ route('settings.staff') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-[#8696ED]/20 text-[#8696ED] flex items-center justify-center border border-[#8696ED]/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="users" class="w-6 h-6 text-[#8696ED]" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-black text-white group-hover:text-[#3EDAD7] transition">Manajemen Staf</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Daftar operator kasir, email, nomor WhatsApp, dan autentikasi 6-digit PIN.</p>
-            </div>
-        </a>
-
-        <!-- 5. Hak Akses & Peran (RBAC) -->
-        <a href="{{ route('settings.roles') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="shield" class="w-6 h-6 text-purple-400" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-black text-white group-hover:text-purple-300 transition">Hak Akses & Peran</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Matriks izin modul dinamis untuk Owner, Supervisor, dan Kasir Outlet.</p>
-            </div>
-        </a>
-
-        <!-- 6. Profil Akun & Keamanan -->
-        <a href="{{ route('profile.show') }}" class="bg-[#1E1B4B] border border-[#2E2A68] hover:border-[#00AAA6] p-5 rounded-3xl shadow-lg transition flex items-start gap-4 group">
-            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/40 group-hover:scale-105 transition shrink-0">
-                <x-icon name="settings" class="w-6 h-6 text-amber-400" />
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-black text-white group-hover:text-amber-300 transition">Profil & Keamanan</h3>
-                    <x-icon name="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-white transition" />
-                </div>
-                <p class="text-xs text-slate-400 font-medium mt-1">Informasi pengguna aktif, ganti password akun, dan pengaturan sesi.</p>
-            </div>
-        </a>
-    </div>
+<section class="ks-card p-6 md:p-8"><p class="ks-eyebrow">Konfigurasi dan keamanan</p><h1 class="mt-2 text-2xl font-black md:text-3xl">Pusat Pengaturan Outlet</h1><p class="ks-muted mt-2 max-w-2xl text-sm leading-6">Atur identitas outlet, struk, pembayaran, staf, hak akses, dan keamanan akun.</p></section>
+<section aria-labelledby="settings-modules"><div class="mb-4 flex items-center justify-between"><h2 id="settings-modules" class="text-base font-black">Pengaturan tersedia</h2><span class="ks-muted text-xs">Sesuai hak akses Anda</span></div><div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+@foreach([
+['settings.outlet','store','Informasi Outlet','Nama, alamat, kontak, pajak, dan biaya layanan.'],
+['settings.receipt','printer','Pengaturan Struk','Logo, footer, dan ukuran kertas thermal.'],
+['settings.payment','qr-code','Metode Pembayaran','QRIS dan kanal delivery online.'],
+['settings.staff','users','Manajemen Staf','Akun operator, status, dan PIN kasir.'],
+['settings.roles','shield','Hak Akses & Peran','Permission Owner, Manager, dan Kasir.'],
+['profile.show','lock-closed','Profil & Keamanan','Profil, kata sandi, PIN, dan sesi akun.'],
+] as $item)<a href="{{ route($item[0]) }}" class="ks-card ks-focus group flex min-h-40 items-start gap-4 p-5 transition hover:-translate-y-0.5 hover:border-[#00AAA6]"><span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#00AAA6]/25 bg-[#00AAA6]/10 text-[#00AAA6]"><x-icon name="{{ $item[1] }}" class="h-6 w-6"/></span><span class="min-w-0 flex-1"><span class="flex items-center justify-between gap-3"><strong class="text-sm font-black">{{ $item[2] }}</strong><x-icon name="chevron-right" class="h-4 w-4 shrink-0 text-[var(--text-muted)] transition group-hover:translate-x-0.5 group-hover:text-[#00AAA6]"/></span><span class="ks-muted mt-2 block text-xs leading-5">{{ $item[3] }}</span></span></a>@endforeach
+</div></section>
 </div>
