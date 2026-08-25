@@ -3,6 +3,7 @@
 namespace App\Livewire\Inventory;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -72,6 +73,7 @@ class CategoryManager extends Component
             session()->flash('message', 'Kategori baru berhasil ditambahkan.');
         }
 
+        Cache::forget('kasiva:categories');
         $this->showModal = false;
         $this->reset(['categoryId', 'name', 'icon', 'order_index']);
     }
@@ -79,6 +81,7 @@ class CategoryManager extends Component
     public function deleteCategory(string $id): void
     {
         Category::findOrFail($id)->delete();
+        Cache::forget('kasiva:categories');
         session()->flash('message', 'Kategori berhasil dihapus.');
     }
 

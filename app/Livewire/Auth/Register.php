@@ -8,6 +8,8 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Register extends Component
@@ -32,6 +34,14 @@ class Register extends Component
             'phone' => 'nullable|string|max:20',
         ]);
 
+        $throttleKey = 'register|'.Str::lower(request()->ip());
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            $this->addError('email', 'Terlalu banyak percobaan registrasi. Coba lagi dalam '.$seconds.' detik.');
+
+            return;
+        }
+
         $outlet = Outlet::create([
             'name' => $this->outlet_name,
             'phone' => $this->phone ?? '',
@@ -52,8 +62,10 @@ class Register extends Component
             'role_id' => $ownerRole->id,
             'outlet_id' => $outlet->id,
             'pin' => Hash::make('123456'),
+            'must_change_password' => true,
         ]);
 
+        RateLimiter::clear($throttleKey);
         Auth::login($user);
         session()->regenerate();
         AuditLog::log('REGISTER', 'Registered new SaaS Outlet & Owner account', $user->name);
