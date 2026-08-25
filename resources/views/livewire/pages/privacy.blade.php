@@ -1,113 +1,16 @@
-<x-layouts.guest>
-<div class="flex flex-col min-h-screen bg-[#0F172A] text-slate-100 selection:bg-[#00AAA6]/30 selection:text-[#3EDAD7]">
-    <!-- Header -->
-    <header class="flex items-center justify-between p-4 md:px-8 border-b border-[#2E2A68] backdrop-blur-md sticky top-0 z-50 bg-[#1E1B4B]/90 shadow-sm">
-        <div class="flex items-center gap-3">
-            <a href="{{ route('landing') }}" class="flex items-center gap-2.5">
-                <img src="/images/kasiva-logo-icon.png" alt="Kasiva POS" class="h-8 md:h-10 object-contain bg-white/95 p-1 rounded-xl shadow-sm">
-                <span class="font-black text-lg text-white tracking-tight">Kasiva</span>
-            </a>
-        </div>
-        <a href="{{ route('pos.cashier') }}" class="rounded-xl font-extrabold px-5 py-2.5 border border-[#2E2A68] text-xs md:text-sm bg-[#00AAA6] hover:bg-[#008F8C] text-white transition flex items-center gap-2 shadow-sm">
-            <x-icon name="store" class="w-4 h-4" />
-            <span>Buka Kasir POS</span>
-        </a>
-    </header>
-
-    <main class="flex-1">
-        <!-- Hero Section -->
-        <section class="py-14 md:py-20 bg-gradient-to-br from-[#00AAA6]/15 via-[#1E1B4B] to-[#0F172A] border-b border-[#2E2A68]/60 text-center px-4">
-            <div class="max-w-3xl mx-auto space-y-4">
-                <div class="inline-flex items-center gap-2 bg-[#00AAA6]/20 px-4 py-1.5 rounded-full border border-[#00AAA6]/40 text-[#8696ED] text-xs font-black uppercase tracking-widest">
-                    <span>Kebijakan Privasi</span>
-                </div>
-                <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
-                    Privasi Data & <span class="text-[#3EDAD7]">Keamanan Bisnis Anda.</span>
-                </h1>
-                <p class="text-slate-400 font-medium text-xs md:text-sm">
-                    Terakhir diperbarui: 25 April 2026 • Standar Enkripsi & Perlindungan Multi-Tenancy Kasiva.
-                </p>
-            </div>
-        </section>
-
-        <!-- Content Sections -->
-        <section class="py-12 md:py-16 max-w-4xl mx-auto px-4 space-y-6">
-            <div class="bg-[#1E1B4B] p-6 md:p-8 rounded-3xl border border-[#2E2A68] shadow-md text-xs md:text-sm text-slate-300 leading-relaxed font-medium">
-                Kasiva POS memprioritaskan kerahasiaan dan keamanan data transaksi finansial, takaran resep HPP, serta data pelanggan Anda. Dokumen ini merinci kebijakan kami dalam mengelola dan melindungi data usaha Anda.
-            </div>
-
-            <!-- Section 1 -->
-            <div class="space-y-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center font-black text-lg border border-blue-500/40">
-                        <x-icon name="database" class="w-5 h-5 text-blue-400" />
-                    </div>
-                    <h2 class="text-lg md:text-xl font-black text-white">1. Pengumpulan & Kepemilikan Data</h2>
-                </div>
-                <div class="bg-[#1E1B4B] p-5 md:p-6 rounded-2xl border border-[#2E2A68] text-xs md:text-sm text-slate-300 leading-relaxed space-y-3">
-                    <p>Kasiva dirancang dengan isolasi multi-tenant data outlet yang ketat:</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center gap-2"><x-icon name="check" class="w-4 h-4 text-emerald-400 shrink-0" /> <span>Seluruh data penjualan dan katalog produk disimpan secara aman dan hanya dapat diakses oleh akun outlet Anda.</span></li>
-                        <li class="flex items-center gap-2"><x-icon name="check" class="w-4 h-4 text-emerald-400 shrink-0" /> <span>Data keuangan, resep HPP, dan margin keuntungan 100% merupakan properti mutlak pemilik usaha.</span></li>
-                        <li class="flex items-center gap-2"><x-icon name="check" class="w-4 h-4 text-emerald-400 shrink-0" /> <span>Kami tidak menjual atau membagikan data transaksi Anda kepada pihak ketiga mana pun.</span></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Section 2 -->
-            <div class="space-y-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center font-black text-lg border border-emerald-500/40">
-                        <x-icon name="eye" class="w-5 h-5 text-emerald-400" />
-                    </div>
-                    <h2 class="text-lg md:text-xl font-black text-white">2. Tujuan Penggunaan Informasi</h2>
-                </div>
-                <div class="bg-[#1E1B4B] p-5 md:p-6 rounded-2xl border border-[#2E2A68] text-xs md:text-sm text-slate-300 leading-relaxed space-y-2">
-                    <p>Informasi yang Anda catat hanya dipergunakan untuk:</p>
-                    <p>1. Memproses transaksi kasir, kalkulasi pemotongan stok bahan baku, dan pembuatan struk.</p>
-                    <p>2. Menghasilkan ringkasan laporan laba-rugi, pergerakan HPP, dan performa omset outlet.</p>
-                    <p>3. Mengelola program loyalitas member WhatsApp dan kupon promo toko Anda.</p>
-                </div>
-            </div>
-
-            <!-- Section 3 -->
-            <div class="space-y-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-violet-500/20 text-violet-400 rounded-2xl flex items-center justify-center font-black text-lg border border-violet-500/40">
-                        <x-icon name="shield" class="w-5 h-5 text-violet-400" />
-                    </div>
-                    <h2 class="text-lg md:text-xl font-black text-white">3. Standar Keamanan & Enkripsi PIN</h2>
-                </div>
-                <div class="bg-[#1E1B4B] p-5 md:p-6 rounded-2xl border border-[#2E2A68] text-xs md:text-sm text-slate-300 leading-relaxed space-y-2">
-                    <p>Seluruh kata sandi dan 6-digit PIN login kasir dienkripsi secara aman menggunakan algoritma standar industri. Data sensitif pada koneksi jaringan dikomunikasikan melalui protokol aman HTTPS/TLS.</p>
-                </div>
-            </div>
-
-            <!-- Kontak Box -->
-            <div class="bg-gradient-to-br from-[#00AAA6]/20 to-[#1E1B4B] p-6 md:p-8 rounded-3xl border border-[#00AAA6]/40 text-center space-y-3">
-                <h3 class="text-base md:text-lg font-black text-white">Pertanyaan Mengenai Privasi & Keamanan Data?</h3>
-                <p class="text-xs text-slate-300 max-w-md mx-auto">Kami berdedikasi menjaga keamanan data Anda. Hubungi tim kami:</p>
-                <a href="mailto:privacy@kasiva.id" class="inline-flex items-center justify-center px-6 py-2.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-bold text-xs rounded-xl shadow transition">
-                    privacy@kasiva.id
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-[#2E2A68] bg-[#16192E] py-8 px-4 md:px-8">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-            <div class="flex items-center gap-2">
-                <img src="/images/kasiva-logo-icon.png" alt="Kasiva" class="h-6 w-6 object-contain bg-white/95 p-0.5 rounded-lg">
-                <span class="font-black text-sm text-white">Kasiva POS</span>
-            </div>
-            <div class="flex flex-wrap gap-5 font-bold text-slate-300">
-                <a href="{{ route('privacy') }}" class="hover:text-white transition">Kebijakan Privasi</a>
-                <a href="{{ route('terms') }}" class="hover:text-white transition">Syarat & Ketentuan</a>
-                <a href="{{ route('about') }}" class="hover:text-white transition">Tentang Kami</a>
-            </div>
-            <p class="text-[11px] text-slate-500">© 2026 Kasiva POS. Hak Cipta Dilindungi Undang-Undang.</p>
-        </div>
-    </footer>
+<x-layouts.guest title="Kebijakan Privasi — Kasiva POS" description="Pelajari bagaimana Kasiva melindungi data transaksi, resep, pelanggan, dan akun outlet Anda.">
+<div class="min-h-dvh bg-[var(--app-bg)] text-[var(--text-main)]">
+    <header class="sticky top-0 z-40 border-b border-[var(--border-color)] bg-[var(--header-bg)] backdrop-blur-xl"><div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-8"><a href="{{ route('landing') }}" class="ks-focus flex min-h-11 items-center gap-2.5 rounded-xl"><img src="{{ asset('images/kasiva-logo-icon-128.png') }}" alt="" class="h-9 w-9 rounded-xl bg-white p-1"><span class="font-black">Kasiva</span></a><div class="flex gap-2"><button onclick="window.toggleKasivaTheme()" class="ks-focus flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border-color)] bg-[var(--card-sub-bg)]" aria-label="Ganti tema"><x-icon name="sun" class="hidden h-4 w-4 dark:block"/><x-icon name="moon" class="h-4 w-4 dark:hidden"/></button><a href="{{ route('register') }}" class="ks-btn-primary">Mulai gratis</a></div></div></header>
+    <main id="main-content"><section class="border-b border-[var(--border-color)] px-4 py-16 text-center md:py-24"><p class="ks-eyebrow">Legal dan keamanan</p><h1 class="mx-auto mt-4 max-w-3xl text-4xl font-black tracking-tight md:text-6xl">Kebijakan Privasi</h1><p class="ks-muted mx-auto mt-5 max-w-2xl leading-7">Cara Kasiva mengelola dan melindungi data usaha, transaksi, resep, serta pelanggan Anda.</p><p class="ks-muted mt-4 text-xs">Terakhir diperbarui: 25 April 2026</p></section>
+    <article class="mx-auto max-w-3xl space-y-8 px-4 py-12 md:px-8 md:py-16"><div class="ks-card p-6 text-sm leading-7 sm:p-8">Kasiva POS memprioritaskan kerahasiaan dan keamanan data transaksi finansial, takaran resep HPP, serta data pelanggan Anda. Dokumen ini menjelaskan data yang dikelola, tujuan penggunaannya, dan kontrol yang tersedia bagi pemilik outlet.</div>
+    @foreach([
+      ['database','1. Pengumpulan dan kepemilikan data',['Data penjualan dan katalog hanya dapat diakses oleh akun outlet yang berwenang.','Data keuangan, resep HPP, dan margin merupakan milik pemilik usaha.','Kasiva tidak menjual data transaksi Anda kepada pihak ketiga.']],
+      ['eye','2. Tujuan penggunaan informasi',['Memproses transaksi, pemotongan stok bahan, dan pembuatan struk.','Menyusun laporan omzet, HPP, laba, dan performa outlet.','Mengelola member, stempel loyalitas, dan promo yang Anda aktifkan.']],
+      ['shield','3. Keamanan akun dan transmisi',['Kata sandi dan PIN disimpan dalam bentuk hash standar industri.','Koneksi produksi harus menggunakan HTTPS/TLS.','Hak akses staf dibatasi melalui role dan permission.']],
+      ['server','4. Penyimpanan dan sinkronisasi',['Fitur offline menyimpan data tertentu pada perangkat untuk menjaga operasional.','Antrean perubahan disinkronkan saat koneksi tersedia.','Akses fisik ke perangkat tetap menjadi tanggung jawab outlet.']],
+      ['users','5. Hak dan tanggung jawab pengguna',['Pemilik dapat memperbarui data akun dan outlet melalui pengaturan.','Permintaan terkait data dapat dikirim ke alamat kontak resmi.','Pengguna wajib menjaga kredensial dan mencabut akses staf yang tidak lagi bekerja.']],
+    ] as $section)<section aria-labelledby="privacy-{{ $loop->iteration }}"><div class="flex items-center gap-3"><span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#00AAA6]/15 text-[#00AAA6]"><x-icon name="{{ $section[0] }}" class="h-5 w-5"/></span><h2 id="privacy-{{ $loop->iteration }}" class="text-xl font-black">{{ $section[1] }}</h2></div><ul class="ks-card mt-4 space-y-3 p-6 text-sm leading-7 sm:p-7">@foreach($section[2] as $item)<li class="flex gap-3"><x-icon name="check" class="mt-1.5 h-4 w-4 shrink-0 text-[#00AAA6]"/><span class="ks-muted">{{ $item }}</span></li>@endforeach</ul></section>@endforeach
+    <section class="rounded-3xl border border-[#00AAA6]/30 bg-[#00AAA6]/10 p-7 text-center"><h2 class="text-xl font-black">Pertanyaan tentang privasi?</h2><p class="ks-muted mt-2 text-sm">Hubungi tim Kasiva untuk permintaan atau klarifikasi terkait data.</p><a href="mailto:privacy@kasiva.id" class="ks-btn-primary mt-5">privacy@kasiva.id</a></section></article></main>
+    <footer class="border-t border-[var(--border-color)]"><div class="mx-auto flex max-w-6xl flex-col justify-between gap-4 px-4 py-8 text-xs md:flex-row md:px-8"><p class="ks-muted">© {{ date('Y') }} Kasiva POS.</p><nav class="flex flex-wrap gap-5 font-bold"><a href="{{ route('about') }}">Tentang</a><a href="{{ route('privacy') }}" aria-current="page" class="text-[#00AAA6]">Privasi</a><a href="{{ route('terms') }}">Ketentuan</a></nav></div></footer>
 </div>
 </x-layouts.guest>

@@ -50,8 +50,8 @@ test('social preview landing tersedia dalam format PNG', function () {
 });
 
 test('halaman login dan register dapat diakses dengan sukses', function () {
-    $this->get('/login')->assertStatus(200)->assertSee('Masuk Akun Kasiva');
-    $this->get('/register')->assertStatus(200)->assertSee('Pendaftaran Akun Outlet');
+    $this->get('/login')->assertStatus(200)->assertSee('Masuk ke Kasiva');
+    $this->get('/register')->assertStatus(200)->assertSee('Daftarkan outlet');
 });
 
 test('pengguna dapat melakukan registrasi outlet baru', function () {

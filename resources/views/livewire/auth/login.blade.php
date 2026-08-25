@@ -1,50 +1,42 @@
-<div class="min-h-screen flex items-center justify-center p-4 bg-[#0F172A] text-slate-100 selection:bg-[#00AAA6]/30 selection:text-[#3EDAD7]">
-    <div class="bg-[#1E1B4B] border border-[#2E2A68] w-full max-w-sm rounded-3xl p-7 space-y-6 shadow-2xl backdrop-blur-xl">
-        <div class="text-center space-y-2">
-            <a href="{{ route('landing') }}" class="inline-block">
-                <img src="/images/kasiva-logo-full.png" alt="Kasiva POS" class="h-10 w-auto object-contain mx-auto bg-white/95 p-1.5 rounded-xl shadow-sm hover:scale-105 transition">
+<div class="relative min-h-dvh overflow-hidden bg-[var(--app-bg)] text-[var(--text-main)] selection:bg-[#00AAA6]/25">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgb(134_150_237_/_0.14),transparent_34%),radial-gradient(circle_at_90%_85%,rgb(0_170_166_/_0.15),transparent_34%)]"></div>
+    <div class="relative mx-auto grid min-h-dvh max-w-7xl items-stretch lg:grid-cols-[1.05fr_.95fr]">
+        <aside class="hidden flex-col justify-between border-r border-[var(--border-color)] p-10 lg:flex xl:p-14" aria-label="Manfaat Kasiva">
+            <a href="{{ route('landing') }}" class="ks-focus inline-flex min-h-11 w-fit items-center gap-3 rounded-xl">
+                <img src="{{ asset('images/kasiva-logo-icon-128.png') }}" alt="" width="44" height="44" class="h-11 w-11 rounded-xl bg-white p-1 shadow-sm"><span class="text-xl font-black">Kasiva</span>
             </a>
-            <h1 class="text-xl font-black text-white tracking-tight">Masuk Akun Kasiva</h1>
-            <p class="text-xs text-slate-400 font-medium">Akses sistem kasir outlet & dasbor manajemen</p>
-        </div>
-
-        <form wire:submit.prevent="login" class="space-y-4 text-xs">
-            <div>
-                <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Alamat Email</label>
-                <input type="email" wire:model="email" placeholder="kasir@kasiva.pos" class="w-full px-3.5 py-3 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] transition">
-                @error('email') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
+            <div class="max-w-xl">
+                <p class="ks-eyebrow">Selamat datang kembali</p>
+                <h1 class="mt-4 text-4xl font-black leading-tight tracking-tight xl:text-5xl">Satu login untuk menjaga <span class="text-[#00AAA6]">seluruh ritme outlet.</span></h1>
+                <p class="ks-muted mt-5 max-w-lg leading-7">Lanjutkan transaksi, pantau stok bahan, dan lihat profit outlet dari tempat terakhir Anda berhenti.</p>
+                <div class="mt-8 grid gap-3 sm:grid-cols-3">
+                    @foreach([['shield','Akses berbasis peran'],['refresh','Siap offline'],['chart-bar','Profit transparan']] as $item)
+                        <div class="ks-panel p-4"><x-icon name="{{ $item[0] }}" class="h-5 w-5 text-[#00AAA6]" /><p class="mt-3 text-xs font-extrabold">{{ $item[1] }}</p></div>
+                    @endforeach
+                </div>
             </div>
+            <p class="ks-muted text-xs">Kasiva POS • Dibuat untuk F&amp;B dan retail Indonesia</p>
+        </aside>
 
-            <div>
-                <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[10px]">Kata Sandi / PIN</label>
-                <input type="password" wire:model="password" placeholder="••••••••" class="w-full px-3.5 py-3 bg-[#16192E] border border-[#2E2A68] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-[#00AAA6] transition">
-                @error('password') <span class="text-rose-400 text-[10px] mt-1 block">{{ $message }}</span> @enderror
+        <main class="flex items-center justify-center px-4 py-10 sm:px-8 lg:px-12" id="main-content">
+            <div class="w-full max-w-md">
+                <div class="mb-8 flex items-center justify-between lg:hidden">
+                    <a href="{{ route('landing') }}" class="ks-focus flex min-h-11 items-center gap-2.5 rounded-xl"><img src="{{ asset('images/kasiva-logo-icon-128.png') }}" alt="" width="40" height="40" class="h-10 w-10 rounded-xl bg-white p-1"><span class="text-lg font-black">Kasiva</span></a>
+                    <button type="button" onclick="window.toggleKasivaTheme()" class="ks-focus flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border-color)] bg-[var(--card-sub-bg)]" aria-label="Ganti tema terang atau gelap"><x-icon name="sun" class="hidden h-4 w-4 dark:block" /><x-icon name="moon" class="h-4 w-4 dark:hidden" /></button>
+                </div>
+
+                <section class="ks-card p-6 sm:p-8" aria-labelledby="login-title">
+                    <div><p class="ks-eyebrow">Akun outlet</p><h2 id="login-title" class="mt-2 text-2xl font-black">Masuk ke Kasiva</h2><p class="ks-muted mt-2 text-sm leading-6">Gunakan email dan kata sandi akun Anda.</p></div>
+                    @if(session('warning'))<div role="alert" class="mt-5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs font-bold text-amber-600 dark:text-amber-300">{{ session('warning') }}</div>@endif
+                    <form wire:submit="login" class="mt-6 space-y-5" novalidate>
+                        <div><label for="login-email" class="ks-label">Alamat email</label><input id="login-email" type="email" wire:model="email" autocomplete="email" inputmode="email" placeholder="nama@outlet.com" class="ks-input" aria-describedby="login-email-error">@error('email')<p id="login-email-error" role="alert" class="mt-1.5 text-xs font-bold text-rose-500">{{ $message }}</p>@enderror</div>
+                        <div><label for="login-password" class="ks-label">Kata sandi</label><input id="login-password" type="password" wire:model="password" autocomplete="current-password" placeholder="Masukkan kata sandi" class="ks-input" aria-describedby="login-password-error">@error('password')<p id="login-password-error" role="alert" class="mt-1.5 text-xs font-bold text-rose-500">{{ $message }}</p>@enderror</div>
+                        <label class="ks-muted flex min-h-11 cursor-pointer items-center gap-2.5 text-sm font-semibold"><input type="checkbox" wire:model="remember" class="h-4 w-4 rounded border-[var(--border-color)] bg-[var(--card-sub-bg)] text-[#00AAA6] focus:ring-[#00AAA6]"> Tetap masuk di perangkat ini</label>
+                        <button type="submit" class="ks-btn-primary w-full" wire:loading.attr="disabled" wire:target="login"><span wire:loading.remove wire:target="login">Masuk ke Kasiva</span><span wire:loading wire:target="login">Memeriksa akun…</span><x-icon name="arrow-right" class="h-4 w-4" /></button>
+                    </form>
+                    <div class="mt-6 border-t border-[var(--border-color)] pt-5 text-center text-sm"><p class="ks-muted">Belum punya akun? <a href="{{ route('register') }}" class="ks-focus rounded font-extrabold text-[#00AAA6] hover:underline">Daftar outlet gratis</a></p><a href="{{ route('landing') }}" class="ks-focus ks-muted mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-lg text-xs font-bold hover:text-[var(--text-main)]"><x-icon name="arrow-left" class="h-3.5 w-3.5" /> Kembali ke beranda</a></div>
+                </section>
             </div>
-
-            <div class="flex items-center justify-between text-[11px] pt-1">
-                <label class="flex items-center gap-2 text-slate-400 cursor-pointer font-medium hover:text-slate-300">
-                    <input type="checkbox" wire:model="remember" class="rounded bg-[#16192E] border-[#2E2A68] text-[#00AAA6] focus:ring-0">
-                    Ingat saya
-                </label>
-                <span class="text-slate-500 text-[10px]">PIN default: 123456</span>
-            </div>
-
-            <button type="submit" class="w-full py-3.5 bg-[#00AAA6] hover:bg-[#008F8C] text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
-                <span>Masuk ke Kasir POS</span>
-                <x-icon name="arrow-right" class="w-4 h-4" />
-            </button>
-        </form>
-
-        <div class="pt-3 border-t border-[#2E2A68] text-center space-y-2">
-            <p class="text-[11px] text-slate-400 font-medium">
-                Belum punya akun outlet? <a href="{{ route('register') }}" class="text-[#3EDAD7] font-black hover:underline">Daftar Sekarang</a>
-            </p>
-            <div>
-                <a href="{{ route('landing') }}" class="text-[10px] text-slate-500 hover:text-slate-300 transition flex items-center justify-center gap-1">
-                    <x-icon name="arrow-left" class="w-3 h-3" />
-                    <span>Kembali ke Beranda</span>
-                </a>
-            </div>
-        </div>
+        </main>
     </div>
 </div>
