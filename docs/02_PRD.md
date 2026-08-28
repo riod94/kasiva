@@ -60,7 +60,8 @@ Kasiva mengintegrasikan manajemen produk, transaksi kasir berkecepatan tinggi, p
 - **F-POS-02 (Kalkulasi HPP Resep)**: Kalkulasi HPP (COGS) otomatis saat checkout berdasarkan resep bahan baku per porsi.
 - **F-POS-03 (Metode Pembayaran)**: Mendukung Pembayaran Tunai (kalkulasi kembalian otomatis), QRIS, dan Split Payment.
 - **F-POS-04 (Struk Kasiva)**: Struk transaksi otomatis dengan nomor unik (`KSV-YYYYMMDD-XXXX`), logo Kasiva, dan QR code.
-- **F-POS-05 (Offline Checkout)**: Transaksi tersimpan 100% aman di SQLite lokal saat koneksi internet terputus.
+- **F-POS-05 (Offline Checkout)**: Transaksi tersimpan 100% aman di SQLite lokal saat koneksi terputus.
+- **F-POS-06 (Platform Adjustment Delivery)**: Step checkout tambahan khusus pesanan dari platform delivery (GoFood/GrabFood/ShopeeFood). Kasir dapat override total tagihan dari jumlah item cart, dan selisihnya dicatat sebagai `platform_discount` (jika reduce) atau `platform_markup` (jika increase) untuk rekonsiliasi profit di laporan keuangan. Field `platform_discount` & `platform_markup` di tabel `transactions` adalah `DECIMAL(12,2) NOT NULL DEFAULT 0`; aggregate per-periode ditampilkan di F-FIN dengan label `Penyesuaian Platform`.
 
 ### 4.3 Modul Inventaris & HPP Moving Average (F-INV)
 - **F-INV-01 (Manajemen Bahan Baku)**: Pencatatan stok bahan baku (unit: ml, gram, pcs) dan kalkulasi *moving average unit cost*:

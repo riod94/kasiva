@@ -94,6 +94,58 @@ sequenceDiagram
     LW-->>K: Render Modal Struk Digital Kasiva
 ```
 
+### 2.1.1 Aliran Platform Adjustment (Pesanan Delivery)
+
+Step checkout tambahan untuk pesanan dari platform delivery (GoFood/GrabFood/ShopeeFood). Kasir menerima total tagihan yang **sudah di-override** oleh platform (mis. ada diskon promo atau biaya layanan), yang **tidak sama** dengan jumlah `cart.items.sum(subtotal)`. Selisihnya dicatat agar laporan profit tetap akurat.
+
+```
+Kasir                CashierScreen          CheckoutService        DB (transactions)
+  |                       |                       |                       |
+  |-- pilih step 3 ------->|                       |                       |
+  |  (PLATFORM_ADJUSTMENT) |                       |                       |
+  |<-- modal setoran -----|                       |                       |
+  |  tampilkan:           |                       |                       |
+  |   - total cart items  |                       |                       |
+  |   - total tagihan     |                       |                       |
+  |   - selisih           |                       |                       |
+  |                       |                       |                       |
+  |-- input adjusted      |                       |                       |
+  |  amount + platform    |                       |                       |
+  |  (GoFood/GrabFood/dll)|                       |                       |
+  |                       |                       |                       |
+  |-- klik Konfirmasi --->|                       |                       |
+  |                       |-- validate step ------>|                       |
+  |                       |   (PLATFORM_ADJUSTER)  |                       |
+  |                       |                       |                       |
+  |                       |<-- hitung selisih ----|                       |
+  |                       |   $diff = total -     |                       |
+  |                       |   adjusted            |                       |
+  |                       |   if $diff >= 0:      |                       |
+  |                       |     platform_disc = $diff
+  |                       |   else:               |                       |
+  |                       |     platform_markup = |                       |
+  |                       |       abs($diff)      |                       |
+  |                       |                       |                       |
+  |                       |-- DB::transaction ---->|                       |
+  |                       |   INSERT transactions |---- INSERT ----------->|
+  |                       |   (platform_discount, |   platform_discount,   |
+  |                       |    platform_markup,   |   platform_markup,     |
+  |                       |    is_backdated)      |   is_backdated)        |
+  |                       |                       |                       |
+  |<-- render struk KSV --|                       |                       |
+```
+
+**Field database** (migration `2026_08_12_000002_create_extended_kasiva_tables.php`):
+- `transactions.platform_discount` DECIMAL(12,2) DEFAULT 0 — selisih positif (tagihan lebih kecil dari cart items)
+- `transactions.platform_markup` DECIMAL(12,2) DEFAULT 0 — selisih negatif (tagihan lebih besar dari cart items)
+- `transactions.is_backdated` BOOLEAN DEFAULT false — flag terpisah untuk transaksi backdate, di-aggregate terpisah di FinancialReports
+
+**Laporan** (`FinancialReports::render()`): aggregate `Σ(total_amount - itemsSum)` per-periode dikalikan `is_backdated` atau `platform_discount != 0` flag, ditampilkan sebagai `Penyesuaian Platform` dengan warna emerald untuk positif (adjustment naik, kasir selisih) atau rose untuk negatif.
+
+**Mengapa ini tidak cukup hanya dengan diskon biasa?**
+- `campaign_discount` dihitung dari harga sebelum transaksi dan **mengurangi** HPP/snapshot profit dari item cart. `platform_discount` adalah **delta terhadap total tagihan** yang **tidak** mengubah HPP item — jadi profit per-item tetap akurat, hanya total revenue yang disesuaikan.
+- Laba bersih per-item tidak terkontaminasi oleh override kasir. Laporan profit per-item tetap merefleksikan resep + harga jual sebenarnya.
+
 ### 2.2 Aliran Sinkronisasi Latar Belakang (Offline-First Sync Flow)
 
 ```mermaid
