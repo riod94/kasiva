@@ -8,7 +8,7 @@
 | **Versi Produk** | 1.0.0 (Rebranded & Rearchitected) |
 | **Tanggal Dokumen** | 2026-08-09 |
 | **Status Dokumen** | Official Specification / Product Management Benchmark |
-| **Tech Stack Utama** | **Laravel 13** + **Livewire 4** + **TailwindCSS v4** + **NativePHP (Desktop & Mobile SuperNative)** |
+| **Tech Stack Utama** | **Laravel 12** + **Livewire 4** + **TailwindCSS v4** + **NativePHP (Desktop & Mobile SuperNative)** |
 | **Database Model** | Dual Storage: SQLite Lokal (Client Kasir) & PostgreSQL (Cloud Server SaaS) |
 
 ---

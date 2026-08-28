@@ -4,7 +4,7 @@
 
 **Kasiva** adalah sistem Point of Sale (POS) SaaS Modern Multi-Platform yang dirancang khusus untuk Usaha Mikro, Kecil, dan Menengah (UMKM) serta bisnis F&B / Retail di Indonesia. 
 
-Kasiva mengusung filosofi **"Single Codebase, Omnichannel Multi-Target Execution"** di mana satu sistem inti (Laravel 13 + Livewire 4 + TailwindCSS v4 + NativePHP) dapat beroperasi secara seamless di:
+Kasiva mengusung filosofi **"Single Codebase, Omnichannel Multi-Target Execution"** di mana satu sistem inti (Laravel 12 + Livewire 4 + TailwindCSS v4 + NativePHP) dapat beroperasi secara seamless di:
 1. **Web Browser (Desktop)**
 2. **Mobile Web (HP/Tablet Browser)**
 3. **Android App (NativePHP Mobile / APK)**
@@ -28,7 +28,7 @@ Kasiva mengusung filosofi **"Single Codebase, Omnichannel Multi-Target Execution
 
 ```mermaid
 graph TD
-    CORE["📦 Kasiva Single Core (Laravel 13)"]
+    CORE["📦 Kasiva Single Core (Laravel 12)"]
     
     CORE --> TARGET_WEB["🌐 Web & Mobile Web"]
     CORE --> TARGET_MOBILE["📱 NativePHP Mobile (Android & iOS)"]

@@ -16,7 +16,7 @@ gantt
     title Roadmap Pengembangan Kasiva POS Multi-Platform
     dateFormat  YYYY-MM-DD
     section Phase 1: Core Foundation
-    Laravel 13 & Tailwind v4 Setup       :done, p1, 2026-08-01, 3d
+    Laravel 12 & Tailwind v4 Setup       :done, p1, 2026-08-01, 3d
     Design System & Kasiva Palette       :done, p2, 2026-08-04, 2d
     section Phase 2: POS & HPP Engine
     Database Migrations & Models        :done, p3, 2026-08-06, 2d

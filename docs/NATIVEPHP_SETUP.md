@@ -7,7 +7,7 @@ Dokumen ini menjelaskan panduan instalasi, konfigurasi, dan kompilasi aplikasi *
 ## 1. Prerequisites (Prasyarat Sistem)
 
 - **PHP**: `^8.3`
-- **Laravel**: `^13.0`
+- **Laravel**: `^12.0`
 - **Composer**: `>= 2.6`
 - **Node.js**: `>= 20.x`
 - **Android Studio / SDK** (untuk kompilasi APK / Android Bundle)
