@@ -1,0 +1,34 @@
+/* Kasiva Landing — utility & animasi lokal
+ * ----------------------------------------
+ * File ini di-bundle terpisah dari app.css untuk menjaga ukuran payload
+ * halaman publik tetap kecil. Tailwind v4 sudah mencakup utility di blade;
+ * file ini hanya memuat keyframes, gradient, dan state kelas yang berulang.
+ */
+
+.lp-float { animation: lp-float 6s ease-in-out infinite; }
+@keyframes lp-float { 50% { transform: translateY(-9px); } }
+
+.lp-grid {
+    background-image: radial-gradient(rgb(80 91 147 / 0.17) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.lp-gradient-text {
+    background: linear-gradient(100deg, #505b93 0%, #00aaa6 53%, #008f8c 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+    background-clip: text;
+}
+
+html.dark .lp-gradient-text {
+    background: linear-gradient(100deg, #a9b4ff 0%, #3edad7 53%, #00aaa6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .lp-float { animation: none; }
+    .lp-anim * { animation: none !important; transition: none !important; }
+}
