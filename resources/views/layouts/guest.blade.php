@@ -47,13 +47,17 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="{{ $title ?? 'Kasiva POS — Sistem Kasir Pintar F&B' }}">
     <meta property="og:description" content="{{ $description ?? 'Sistem Kasir Pintar Modern dengan kalkulasi HPP otomatis, laporan laba bersih, dan dukungan platform online.' }}">
-    <meta property="og:image" content="{{ asset('images/kasiva-logo-full.png') }}">
+    <meta property="og:image" content="{{ asset('images/kasiva-social-preview.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Kasiva POS — Kasir bukan cuma mencatat, Kasiva menjaga profit.">
 
     {{-- Twitter --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $title ?? 'Kasiva POS — Modern Point of Sale' }}">
     <meta name="twitter:description" content="{{ $description ?? 'Sistem Kasir Pintar Modern untuk UMKM dan Bisnis F&B Indonesia.' }}">
-    <meta name="twitter:image" content="{{ asset('images/kasiva-logo-full.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/kasiva-social-preview.png') }}">
 
     {{-- Structured Data: Organization --}}
     <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', 'name' => 'Kasiva POS', 'url' => url('/'), 'logo' => asset('images/kasiva-logo-icon.png'), 'description' => 'Sistem kasir pintar dan manajemen inventaris F&B dengan kalkulasi HPP otomatis.'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>

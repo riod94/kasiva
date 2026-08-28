@@ -19,12 +19,15 @@
     <meta property="og:url" content="{{ $canonical ?? url()->current() }}">
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
-    <meta property="og:image" content="{{ asset('images/kasiva-logo-full.png') }}">
-    <meta property="og:image:alt" content="Kasiva POS">
+    <meta property="og:image" content="{{ asset('images/kasiva-social-preview.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Kasiva POS — Kasir bukan cuma mencatat, Kasiva menjaga profit.">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $title }}">
     <meta name="twitter:description" content="{{ $description }}">
-    <meta name="twitter:image" content="{{ asset('images/kasiva-logo-full.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/kasiva-social-preview.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('images/kasiva-logo-icon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/kasiva-logo-icon.png') }}">
     <meta name="theme-color" content="#272D48">

@@ -22,8 +22,12 @@ test('landing page memiliki metadata SEO dan schema terstruktur', function () {
         ->assertSee('<title>Kasiva POS — Aplikasi Kasir, HPP, Stok &amp; Laporan Profit F&amp;B</title>', false)
         ->assertSee('name="description"', false)
         ->assertSee('rel="canonical"', false)
-        ->assertSee('property="og:image"', false)
-        ->assertSee('name="twitter:card" content="summary_large_image"', false);
+        ->assertSee('property="og:image" content="'.asset('images/kasiva-social-preview.png').'"', false)
+        ->assertSee('property="og:image:width" content="1200"', false)
+        ->assertSee('property="og:image:height" content="630"', false)
+        ->assertSee('property="og:image:type" content="image/png"', false)
+        ->assertSee('name="twitter:card" content="summary_large_image"', false)
+        ->assertSee('name="twitter:image" content="'.asset('images/kasiva-social-preview.png').'"', false);
 
     preg_match_all('/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/s', $response->getContent(), $matches);
     $schemas = array_map(fn (string $json): array => json_decode($json, true, 512, JSON_THROW_ON_ERROR), $matches[1]);
