@@ -13,13 +13,21 @@ class StaffManager extends Component
     use WithPagination;
 
     public string $search = '';
+
     public bool $showModal = false;
+
     public ?int $userId = null;
+
     public string $name = '';
+
     public string $email = '';
+
     public string $phone = '';
+
     public string $pin = '';
+
     public ?string $roleId = null;
+
     public bool $is_active = true;
 
     protected $rules = [
@@ -54,7 +62,7 @@ class StaffManager extends Component
         $this->phone = $user->phone ?? '';
         $this->pin = ''; // Keep empty unless updating
         $this->roleId = $user->role_id;
-        $this->is_active = (bool)$user->is_active;
+        $this->is_active = (bool) $user->is_active;
         $this->showModal = true;
     }
 
@@ -71,22 +79,27 @@ class StaffManager extends Component
                 'role_id' => $this->roleId,
                 'is_active' => $this->is_active,
             ];
-            if (!empty($this->pin)) {
+            if (! empty($this->pin)) {
                 $data['pin'] = Hash::make($this->pin);
             }
             $user->update($data);
             session()->flash('message', 'Data staf kasir berhasil diperbarui.');
         } else {
-            User::create([
+            $plainPin = ! empty($this->pin) ? $this->pin : (string) random_int(100000, 999999);
+            $newUser = User::create([
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'password' => Hash::make('kasir12345'),
-                'pin' => !empty($this->pin) ? Hash::make($this->pin) : Hash::make('123456'),
+                'pin' => Hash::make($plainPin),
+                'must_change_pin' => empty($this->pin),
                 'role_id' => $this->roleId,
                 'is_active' => $this->is_active,
             ]);
             session()->flash('message', 'Staf kasir baru berhasil ditambahkan.');
+            if (empty($this->pin)) {
+                session()->flash('staff_initial_pin', ['name' => $newUser->name, 'pin' => $plainPin]);
+            }
         }
 
         $this->showModal = false;
@@ -96,7 +109,7 @@ class StaffManager extends Component
     public function toggleStatus(int $id): void
     {
         $user = User::findOrFail($id);
-        $user->update(['is_active' => !$user->is_active]);
+        $user->update(['is_active' => ! $user->is_active]);
         session()->flash('message', 'Status akun staf berhasil diubah.');
     }
 
@@ -110,8 +123,8 @@ class StaffManager extends Component
     {
         $staffMembers = User::with('role')
             ->when($this->search, function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%');
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%');
             })
             ->latest()
             ->paginate(10);

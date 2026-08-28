@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\InventoryLog;
 use App\Models\Material;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,7 @@ class HppCalculatorService
             ]);
 
             if ($log) {
-                \App\Models\InventoryLog::create([
+                InventoryLog::create([
                     'material_id' => $material->id,
                     'type' => 'IN',
                     'quantity' => $incomingQty,
@@ -55,12 +56,12 @@ class HppCalculatorService
             foreach ($product->materials as $material) {
                 $restoreAmount = (float) $material->pivot->quantity * $qty;
                 $material->increment('current_stock', $restoreAmount);
-                \App\Models\InventoryLog::create([
+                InventoryLog::create([
                     'material_id' => $material->id,
                     'type' => 'ADJUST',
                     'quantity' => $restoreAmount,
                     'unit_cost' => (float) $material->avg_cost,
-                    'notes' => 'Void transaksi: restore stok ' . $product->name . ' x' . $qty,
+                    'notes' => 'Void transaksi: restore stok '.$product->name.' x'.$qty,
                 ]);
             }
             $product->increment('current_stock', $qty);

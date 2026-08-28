@@ -22,6 +22,8 @@ class User extends Authenticatable
         'role_id',
         'outlet_id',
         'is_active',
+        'must_change_password',
+        'must_change_pin',
     ];
 
     protected $hidden = [
@@ -40,6 +42,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'must_change_password' => 'boolean',
+            'must_change_pin' => 'boolean',
         ];
     }
 
@@ -54,17 +58,29 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an owner / super admin
+     * Check if the user is an owner / super admin.
+     * HARDENING: empty(role_id) HANYA bypass bila user memang tanpa outlet/role (bootstrap),
+     * bukan akun aktif. is_active=false tidak pernah owner.
      */
     public function isOwner(): bool
     {
-        return $this->role?->slug === 'owner' || empty($this->role_id);
+        if ($this->is_active === false) {
+            return false;
+        }
+        if ($this->role?->slug === 'owner') {
+            return true;
+        }
+        // Legacy bypass: akun tanpa role dianggap owner HANYA jika outlet_id juga kosong/null (akun bootstrap awal)
+        // Jika outlet_id terisi tapi role_id kosong -> data rusak -> jangan bypass, anggap bukan owner
+        if (empty($this->role_id) && empty($this->outlet_id)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Check if user has a specific role
-     *
-     * @param string|array $role
      */
     public function hasRole(string|array $role): bool
     {
@@ -72,7 +88,7 @@ class User extends Authenticatable
             return true;
         }
 
-        if (!$this->role) {
+        if (! $this->role) {
             return false;
         }
 
@@ -93,7 +109,7 @@ class User extends Authenticatable
             return true;
         }
 
-        if (!$this->role) {
+        if (! $this->role) {
             return false;
         }
 

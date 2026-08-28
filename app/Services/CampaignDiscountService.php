@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Campaign;
-use App\Models\CampaignItem;
-use App\Models\CampaignReward;
 
 /**
  * Port dari Ngepos src/stores/cart.ts::calculateDiscounts()
@@ -13,7 +11,7 @@ use App\Models\CampaignReward;
 class CampaignDiscountService
 {
     /**
-     * @param array $cartItems  ['product_id' => string, 'price' => float, 'qty' => int, 'name' => string][]
+     * @param  array  $cartItems  ['product_id' => string, 'price' => float, 'qty' => int, 'name' => string][]
      * @return array{total: float, details: array{name:string,amount:float}[], note: string}
      */
     public function calculate(array $cartItems): array
@@ -38,20 +36,26 @@ class CampaignDiscountService
         foreach ($campaigns as $camp) {
             $reward = $camp->rewards->first();
             // fallback: campaign menyimpan reward di kolom sendiri (CampaignManager lama)
-            if (!$reward) {
-                if (empty($camp->reward_type) && empty($camp->reward_value)) continue;
-                $reward = (object)['reward_type' => $camp->reward_type, 'reward_value' => (float)$camp->reward_value];
+            if (! $reward) {
+                if (empty($camp->reward_type) && empty($camp->reward_value)) {
+                    continue;
+                }
+                $reward = (object) ['reward_type' => $camp->reward_type, 'reward_value' => (float) $camp->reward_value];
             }
 
             if ($camp->type === 'BULK_DISCOUNT') {
                 foreach ($cartItems as $item) {
-                    $isTarget = $camp->items->contains(fn($ci) => (string)$ci->product_id === (string)$item['product_id'] && $ci->role === 'GET');
+                    $isTarget = $camp->items->contains(fn ($ci) => (string) $ci->product_id === (string) $item['product_id'] && $ci->role === 'GET');
                     // fallback: if campaign has no GET items, treat items table with role BUY as target for BULK
-                    if (!$isTarget && $camp->items->isEmpty()) continue;
-                    if (!$isTarget && $camp->items->where('role', 'GET')->isEmpty()) {
-                        $isTarget = $camp->items->contains(fn($ci) => (string)$ci->product_id === (string)$item['product_id']);
+                    if (! $isTarget && $camp->items->isEmpty()) {
+                        continue;
                     }
-                    if (!$isTarget) continue;
+                    if (! $isTarget && $camp->items->where('role', 'GET')->isEmpty()) {
+                        $isTarget = $camp->items->contains(fn ($ci) => (string) $ci->product_id === (string) $item['product_id']);
+                    }
+                    if (! $isTarget) {
+                        continue;
+                    }
 
                     $amount = 0;
                     if ($reward->reward_type === 'PERCENT_DISCOUNT') {
@@ -63,27 +67,34 @@ class CampaignDiscountService
                     }
                     if ($amount > 0) {
                         $totalDiscount += $amount;
-                        $details[] = ['name' => $camp->name . ' (' . $item['name'] . ')', 'amount' => $amount];
+                        $details[] = ['name' => $camp->name.' ('.$item['name'].')', 'amount' => $amount];
                     }
                 }
             } elseif (in_array($camp->type, ['BUNDLE', 'BUY_X_GET_Y'])) {
                 $requirements = $camp->items->where('role', 'BUY');
-                if ($requirements->isEmpty()) $requirements = $camp->items;
+                if ($requirements->isEmpty()) {
+                    $requirements = $camp->items;
+                }
 
                 $maxSets = PHP_INT_MAX;
                 $met = true;
                 foreach ($requirements as $req) {
                     $available = 0;
                     foreach ($cartItems as $it) {
-                        if ((string)$it['product_id'] === (string)$req->product_id) {
+                        if ((string) $it['product_id'] === (string) $req->product_id) {
                             $available += $it['qty'] - ($usedQty[$it['product_id']] ?? 0);
                         }
                     }
-                    if ($available < $req->quantity) { $met = false; break; }
+                    if ($available < $req->quantity) {
+                        $met = false;
+                        break;
+                    }
                     $setsForThis = intdiv($available, max(1, $req->quantity));
                     $maxSets = min($maxSets, $setsForThis);
                 }
-                if (!$met || $maxSets <= 0 || $maxSets === PHP_INT_MAX) continue;
+                if (! $met || $maxSets <= 0 || $maxSets === PHP_INT_MAX) {
+                    continue;
+                }
 
                 $rewardAmount = 0;
                 if ($reward->reward_type === 'FIXED_DISCOUNT') {
@@ -92,7 +103,7 @@ class CampaignDiscountService
                     $reqTotal = 0;
                     foreach ($requirements as $req) {
                         foreach ($cartItems as $it) {
-                            if ((string)$it['product_id'] === (string)$req->product_id) {
+                            if ((string) $it['product_id'] === (string) $req->product_id) {
                                 $reqTotal += $it['price'] * $req->quantity;
                                 break;
                             }
@@ -110,8 +121,12 @@ class CampaignDiscountService
                     foreach ($requirements as $req) {
                         $needed = $req->quantity * $maxSets;
                         foreach ($cartItems as $it) {
-                            if ((string)$it['product_id'] !== (string)$req->product_id) continue;
-                            if ($needed <= 0) break;
+                            if ((string) $it['product_id'] !== (string) $req->product_id) {
+                                continue;
+                            }
+                            if ($needed <= 0) {
+                                break;
+                            }
                             $available = $it['qty'] - ($usedQty[$it['product_id']] ?? 0);
                             $consume = min($available, $needed);
                             $usedQty[$it['product_id']] = ($usedQty[$it['product_id']] ?? 0) + $consume;

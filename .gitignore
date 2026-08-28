@@ -18,9 +18,12 @@
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage
+/playwright-report/
+/test-results/
 /storage/*.key
 /storage/pail
 /vendor
+.env.testing
 _ide_helper.php
 Homestead.json
 Homestead.yaml
