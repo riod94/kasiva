@@ -4,6 +4,8 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -75,7 +77,7 @@ test('registrasi menghasilkan PIN acak 6 digit (bukan hardcode 123456)', functio
 
     $user = User::first();
     expect($user->pin)->not->toBeNull();
-    expect($user->pin)->not->toBe(\Illuminate\Support\Facades\Hash::make('123456'));
+    expect($user->pin)->not->toBe(Hash::make('123456'));
     expect($user->must_change_pin)->toBeTrue();
 
     $flash = session('initial_pin');
@@ -89,7 +91,7 @@ test('dua registrasi menghasilkan PIN yang berbeda (keacakan terjaga)', function
         ->call('register');
     $pin1 = session('initial_pin');
 
-    \Illuminate\Support\Facades\Auth::logout();
+    Auth::logout();
     Livewire::test(Register::class)
         ->set('outlet_name', 'Outlet B')->set('name', 'B')->set('email', 'b@kasiva.pos')->set('password', 'password123')
         ->call('register');
