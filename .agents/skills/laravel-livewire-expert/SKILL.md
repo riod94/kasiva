@@ -1,9 +1,9 @@
 ---
 name: laravel-livewire-expert
-description: Standar pengembangan & arsitektur Laravel 13, Livewire 4, Eloquent ORM, serta kalkulasi HPP dan transaksi DB atomic untuk Kasiva.
+description: Standar pengembangan & arsitektur Laravel 12, Livewire 4, Eloquent ORM, serta kalkulasi HPP dan transaksi DB atomic untuk Kasiva.
 ---
 
-# Laravel 13 & Livewire 4 Expert Skill
+# Laravel 12 & Livewire 4 Expert Skill
 
 ## 1. Prinsip Utama & Arsitektur Kode
 - **Single Responsibility Component**: Setiap komponen Livewire hanya mengurus satu domain (contoh: `CashierScreen` untuk POS, `TransactionHistory` untuk riwayat, `ExpenseManager` untuk pengeluaran).
