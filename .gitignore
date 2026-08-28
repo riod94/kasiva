@@ -35,3 +35,4 @@ Thumbs.db
 /tests/e2e/.agnes/
 /public/images/e2e-proof/
 /.claude/
+/.tokensave/
