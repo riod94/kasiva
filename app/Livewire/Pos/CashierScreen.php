@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Services\CartCalculator;
 use App\Services\CheckoutService;
 use App\Services\LoyaltyService;
+use App\Services\WhatsAppReceiptFormatter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -590,35 +591,7 @@ class CashierScreen extends Component
             return '#';
         }
 
-        $text = "*STRUK DIGITAL KASIVA POS*\n";
-        $text .= 'No: '.$this->lastTransaction->receipt_number."\n";
-        $text .= 'Tanggal: '.$this->lastTransaction->created_at->format('d/m/Y H:i')."\n";
-        $text .= 'Kasir: '.$this->lastTransaction->cashier_name."\n";
-        if ($this->lastTransaction->loyalty_member_id) {
-            $lm = LoyaltyMember::find($this->lastTransaction->loyalty_member_id);
-            if ($lm) {
-                $text .= 'Member: '.($lm->name ?: $lm->qr_code).' ('.$lm->qr_code.")\n";
-            }
-        }
-        if (($this->lastTransaction->discount_note ?? '') !== '') {
-            $text .= 'Promo: '.$this->lastTransaction->discount_note."\n";
-        }
-        $text .= "--------------------------------\n";
-        foreach ($this->lastTransaction->items as $item) {
-            $text .= $item->product_name.' ('.$item->quantity.'x) - Rp '.number_format($item->subtotal, 0, ',', '.')."\n";
-        }
-        $text .= "--------------------------------\n";
-        if (($this->lastTransaction->discount_total ?? 0) > 0) {
-            $text .= 'DISKON: -Rp '.number_format($this->lastTransaction->discount_total, 0, ',', '.').' ('.($this->lastTransaction->discount_note ?? '').")\n";
-        }
-        $text .= 'TOTAL: Rp '.number_format($this->lastTransaction->total_amount, 0, ',', '.')."\n";
-        $text .= 'BAYAR ('.$this->lastTransaction->payment_method.'): Rp '.number_format($this->lastTransaction->paid_amount, 0, ',', '.')."\n";
-        if ($this->lastTransaction->change_amount > 0) {
-            $text .= 'KEMBALI: Rp '.number_format($this->lastTransaction->change_amount, 0, ',', '.')."\n";
-        }
-        $text .= "\nTerima kasih telah berbelanja di Kasiva!";
-
-        return 'https://api.whatsapp.com/send?text='.urlencode($text);
+        return WhatsAppReceiptFormatter::url($this->lastTransaction);
     }
 
     public function closeReceiptModal(): void

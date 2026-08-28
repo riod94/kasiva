@@ -85,16 +85,21 @@ class StaffManager extends Component
             $user->update($data);
             session()->flash('message', 'Data staf kasir berhasil diperbarui.');
         } else {
-            User::create([
+            $plainPin = ! empty($this->pin) ? $this->pin : (string) random_int(100000, 999999);
+            $newUser = User::create([
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'password' => Hash::make('kasir12345'),
-                'pin' => ! empty($this->pin) ? Hash::make($this->pin) : Hash::make('123456'),
+                'pin' => Hash::make($plainPin),
+                'must_change_pin' => empty($this->pin),
                 'role_id' => $this->roleId,
                 'is_active' => $this->is_active,
             ]);
             session()->flash('message', 'Staf kasir baru berhasil ditambahkan.');
+            if (empty($this->pin)) {
+                session()->flash('staff_initial_pin', ['name' => $newUser->name, 'pin' => $plainPin]);
+            }
         }
 
         $this->showModal = false;

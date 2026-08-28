@@ -54,6 +54,7 @@ class Register extends Component
             ['name' => 'Owner / Pemilik', 'description' => 'Akses penuh seluruh modul']
         );
 
+        $plainPin = (string) random_int(100000, 999999);
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
@@ -61,13 +62,15 @@ class Register extends Component
             'phone' => $this->phone,
             'role_id' => $ownerRole->id,
             'outlet_id' => $outlet->id,
-            'pin' => Hash::make('123456'),
+            'pin' => Hash::make($plainPin),
             'must_change_password' => true,
+            'must_change_pin' => true,
         ]);
 
         RateLimiter::clear($throttleKey);
         Auth::login($user);
         session()->regenerate();
+        session()->flash('initial_pin', $plainPin);
         AuditLog::log('REGISTER', 'Registered new SaaS Outlet & Owner account', $user->name);
 
         return redirect()->route('pos.cashier');

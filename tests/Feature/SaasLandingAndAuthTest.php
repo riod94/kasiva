@@ -68,6 +68,41 @@ test('pengguna dapat melakukan registrasi outlet baru', function () {
     expect(User::first()->email)->toBe('rizki@kasiva.pos');
 });
 
+test('registrasi menghasilkan PIN acak 6 digit (bukan hardcode 123456)', function () {
+    Livewire::test(Register::class)
+        ->set('outlet_name', 'Outlet A')
+        ->set('name', 'Owner A')
+        ->set('email', 'a@kasiva.pos')
+        ->set('password', 'password123')
+        ->call('register');
+
+    $user = User::first();
+    expect($user->pin)->not->toBeNull();
+    expect($user->pin)->not->toBe(\Illuminate\Support\Facades\Hash::make('123456'));
+    expect($user->must_change_pin)->toBeTrue();
+
+    $flash = session('initial_pin');
+    expect($flash)->toBeString();
+    expect($flash)->toMatch('/^\d{6}$/');
+});
+
+test('dua registrasi menghasilkan PIN yang berbeda (keacakan terjaga)', function () {
+    Livewire::test(Register::class)
+        ->set('outlet_name', 'Outlet A')->set('name', 'A')->set('email', 'a@kasiva.pos')->set('password', 'password123')
+        ->call('register');
+    $pin1 = session('initial_pin');
+
+    \Illuminate\Support\Facades\Auth::logout();
+    Livewire::test(Register::class)
+        ->set('outlet_name', 'Outlet B')->set('name', 'B')->set('email', 'b@kasiva.pos')->set('password', 'password123')
+        ->call('register');
+    $pin2 = session('initial_pin');
+
+    expect($pin1)->toMatch('/^\d{6}$/');
+    expect($pin2)->toMatch('/^\d{6}$/');
+    expect($pin1)->not->toBe($pin2);
+});
+
 test('pengguna dapat melakukan login dengan kredensial yang valid', function () {
     $user = User::create([
         'name' => 'Staf Kasir',

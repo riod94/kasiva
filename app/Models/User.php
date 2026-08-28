@@ -23,6 +23,7 @@ class User extends Authenticatable
         'outlet_id',
         'is_active',
         'must_change_password',
+        'must_change_pin',
     ];
 
     protected $hidden = [
@@ -42,6 +43,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_active' => 'boolean',
             'must_change_password' => 'boolean',
+            'must_change_pin' => 'boolean',
         ];
     }
 
