@@ -30,3 +30,7 @@ Homestead.yaml
 Thumbs.db
 /og-*.html
 /og-*.png
+/.worktrees/
+/.agnes/
+/tests/e2e/.agnes/
+/public/images/e2e-proof/
