@@ -39,13 +39,10 @@ test('landing page tidak memuat runtime aplikasi POS yang tidak diperlukan', fun
         ->assertDontSee('resources/js/app.js', false);
 });
 
-test('social preview landing 1200x630 (OG image v2, di-skip bila belum dibuat)', function () {
+test('social preview landing tersedia dalam format PNG', function () {
     $path = public_path('images/kasiva-social-preview.png');
 
-    if (! is_file($path)) {
-        $this->markTestSkipped('OG image v2 belum dibuat (deferred ke skill superdesign).');
-    }
-
+    expect($path)->toBeFile();
     expect(getimagesize($path))->toMatchArray([0 => 1200, 1 => 630, 'mime' => 'image/png']);
 });
 
