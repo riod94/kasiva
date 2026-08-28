@@ -34,3 +34,4 @@ Thumbs.db
 /.agnes/
 /tests/e2e/.agnes/
 /public/images/e2e-proof/
+/.claude/
